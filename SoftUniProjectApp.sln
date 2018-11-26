@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.App", "Foodnetic.App\Foodnetic.App.csproj", "{FD675E2C-5E4A-4A6A-9309-BA462CC5BA86}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.App", "Foodnetic.App\Foodnetic.App.csproj", "{FD675E2C-5E4A-4A6A-9309-BA462CC5BA86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.Models", "Foodnetic.Models\Foodnetic.Models.csproj", "{06D02009-919E-4B5F-8915-69632C7BEB23}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Models", "Foodnetic.Models\Foodnetic.Models.csproj", "{06D02009-919E-4B5F-8915-69632C7BEB23}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.Data", "Foodnetic.Data\Foodnetic.Data.csproj", "{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.Services", "Foodnetic.Services\Foodnetic.Services.csproj", "{C4B961DC-4026-4AF4-9742-22C1461BEDAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{06D02009-919E-4B5F-8915-69632C7BEB23}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{06D02009-919E-4B5F-8915-69632C7BEB23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{06D02009-919E-4B5F-8915-69632C7BEB23}.Release|Any CPU.Build.0 = Release|Any CPU
+		{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

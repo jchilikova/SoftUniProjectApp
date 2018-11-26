@@ -36,6 +36,8 @@ namespace Foodnetic.Models
 
         public ICollection<Ingredient> Ingredients { get; set; }
 
+        public ICollection<Menu> Menus { get; set; }    
+
         public  ICollection<Comment> Comment { get; set; }
 
         public  ICollection<Tag> Tags { get; set; }
