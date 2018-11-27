@@ -7,13 +7,13 @@ namespace Foodnetic.Models
     {
         public Ingredient()
         {
-            this.Recipes = new HashSet<Recipe>();
+            this.Recipes = new HashSet<RecipeIngredient>();
             this.Id = Guid.NewGuid().ToString();
         }
 
         public int Quantity { get; set; }
 
-        public ICollection<Recipe> Recipes { get; set; }
+        public ICollection<RecipeIngredient> Recipes { get; set; }
        
     }
 }

@@ -7,7 +7,7 @@ namespace Foodnetic.Models
     {
         public Tag()
         {
-            this.Recipes = new HashSet<Recipe>();
+            this.Recipes = new HashSet<RecipeTag>();
             this.Id = Guid.NewGuid().ToString();
         }
 
@@ -15,6 +15,6 @@ namespace Foodnetic.Models
 
         public string Name { get; set; }
 
-        public ICollection<Recipe> Recipes { get; set; }    
+        public ICollection<RecipeTag> Recipes { get; set; }    
     }
 }

@@ -27,10 +27,10 @@ Import Google Fonts
 --------------------*/
 
 /* main font for menu. */
-@import url(http://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900);
+@import url(https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900);
 /* font for headings, text, tags */
-@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700,800);
-@import url(http://fonts.googleapis.com/css?family=Playfair+Display:400italic&subset=latin,latin-ext);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,400,500,600,700,800);
+@import url(https://fonts.googleapis.com/css?family=Playfair+Display:400italic&subset=latin,latin-ext);
 
 /*--------------------
 1. General
@@ -464,12 +464,26 @@ figure.effect-bubba:hover p {
     color: #fff;
 }
 
+
+.dark-bg {
+    background: #323232;
+    color: #fff;
+}
+
 .bg-img1 {
     background-image: url(../images/foods2.jpg);
     background-size: cover !important;
     background-position: center center;
     background-repeat: no-repeat;
     background-attachment: fixed;
+}
+
+.bg-img2 {
+    background-image: url(../images/foods.jpg);
+    background-size: cover !important;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: inherit;
 }
 
 .light-bg {

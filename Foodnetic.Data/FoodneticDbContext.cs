@@ -1,4 +1,5 @@
-﻿using Foodnetic.Models;
+﻿using Foodnetic.Data.Configuration;
+using Foodnetic.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,5 +26,26 @@ namespace Foodnetic.Data
 
         public DbSet<Tag> Tags { get; set; }
 
+        public DbSet<RecipeMenu> RecipeMenus { get; set; }
+
+        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
+
+        public DbSet<RecipeTag> RecipeTags { get; set; }
+
+        public DbSet<UserGrocery> UserGroceries { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new RecipeMenuConfiguration());
+            modelBuilder.ApplyConfiguration(new RecipeConfiguration());
+            modelBuilder.ApplyConfiguration(new RecipeIngredientConfiguration());
+            modelBuilder.ApplyConfiguration(new RecipeTagConfiguration());
+            modelBuilder.ApplyConfiguration(new UserConfiguration());
+            modelBuilder.ApplyConfiguration(new UserGroceryConfiguration());
+
+            base.OnModelCreating(modelBuilder);
+        }
+
     }
+
 }

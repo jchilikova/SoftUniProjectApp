@@ -7,9 +7,9 @@ namespace Foodnetic.Models
     {
         public Recipe()
         {
-            this.Ingredients = new HashSet<Ingredient>();
+            this.Ingredients = new HashSet<RecipeIngredient>();
             this.Comment = new HashSet<Comment>();
-            this.Tags = new HashSet<Tag>();
+            this.Tags = new HashSet<RecipeTag>();
             this.Id = Guid.NewGuid().ToString();
         }
 
@@ -34,12 +34,12 @@ namespace Foodnetic.Models
 
         public decimal Rating { get; set; }
 
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public ICollection<RecipeIngredient> Ingredients { get; set; }
 
-        public ICollection<Menu> Menus { get; set; }    
+        public ICollection<RecipeMenu> Menus { get; set; }    
 
         public  ICollection<Comment> Comment { get; set; }
 
-        public  ICollection<Tag> Tags { get; set; }
+        public  ICollection<RecipeTag> Tags { get; set; }
     }
 }

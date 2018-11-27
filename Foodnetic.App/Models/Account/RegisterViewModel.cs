@@ -23,6 +23,7 @@ namespace Foodnetic.App.Models.Account
 
         [Required]
         [Compare("Password", ErrorMessage = "Passwords does not match!")]
+        [Display(Name="Confirm Password")]
         [MinLength(5, ErrorMessage = "Must contain at least 5 characters!")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
@@ -34,10 +35,5 @@ namespace Foodnetic.App.Models.Account
         [Required(ErrorMessage = "Last name is required!")]
         [Display(Name="Last name")]
         public string LastName { get; set; }
-
-        [Required]
-        [Display(Name="Unique Citizen Number(UCN)")]
-        [RegularExpression("[0-9]{10}", ErrorMessage = "The Unique Citizen Number(UCN) should consist of exactly 10 numbers")]
-        public int Ucn { get; set; }
     }
 }

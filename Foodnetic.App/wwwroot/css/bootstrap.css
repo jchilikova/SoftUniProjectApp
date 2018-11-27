@@ -1189,6 +1189,11 @@ h6,
   line-height: 1.1;
   color: inherit;
 }
+
+.text-white {
+    color: #eeeeee
+}
+
 h1 small,
 h2 small,
 h3 small,
@@ -1371,6 +1376,15 @@ a.text-warning:focus {
 a.text-danger:hover,
 a.text-danger:focus {
   color: #843534;
+}
+
+.text-white {
+    color: #eeeeee
+}
+
+a.text-white:hover,
+a.text-white:focus {
+    color: #eeeeee
 }
 
 .bg-primary {
@@ -3056,6 +3070,11 @@ a.btn.disabled,
 fieldset[disabled] a.btn {
   pointer-events: none;
 }
+
+.rounded {
+    border-radius: .25rem !important
+}
+
 .btn-default {
   color: #333;
   background-color: #fff;
@@ -6574,7 +6593,10 @@ button.close {
 }
 .invisible {
   visibility: hidden;
+
+
 }
+
 .text-hide {
   font: 0/0 a;
   color: transparent;

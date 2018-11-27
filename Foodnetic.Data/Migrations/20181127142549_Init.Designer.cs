@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.App.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181127142549_Init")]
+    partial class Init
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -118,7 +120,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("RecipeIngredients");
+                    b.ToTable("RecipeIngredient");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.RecipeMenu", b =>
@@ -133,7 +135,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("RecipeMenus");
+                    b.ToTable("RecipeMenu");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.RecipeTag", b =>
@@ -146,7 +148,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeTags");
+                    b.ToTable("RecipeTag");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Tag", b =>
@@ -171,7 +173,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("GroceryId");
 
-                    b.ToTable("UserGroceries");
+                    b.ToTable("UserGrocery");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

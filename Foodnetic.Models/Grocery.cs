@@ -8,12 +8,12 @@ namespace Foodnetic.Models
     {
         public Grocery()
         {
-            this.Users = new HashSet<User>();
+            this.Users = new HashSet<UserGrocery>();
             this.Id = Guid.NewGuid().ToString();
         }
 
         public DateTime ExpirationDate { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<UserGrocery> Users { get; set; }
     }
 }
