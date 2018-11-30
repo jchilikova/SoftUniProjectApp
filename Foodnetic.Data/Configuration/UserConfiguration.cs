@@ -16,6 +16,10 @@ namespace Foodnetic.Data.Configuration
                 .WithOne(x => x.User)
                 .HasForeignKey<Menu>(x => x.UserId);
 
+            builder.HasMany(x => x.Groceries)
+                .WithOne(x => x.User)
+                .HasForeignKey(x => x.UserId);
+
         }
     }   
 }

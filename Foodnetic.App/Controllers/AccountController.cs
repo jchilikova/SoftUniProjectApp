@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using Foodnetic.App.Models.Account;
 using Foodnetic.Models;
+using Foodnetic.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;

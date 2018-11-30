@@ -32,7 +32,6 @@ namespace Foodnetic.Data
 
         public DbSet<RecipeTag> RecipeTags { get; set; }
 
-        public DbSet<UserGrocery> UserGroceries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -41,7 +40,6 @@ namespace Foodnetic.Data
             modelBuilder.ApplyConfiguration(new RecipeIngredientConfiguration());
             modelBuilder.ApplyConfiguration(new RecipeTagConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
-            modelBuilder.ApplyConfiguration(new UserGroceryConfiguration());
 
             base.OnModelCreating(modelBuilder);
         }

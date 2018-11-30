@@ -1,0 +1,173 @@
+﻿@{
+    ViewData["Title"] = "All Recipes";
+    Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
+}
+
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+<body>
+    <header>
+        @{
+            await Html.RenderPartialAsync("_DefaultNavbarPartial");
+        }
+    </header>
+<div class="intro-text text-center">
+    <h1 class="intro-lead-in mb-4 mt-4">All Recipes</h1>
+    <a asp-controller="Recipes" asp-action="Create" class="btn btn-xl">Create Recipe</a>
+</div>
+<div class="dropdown text-center mt-5">
+    <button class="btn btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Categories
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">All</a>
+        <a class="dropdown-item" href="#">Another action</a>
+        <a class="dropdown-item" href="#">Something else here</a>
+    </div>
+</div>
+<div class="row d-flex justify-content-around mt-5">
+    <article class="col-md-3 border border-success text-center" @*style="border-width: 1.5px !important"*@>
+        <div class="my-3">
+            <img src="~/images/burger.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken burger</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/pizza.jpg" class="img-thumbnail"/>
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chorizo pizza</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/kfc.jpg" class="img-thumbnail"/>
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken wings</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+</div>
+<div class="row d-flex justify-content-around mt-5">
+    <article class="col-md-3 border border-success text-center" @*style="border-width: 1.5px !important" *@>
+        <div class="my-3">
+            <img src="~/images/burger.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken burger</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/pizza.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chorizo pizza</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/kfc.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken wings</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+</div>
+<div class="row d-flex justify-content-around mt-5">
+    <article class="col-md-3 border border-success text-center" @*style="border-width: 1.5px !important" *@>
+        <div class="my-3">
+            <img src="~/images/burger.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken burger</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/pizza.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chorizo pizza</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+    <article class="col-md-3 border border-success text-center">
+        <div class="my-3">
+            <img src="~/images/kfc.jpg" class="img-thumbnail" />
+        </div>
+        <div>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star checked"></span>
+            <span class="fa fa-star"></span>
+            <span class="fa fa-star"></span>
+        </div>
+        <div><h4>Chicken wings</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><h5>By Username</h5></div>
+    </article>
+</div>
+</body>
+

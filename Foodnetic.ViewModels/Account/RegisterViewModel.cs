@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Foodnetic.App.Models.Account
+namespace Foodnetic.ViewModels.Account
 {
     public class RegisterViewModel
     {

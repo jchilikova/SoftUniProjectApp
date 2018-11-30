@@ -135,6 +135,13 @@ section {
 	background-color: #fec503
 }
 
+.border-3 {
+    border-width: 20px !important;
+}
+
+.checked {
+    color: orange;
+
 @media (min-width:768px) {
 	.navbar-default
 	{
@@ -482,7 +489,7 @@ figure.effect-bubba:hover p {
     background-image: url(../images/foods.jpg);
     background-size: cover !important;
     background-position: center center;
-    background-repeat: no-repeat;
+    background-repeat:repeat-y;
     background-attachment: inherit;
 }
 

@@ -2,15 +2,15 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using Foodnetic.App.Models.Account
-@model Foodnetic.App.Models.Account.LoginViewModel
+@using Foodnetic.ViewModels.Account
+@model Foodnetic.ViewModels.Account.LoginViewModel
 
 <body class="bg-img1">
 @{
     await Html.RenderPartialAsync("_LoginRegisterNavbarPartial");
 }
 <main>
-    <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%">
+    <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%; opacity: 0.82">
         <h1 class="text-center" style="color: white">Login</h1>
         <hr class="bg-eventure hr-2"/>
         <form class="mx-auto half-width" method="post" asp-controller="Account" asp-action="Login">

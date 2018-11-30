@@ -7,7 +7,7 @@ namespace Foodnetic.Models
     {
         public User()
         {
-            this.Groceries = new HashSet<UserGrocery>();
+            this.Groceries = new HashSet<Grocery>();
             this.Comments = new HashSet<Comment>();
         }
 
@@ -18,7 +18,7 @@ namespace Foodnetic.Models
         public string DailyMenuId { get; set; }
         public Menu DailyMenu { get; set; }
         
-        public ICollection<UserGrocery> Groceries { get; set; }
+        public ICollection<Grocery> Groceries { get; set; }
 
         public ICollection<Comment> Comments { get; set; }
     }

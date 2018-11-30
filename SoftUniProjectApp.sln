@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.App", "Foodnetic.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Models", "Foodnetic.Models\Foodnetic.Models.csproj", "{06D02009-919E-4B5F-8915-69632C7BEB23}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.Data", "Foodnetic.Data\Foodnetic.Data.csproj", "{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Data", "Foodnetic.Data\Foodnetic.Data.csproj", "{993CD48D-7FD2-43AB-8B3F-EFF351817F6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.Services", "Foodnetic.Services\Foodnetic.Services.csproj", "{C4B961DC-4026-4AF4-9742-22C1461BEDAD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Services", "Foodnetic.Services\Foodnetic.Services.csproj", "{C4B961DC-4026-4AF4-9742-22C1461BEDAD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Foodnetic.ViewModels", "Foodnetic.ViewModels\Foodnetic.ViewModels.csproj", "{123746C5-3649-486E-B98E-A3301F45FC17}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B961DC-4026-4AF4-9742-22C1461BEDAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{123746C5-3649-486E-B98E-A3301F45FC17}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{123746C5-3649-486E-B98E-A3301F45FC17}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{123746C5-3649-486E-B98E-A3301F45FC17}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{123746C5-3649-486E-B98E-A3301F45FC17}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
