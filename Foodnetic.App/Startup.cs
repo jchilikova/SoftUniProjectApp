@@ -11,7 +11,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Foodnetic.App.Data;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Microsoft.Extensions.Configuration;
@@ -49,7 +48,7 @@ namespace Foodnetic.App
                     options.Password.RequireUppercase = false;
                     options.Password.RequiredUniqueChars = 0;
                     options.Password.RequireNonAlphanumeric = false;
-                    options.Password.RequiredLength = 6;
+                    options.Password.RequiredLength = 5;
                 })
                 .AddDefaultUI()
                 .AddRoles<IdentityRole>()
@@ -63,6 +62,16 @@ namespace Foodnetic.App
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
+            //services.AddAuthentication().AddFacebook(facebookOptions =>
+            //{
+            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //});
+
+            //services.AddAuthentication().AddGoogle(googleOptions =>
+            //{
+            //    googleOptions.AccessType = Configuration["Authentication:Facebook:AppId"];
+            //});
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
@@ -90,6 +99,10 @@ namespace Foodnetic.App
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areaRoute",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

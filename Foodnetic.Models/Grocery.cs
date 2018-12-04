@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
 namespace Foodnetic.Models
 {
@@ -13,7 +11,7 @@ namespace Foodnetic.Models
 
         public DateTime ExpirationDate { get; set; }
 
-        public string UserId { get; set; }
-        public User User { get; set; }
+        public string VirtualFridgeId { get; set; }
+        public VirtualFridge VirtualFridge { get; set; }
     }
 }

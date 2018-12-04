@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Foodnetic.App.Controllers
 {
-    public class FridgesController : Controller
+    public class FridgeController : Controller
     {
         public IActionResult Index()
         {

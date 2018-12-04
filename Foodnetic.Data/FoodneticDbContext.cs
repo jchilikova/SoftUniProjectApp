@@ -32,6 +32,7 @@ namespace Foodnetic.Data
 
         public DbSet<RecipeTag> RecipeTags { get; set; }
 
+        public DbSet<VirtualFridge> VirtualFridges { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

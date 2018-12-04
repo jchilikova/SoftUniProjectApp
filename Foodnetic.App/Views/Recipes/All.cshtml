@@ -7,6 +7,10 @@
     .checked {
         color: orange;
     }
+    .hr-green {
+        background-color: black;
+        width: 50%
+    }
 </style>
 <body>
     <header>
@@ -16,6 +20,7 @@
     </header>
 <div class="intro-text text-center">
     <h1 class="intro-lead-in mb-4 mt-4">All Recipes</h1>
+    <hr class="hr-green"/>
     <a asp-controller="Recipes" asp-action="Create" class="btn btn-xl">Create Recipe</a>
 </div>
 <div class="dropdown text-center mt-5">
@@ -28,6 +33,7 @@
         <a class="dropdown-item" href="#">Something else here</a>
     </div>
 </div>
+
 <div class="row d-flex justify-content-around mt-5">
     <article class="col-md-3 border border-success text-center" @*style="border-width: 1.5px !important"*@>
         <div class="my-3">

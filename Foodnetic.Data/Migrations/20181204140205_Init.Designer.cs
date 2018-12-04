@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Foodnetic.App.Data.Migrations
+namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    [Migration("20181127142549_Init")]
+    [Migration("20181204140205_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -93,6 +93,8 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.Property<string>("Directions");
 
+                    b.Property<bool>("IsDeleted");
+
                     b.Property<string>("Name");
 
                     b.Property<int>("NumberOfServings");
@@ -120,7 +122,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("IngredientId");
 
-                    b.ToTable("RecipeIngredient");
+                    b.ToTable("RecipeIngredients");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.RecipeMenu", b =>
@@ -135,7 +137,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("MenuId");
 
-                    b.ToTable("RecipeMenu");
+                    b.ToTable("RecipeMenus");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.RecipeTag", b =>
@@ -148,7 +150,7 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.HasIndex("TagId");
 
-                    b.ToTable("RecipeTag");
+                    b.ToTable("RecipeTags");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Tag", b =>
@@ -163,17 +165,20 @@ namespace Foodnetic.App.Data.Migrations
                     b.ToTable("Tags");
                 });
 
-            modelBuilder.Entity("Foodnetic.Models.UserGrocery", b =>
+            modelBuilder.Entity("Foodnetic.Models.VirtualFridge", b =>
                 {
-                    b.Property<string>("UserId");
+                    b.Property<string>("Id")
+                        .ValueGeneratedOnAdd();
 
-                    b.Property<string>("GroceryId");
+                    b.Property<string>("OwnerId");
 
-                    b.HasKey("UserId", "GroceryId");
+                    b.HasKey("Id");
 
-                    b.HasIndex("GroceryId");
+                    b.HasIndex("OwnerId")
+                        .IsUnique()
+                        .HasFilter("[OwnerId] IS NOT NULL");
 
-                    b.ToTable("UserGrocery");
+                    b.ToTable("VirtualFridges");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -298,11 +303,9 @@ namespace Foodnetic.App.Data.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("ProviderKey")
-                        .HasMaxLength(128);
+                    b.Property<string>("ProviderKey");
 
                     b.Property<string>("ProviderDisplayName");
 
@@ -333,11 +336,9 @@ namespace Foodnetic.App.Data.Migrations
                 {
                     b.Property<string>("UserId");
 
-                    b.Property<string>("LoginProvider")
-                        .HasMaxLength(128);
+                    b.Property<string>("LoginProvider");
 
-                    b.Property<string>("Name")
-                        .HasMaxLength(128);
+                    b.Property<string>("Name");
 
                     b.Property<string>("Value");
 
@@ -367,6 +368,8 @@ namespace Foodnetic.App.Data.Migrations
 
                     b.Property<string>("LastName");
 
+                    b.Property<string>("VirtualFridgeId");
+
                     b.ToTable("User");
 
                     b.HasDiscriminator().HasValue("User");
@@ -377,6 +380,10 @@ namespace Foodnetic.App.Data.Migrations
                     b.HasBaseType("Foodnetic.Models.Ingredient");
 
                     b.Property<DateTime>("ExpirationDate");
+
+                    b.Property<string>("VirtualFridgeId");
+
+                    b.HasIndex("VirtualFridgeId");
 
                     b.ToTable("Grocery");
 
@@ -447,17 +454,11 @@ namespace Foodnetic.App.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Foodnetic.Models.UserGrocery", b =>
+            modelBuilder.Entity("Foodnetic.Models.VirtualFridge", b =>
                 {
-                    b.HasOne("Foodnetic.Models.Grocery", "Grocery")
-                        .WithMany("Users")
-                        .HasForeignKey("GroceryId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Foodnetic.Models.User", "User")
-                        .WithMany("Groceries")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                    b.HasOne("Foodnetic.Models.User", "Owner")
+                        .WithOne("VirtualFridge")
+                        .HasForeignKey("Foodnetic.Models.VirtualFridge", "OwnerId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -503,6 +504,13 @@ namespace Foodnetic.App.Data.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Foodnetic.Models.Grocery", b =>
+                {
+                    b.HasOne("Foodnetic.Models.VirtualFridge", "VirtualFridge")
+                        .WithMany("Groceries")
+                        .HasForeignKey("VirtualFridgeId");
                 });
 #pragma warning restore 612, 618
         }

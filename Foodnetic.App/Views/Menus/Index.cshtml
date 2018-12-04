@@ -1,0 +1,56 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
+}
+<style>
+    .text-foods {
+        font-family: "Playfair Display",sans-serif;
+        font-style: italic;
+    }
+    .hr-green {
+        background-color: black;
+        width: 50%
+    }
+</style>
+<body>
+<header>
+    @{
+        await Html.RenderPartialAsync("_DefaultNavbarPartial");
+    }
+</header>
+<div class="intro-text text-center">
+    <h1 class="intro-lead-in mb-4 mt-4">Daily Menu</h1>
+    <hr class="hr-green"/>
+    <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
+</div>
+<div class="row d-flex justify-content-around mt-5 text-center">
+    <div class="col-md-3">
+        <h2 class="text-foods">
+            Breakfast
+        </h2>
+        <div class="my-3">
+            <img src="~/images/burger.jpg" class="img-thumbnail" />
+        </div>
+        <div><h4>Beef burger</h4></div>
+        <div><p>Description about the recipe....</p></div>
+        <div><a href="#">View more...</a></div>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-foods">
+            Lunch
+        </h2>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-foods">
+            Dinner
+        </h2>
+    </div>
+    <div class="col-md-3">
+        <h2 class="text-foods">
+            Dessert
+        </h2>
+    </div>
+</div>
+</body>
+

@@ -34,6 +34,8 @@ namespace Foodnetic.Models
 
         public decimal Rating { get; set; }
 
+        public bool IsDeleted { get; set; }
+
         public ICollection<RecipeIngredient> Ingredients { get; set; }
 
         public ICollection<RecipeMenu> Menus { get; set; }    

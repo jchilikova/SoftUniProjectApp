@@ -135,13 +135,6 @@ section {
 	background-color: #fec503
 }
 
-.border-3 {
-    border-width: 20px !important;
-}
-
-.checked {
-    color: orange;
-
 @media (min-width:768px) {
 	.navbar-default
 	{
@@ -489,12 +482,24 @@ figure.effect-bubba:hover p {
     background-image: url(../images/foods.jpg);
     background-size: cover !important;
     background-position: center center;
-    background-repeat:repeat-y;
+    background-repeat: no-repeat;
     background-attachment: inherit;
 }
 
 .light-bg {
 	background-color: #f8f8f8;
+}
+
+.hr-green {
+    background-color: #466618
+}
+
+.btn-lightgreen {
+    background-color: #98fb98
+}
+
+.btn-lightdanger {
+    background-color: #db7093
 }
 
 .overlay-dark:before, .overlay-light:before {

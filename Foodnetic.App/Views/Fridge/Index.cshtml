@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
+}
+<style>
+    .bg-lightgreen {
+        background-color: #90EE90
+    }
+
+    .bg-lightdanger {
+        background-color: #FFb6c1
+    }
+
+    .hr-green {
+        background-color: black;
+        width: 50%
+    }
+</style>
+<body>
+    <header>
+        @{
+            await Html.RenderPartialAsync("_DefaultNavbarPartial");
+        }
+    </header>
+    <div class="intro-text text-center">
+        <h1 class="intro-lead-in mb-4 mt-4">Virtual Fridge</h1>
+        <hr class="hr-green" />
+        <a asp-controller="Fridge" asp-action="AddGrocery" class="btn btn-xl">Add Grocery</a>
+    </div>
+    <table class="table w-75 mx-auto table-hover my-5 table-bordered">
+        <thead>
+            <tr class="row">
+                <th class="col-md-1">#</th>
+                <th class="col-md-4">Name</th>
+                <th class="col-md-3">Quantity</th>
+                <th class="col-md-4">Expiration Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="row">
+                <th class="col-md-1">#</th>
+                <td class="col-md-4">Beef</td>
+                <td class="col-md-3">350</td>
+                <td class="col-md-4 bg-lightdanger">04.12.2018</td>
+            </tr>
+            <tr class="row">
+                <th class="col-md-1">#</th>
+                <td class="col-md-4">Fish</td>
+                <td class="col-md-3">200</td>
+                <td class="col-md-4 bg-lightgreen">22.10.2019</td>
+            </tr>
+        </tbody>
+    </table>
+</body>

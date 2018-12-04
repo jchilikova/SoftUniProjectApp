@@ -1,0 +1,43 @@
+﻿@{
+    ViewData["Title"] = "CreateProduct";
+    Layout = "~/Areas/Administration/Views/Shared/_SecondaryLayout.cshtml";
+}
+@model Foodnetic.App.Areas.Administration.Models.Products.CreateProductViewModel
+
+<style>
+    .hr-green {
+        background-color: black;
+        width: 50%
+    }
+    .btn-green {
+        background-color: #466618;
+    }
+</style>
+<body>
+<header>
+    @{
+        await Html.RenderPartialAsync("_DefaultNavbarPartial");
+    }
+</header>
+    <div class="intro-text text-center">
+        <h1 class="intro-lead-in mb-4 mt-4">Create Product</h1>
+        <hr class="hr-green" />
+    </div>
+<form method="post" asp-controller="Admins" asp-action="CreateProduct">
+    <div class="container text-center col-md-4">
+        <div class="form-control text-center">
+            <strong><label asp-for="Name"></label></strong>
+            <input asp-for="Name" class="form-control" placeholder="Name...">
+        </div>
+        <div class="form-control">
+            <strong><label asp-for="ProductType"></label></strong>
+            <select asp-for="ProductType" asp-items="Html.GetEnumSelectList<Foodnetic.Models.Enums.ProductType>()"></select>
+        </div>
+    </div>
+    <hr class="hr-green" />
+        <div class="text-center" style="margin-top: 10px; margin-bottom: 20px">
+            <a class="btn btn-green text-white" asp-action="CreateProduct">Create Product</a>
+        </div>
+    
+</form>
+</body>

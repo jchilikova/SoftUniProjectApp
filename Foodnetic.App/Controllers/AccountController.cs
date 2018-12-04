@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Foodnetic.App.Globals;
 using Foodnetic.Models;
 using Foodnetic.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
@@ -50,7 +51,7 @@ namespace Foodnetic.App.Controllers
         }
 
         [HttpPost]
-        public IActionResult Register(RegisterViewModel bindingModel)
+        public async System.Threading.Tasks.Task<IActionResult> Register(RegisterViewModel bindingModel)
         {
             var userExists = this.signIn.UserManager.Users.Any(x => x.UserName == bindingModel.Username);
             var emailExists = this.signIn.UserManager.Users.Any(x => x.Email == bindingModel.Email);
@@ -81,6 +82,15 @@ namespace Foodnetic.App.Controllers
 
                 if (result.Succeeded)
                 {
+                    //if (!this.signIn.UserManager.Users.Any())
+                    //{
+                    //    await this.signIn.UserManager.AddToRoleAsync(user, "Administrator");
+                    //}
+                    //else
+                    //{
+                    //    await this.signIn.UserManager.AddToRoleAsync(user, "User");
+                    //}
+                    await this.signIn.UserManager.AddToRoleAsync(user, GlobalConstants.UserRole);
                     this.signIn.SignInAsync(user, false).Wait();
                     return this.RedirectToAction("Index", "Home");
                 }
