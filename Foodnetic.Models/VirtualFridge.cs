@@ -14,6 +14,6 @@ namespace Foodnetic.Models
         public string OwnerId { get; set; }
         public User Owner { get; set; }
 
-        public IEnumerable<Grocery> Groceries { get; set; }
+        public ICollection<Grocery> Groceries { get; set; }
     }
 }

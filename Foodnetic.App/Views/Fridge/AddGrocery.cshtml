@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "SearchGrocery";
+    Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
+}
+@using Foodnetic.ViewModels.Grocery
+@model Foodnetic.ViewModels.Grocery.CreateGroceryViewModel
+<style>
+    .hr-black {
+        background-color: black;
+        width: 50%
+    }
+    .btn-green {
+        background-color: #466618
+    }
+</style>
+<body>
+    <header>
+        @{
+            await Html.RenderPartialAsync("_DefaultNavbarPartial");
+        }
+    </header>
+    <div class="intro-text text-center">
+        <h1 class="intro-lead-in mb-4 mt-4">Virtual Fridge</h1>
+        <hr class="hr-black" />
+    </div>
+    <div class="container col-md-5 text-center">
+        <form asp-controller="Fridge" asp-action="AddGrocery" method="get">
+            <label for="SearchString">Product or Product Type: </label><input type="text" name="SearchString" id="SearchString" class="form-control" placeholder="e.g. Dairy, Meat, Fish, Spices...">
+            <input type="submit" value="Search" class="btn btn-green my-4" />
+        </form>
+    </div>
+
+    @if (Model != null)
+    {
+
+        <form method="post" asp-controller="Fridge" asp-action="AddGrocery">
+            <div class="text-center row d-flex justify-content-center">
+                <div class="container text-center col-md-4 form-group" style="margin-right: 1px; margin-left: 30px">
+                    <select asp-for="Product" size="8" class="custom-select ">
+                        @foreach (var product in Model.Products)
+                        {
+                            <option value="@product.Name">@product.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="text-center col-md-3"style="margin-right: 30px; margin-left: 1px">
+                    <strong><label asp-for="Quantity"></label></strong>
+                    <input asp-for="Quantity" class="form-control" placeholder="Quantity...">
+                    <strong><label asp-for="ExpirationDate"></label></strong>
+                    <input asp-for="ExpirationDate" class="form-control" placeholder="Expiration Date...">
+                    <div class="text-center my-3">
+                        <button type="submit" class="btn btn-green">Add Grocery</button>
+                    </div>
+                </div>
+           
+                
+            </div>
+        </form>
+    }
+</body>
+
+

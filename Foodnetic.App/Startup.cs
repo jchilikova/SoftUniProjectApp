@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using Eventures.Web.Middlewares.MiddlewareExtensions;
+using Foodnetic.App.Mapping;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Foodnetic.Data;
 using Foodnetic.Models;
+using Foodnetic.Services;
+using Foodnetic.Services.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -57,7 +55,7 @@ namespace Foodnetic.App
                 .AddEntityFrameworkStores<FoodneticDbContext>();
 
             var mappingConfig = new MapperConfiguration(mc =>
-                mc.AddProfile(new MappingProfile.MappingProfile())
+                mc.AddProfile(new MappingProfile())
             );
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
@@ -73,6 +71,8 @@ namespace Foodnetic.App
             //    googleOptions.AccessType = Configuration["Authentication:Facebook:AppId"];
             //});
 
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IFridgeService, FridgeService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

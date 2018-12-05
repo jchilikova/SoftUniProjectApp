@@ -3,6 +3,7 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+@model IEnumerable<Foodnetic.Models.Grocery>
 <style>
     .bg-lightgreen {
         background-color: #90EE90
@@ -30,26 +31,39 @@
     </div>
     <table class="table w-75 mx-auto table-hover my-5 table-bordered">
         <thead>
-            <tr class="row">
-                <th class="col-md-1">#</th>
-                <th class="col-md-4">Name</th>
-                <th class="col-md-3">Quantity</th>
-                <th class="col-md-4">Expiration Date</th>
-            </tr>
+        <tr class="row">
+            <th class="col-md-1">#</th>
+            <th class="col-md-4">Name</th>
+            <th class="col-md-3">Quantity</th>
+            <th class="col-md-4">Expiration Date</th>
+        </tr>
         </thead>
-        <tbody>
-            <tr class="row">
-                <th class="col-md-1">#</th>
-                <td class="col-md-4">Beef</td>
-                <td class="col-md-3">350</td>
-                <td class="col-md-4 bg-lightdanger">04.12.2018</td>
-            </tr>
-            <tr class="row">
-                <th class="col-md-1">#</th>
-                <td class="col-md-4">Fish</td>
-                <td class="col-md-3">200</td>
-                <td class="col-md-4 bg-lightgreen">22.10.2019</td>
-            </tr>
-        </tbody>
+        @if (Model != null)
+        {
+            foreach (var item in Model.OrderBy(g => g.ExpirationDate))
+             {
+                 if (@item.ExpirationDate == DateTime.Now.Date)
+                 {
+                     continue;
+                 }
+                 var index = 0;
+                 <tbody>
+                 <tr class="row">
+                     <td class="col-md-1">@(index+1)</td>
+                     <td class="col-md-4">@item.Name</td>
+                     <td class="col-md-3">@item.Quantity</td>
+                     @if (@item.ExpirationDate.AddDays(-3) <= DateTime.Now)
+                     {
+                         <td class="col-md-4 bg-lightdanger">@item.ExpirationDate</td>
+                     }
+                     else
+                     {
+                         <td class="col-md-4 bg-lightgreen">@item.ExpirationDate</td>
+                     }
+
+                 </tr>
+                 </tbody>
+             }
+        }
     </table>
 </body>

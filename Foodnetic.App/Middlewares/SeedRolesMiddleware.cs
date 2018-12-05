@@ -51,7 +51,7 @@ namespace Foodnetic.App.Middlewares
                 FirstName = AdminString,
                 LastName = AdminString,
                 Email = AdminEmail,
-                SecurityStamp = Guid.NewGuid().ToString()
+                SecurityStamp = Guid.NewGuid().ToString(),
             };
 
             await userManager.CreateAsync(user, AdminString);

@@ -14,11 +14,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Foodnetic.Data\Foodnetic.Data.csproj" />
+    <ProjectReference Include="..\Foodnetic.Services\Foodnetic.Services.csproj" />
     <ProjectReference Include="..\Foodnetic.ViewModels\Foodnetic.ViewModels.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Administration\Data\" />
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Areas\Identity\Views\Shared\" />
   </ItemGroup>
