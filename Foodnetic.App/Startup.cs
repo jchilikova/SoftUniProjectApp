@@ -60,19 +60,21 @@ namespace Foodnetic.App
             IMapper mapper = mappingConfig.CreateMapper();
             services.AddSingleton(mapper);
 
-            //services.AddAuthentication().AddFacebook(facebookOptions =>
-            //{
-            //    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-            //    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            //});
-
-            //services.AddAuthentication().AddGoogle(googleOptions =>
-            //{
-            //    googleOptions.AccessType = Configuration["Authentication:Facebook:AppId"];
-            //});
+            services.AddAuthentication()
+                .AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            })
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                });
 
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IFridgeService, FridgeService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

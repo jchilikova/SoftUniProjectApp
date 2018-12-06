@@ -1,6 +1,8 @@
 ﻿using System.Linq;
+using System.Threading.Tasks;
 using Foodnetic.App.Globals;
 using Foodnetic.Models;
+using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -10,11 +12,13 @@ namespace Foodnetic.App.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> signIn;
+        private readonly SignInManager<User> signInManager;
+        private readonly IUserService userService;
 
-        public AccountController(SignInManager<User> signIn)
+        public AccountController(SignInManager<User> signInManager, IUserService userService)
         {
-            this.signIn = signIn;
+            this.signInManager = signInManager;
+            this.userService = userService;
         }
 
         [HttpGet]
@@ -28,7 +32,7 @@ namespace Foodnetic.App.Controllers
         {
             if (ModelState.IsValid)
             {
-                var result = await signIn.PasswordSignInAsync(bindingModel.Username,
+                var result = await signInManager.PasswordSignInAsync(bindingModel.Username,
                     bindingModel.Password, bindingModel.RememberMe,false); 
 
                 if (result.Succeeded)
@@ -53,8 +57,8 @@ namespace Foodnetic.App.Controllers
         [HttpPost]
         public async System.Threading.Tasks.Task<IActionResult> Register(RegisterViewModel bindingModel)
         {
-            var userExists = this.signIn.UserManager.Users.Any(x => x.UserName == bindingModel.Username);
-            var emailExists = this.signIn.UserManager.Users.Any(x => x.Email == bindingModel.Email);
+            var userExists = this.signInManager.UserManager.Users.Any(x => x.UserName == bindingModel.Username);
+            var emailExists = this.signInManager.UserManager.Users.Any(x => x.Email == bindingModel.Email);
 
             if (userExists)
             {
@@ -78,20 +82,12 @@ namespace Foodnetic.App.Controllers
                     Email = bindingModel.Email,
                 };
 
-                var result = this.signIn.UserManager.CreateAsync(user, bindingModel.Password).Result;
+                var result = this.signInManager.UserManager.CreateAsync(user, bindingModel.Password).Result;
 
                 if (result.Succeeded)
                 {
-                    //if (!this.signIn.UserManager.Users.Any())
-                    //{
-                    //    await this.signIn.UserManager.AddToRoleAsync(user, "Administrator");
-                    //}
-                    //else
-                    //{
-                    //    await this.signIn.UserManager.AddToRoleAsync(user, "User");
-                    //}
-                    await this.signIn.UserManager.AddToRoleAsync(user, GlobalConstants.UserRole);
-                    this.signIn.SignInAsync(user, false).Wait();
+                    await this.signInManager.UserManager.AddToRoleAsync(user, GlobalConstants.UserRole);
+                    this.signInManager.SignInAsync(user, false).Wait();
                     return this.RedirectToAction("Index", "Home");
                 }
 
@@ -102,10 +98,37 @@ namespace Foodnetic.App.Controllers
             return this.View(bindingModel);
         }
 
+        public async Task<IActionResult> ExternalLogin()
+        {
+            var info = await this.signInManager.GetExternalLoginInfoAsync();
+
+            if (info == null)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            var result = await this.userService.ExternalLoginUser(info);
+
+            if (result)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
+            return this.RedirectToAction("Login", "Account");
+        }
+
+        [HttpPost]
+        public IActionResult ExternalLogin(string provider, string returnUrl = null)
+        {
+            var redirectUrl = "/Account/ExternalLogin";
+            var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+            return new ChallengeResult(provider, properties);
+        }
+
         [Authorize]
         public IActionResult Logout()
         {
-            this.signIn.SignOutAsync().Wait();
+            this.signInManager.SignOutAsync().Wait();
 
             return this.RedirectToAction("Index", "Home");
         }

@@ -55,7 +55,12 @@ namespace Foodnetic.Services
         public IEnumerable<Grocery> GetAll(string name)
         {
             User user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == name);
-            var virtualFridgeId = this.dbContext.VirtualFridges.FirstOrDefault(f => f.OwnerId == user.Id).Id;
+            var virtualFridgeId = this.dbContext.VirtualFridges.FirstOrDefault(f => f.OwnerId == user.Id)?.Id;
+
+            if (virtualFridgeId == null)
+            {
+                return null;
+            }
 
             var groceries = this.dbContext.Groceries.Where(x => x.VirtualFridgeId == virtualFridgeId);
 

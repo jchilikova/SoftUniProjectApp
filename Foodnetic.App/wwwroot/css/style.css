@@ -708,6 +708,8 @@ font-size: 11px;
     border-color: #f6bf01;
 }
 
+
+
 .btn {
     display: inline-block;
     padding: 8px 20px;
@@ -728,6 +730,14 @@ font-size: 11px;
     background-image: none;
     border: 1px solid transparent;
     border-radius: 4px;
+}
+
+.btn-green {
+    color: #fff;
+    background-color: #466618;
+    border-color: #466618;
+    font-family: "Robot",sans-serif;
+
 }
 
 .btn-xl {

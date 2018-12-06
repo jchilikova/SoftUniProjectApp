@@ -52,7 +52,7 @@
                      <td class="col-md-1">@(index+1)</td>
                      <td class="col-md-4">@item.Name</td>
                      <td class="col-md-3">@item.Quantity</td>
-                     @if (@item.ExpirationDate.AddDays(-3) <= DateTime.Now)
+                     @if (@item.ExpirationDate.AddDays(-2) <= DateTime.Now)
                      {
                          <td class="col-md-4 bg-lightdanger">@item.ExpirationDate</td>
                      }
