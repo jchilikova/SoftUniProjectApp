@@ -740,6 +740,12 @@ font-size: 11px;
 
 }
 
+.btn-wood {
+    color: #fff;
+    background-color: #a69386;
+    border-color: #a69386;
+}
+
 .btn-xl {
     color: #fff;
     background-color: #466618;
@@ -801,3 +807,5 @@ and (max-width : 480px) {
     font-size: 20px;
 }
 }
+
+

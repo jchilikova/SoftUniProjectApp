@@ -40,16 +40,17 @@
         </thead>
         @if (Model != null)
         {
+            var index = 1;
             foreach (var item in Model.OrderBy(g => g.ExpirationDate))
-             {
-                 if (@item.ExpirationDate == DateTime.Now.Date)
-                 {
-                     continue;
-                 }
-                 var index = 0;
+            {
+                if (@item.ExpirationDate <= DateTime.Now.Date)
+                {
+                    continue;
+                }
+
                  <tbody>
                  <tr class="row">
-                     <td class="col-md-1">@(index+1)</td>
+                     <td class="col-md-1">@(index++)</td>
                      <td class="col-md-4">@item.Name</td>
                      <td class="col-md-3">@item.Quantity</td>
                      @if (@item.ExpirationDate.AddDays(-2) <= DateTime.Now)

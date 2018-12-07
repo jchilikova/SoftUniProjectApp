@@ -2,6 +2,7 @@
 using Foodnetic.Models;
 using Foodnetic.ViewModels.Grocery;
 using Foodnetic.ViewModels.Products;
+using Foodnetic.ViewModels.Recipes;
 
 namespace Foodnetic.App.Mapping
 {
@@ -15,6 +16,10 @@ namespace Foodnetic.App.Mapping
                 .ForPath(e => e.Products, opt => opt.Ignore())
                 .ForPath(e => e.Product, opt => opt.MapFrom(src => src.Name))
                 .ReverseMap();
+
+            CreateMap<AllRecipesViewModel, Recipe>().ReverseMap();
+
+            CreateMap<RecipeViewModel, Recipe>().ReverseMap();
         }
     }
 }

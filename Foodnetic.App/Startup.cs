@@ -13,6 +13,7 @@ using Foodnetic.Services;
 using Foodnetic.Services.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Foodnetic.App
 {
@@ -34,6 +35,7 @@ namespace Foodnetic.App
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+
 
             services.AddDbContext<FoodneticDbContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
@@ -75,8 +77,10 @@ namespace Foodnetic.App
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IRecipeService, RecipeService>(); ;
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

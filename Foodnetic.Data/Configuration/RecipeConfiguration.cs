@@ -8,7 +8,7 @@ namespace Foodnetic.Data.Configuration
     {
         public void Configure(EntityTypeBuilder<Recipe> builder)
         {
-            builder.HasMany(r => r.Comment)
+            builder.HasMany(r => r.Comments)
                 .WithOne(x => x.Recipe)
                 .HasForeignKey(x => x.RecipeId);
         }

@@ -8,7 +8,7 @@ namespace Foodnetic.Models
         public Recipe()
         {
             this.Ingredients = new HashSet<RecipeIngredient>();
-            this.Comment = new HashSet<Comment>();
+            this.Comments = new HashSet<Comment>();
             this.Tags = new HashSet<RecipeTag>();
             this.Id = Guid.NewGuid().ToString();
         }
@@ -40,7 +40,7 @@ namespace Foodnetic.Models
 
         public ICollection<RecipeMenu> Menus { get; set; }    
 
-        public  ICollection<Comment> Comment { get; set; }
+        public  ICollection<Comment> Comments { get; set; }
 
         public  ICollection<RecipeTag> Tags { get; set; }
     }
