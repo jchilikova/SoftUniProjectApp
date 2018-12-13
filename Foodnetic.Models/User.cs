@@ -8,14 +8,14 @@ namespace Foodnetic.Models
         public User()
         {
             this.Comments = new HashSet<Comment>();
+            this.DailyMenus = new HashSet<Menu>();
         }
 
         public string FirstName { get; set; }
 
         public string LastName  { get; set; }
 
-        public string DailyMenuId { get; set; }
-        public Menu DailyMenu { get; set; }
+        public ICollection<Menu> DailyMenus { get; set; }
 
         public string VirtualFridgeId { get; set; }
         public VirtualFridge VirtualFridge { get; set; }

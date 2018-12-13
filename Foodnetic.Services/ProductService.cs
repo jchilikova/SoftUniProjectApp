@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Foodnetic.Data;
@@ -25,6 +26,11 @@ namespace Foodnetic.Services
 
             this.dbContext.Products.Add(product);
             this.dbContext.SaveChanges();
+        }
+
+        public bool CheckIfProductExists(string name)
+        {
+            return this.dbContext.Products.Any(x => x.Name == name && x.GetType() == typeof(Product));
         }
 
         public ICollection<Product> GetAll()

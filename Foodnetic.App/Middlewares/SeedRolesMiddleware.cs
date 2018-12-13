@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using Foodnetic.App.Globals;
+using Foodnetic.Contants;
 using Foodnetic.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -37,12 +37,17 @@ namespace Foodnetic.App.Middlewares
         {
             await roleManager.CreateAsync(new IdentityRole
             {
-                Name =  GlobalConstants.AdministratorRole
+                Name =  Constants.Strings.AdministratorRole
             });
 
             await roleManager.CreateAsync(new IdentityRole
             {
-                Name =  GlobalConstants.UserRole
+                Name =  Constants.Strings.UserRole
+            });
+
+            await roleManager.CreateAsync(new IdentityRole
+            {
+                Name =  Constants.Strings.ModeratorRole
             });
 
             var user = new User
@@ -56,7 +61,7 @@ namespace Foodnetic.App.Middlewares
 
             await userManager.CreateAsync(user, AdminString);
 
-            await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRole);
+            await userManager.AddToRoleAsync(user, Constants.Strings.AdministratorRole);
         }
     }
 }

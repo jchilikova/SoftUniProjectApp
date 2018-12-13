@@ -7,9 +7,11 @@ namespace Foodnetic.ViewModels.Grocery
 {
     public class CreateGroceryViewModel
     {
-        public string Product { get; set; }
+        [Required]
+        public string ProductName { get; set; }
 
         [Required]
+        [Range(1, int.MaxValue)]
         public int Quantity { get; set; }
 
         [Required]

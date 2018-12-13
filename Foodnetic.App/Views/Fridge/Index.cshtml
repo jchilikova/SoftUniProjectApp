@@ -3,7 +3,8 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
-@model IEnumerable<Foodnetic.Models.Grocery>
+@using System.Globalization
+@model IEnumerable<Foodnetic.ViewModels.Grocery.GroceryViewModel>
 <style>
     .bg-lightgreen {
         background-color: #90EE90
@@ -49,17 +50,17 @@
                 }
 
                  <tbody>
-                 <tr class="row">
+                 <tr class="row text-center">
                      <td class="col-md-1">@(index++)</td>
                      <td class="col-md-4">@item.Name</td>
                      <td class="col-md-3">@item.Quantity</td>
                      @if (@item.ExpirationDate.AddDays(-2) <= DateTime.Now)
                      {
-                         <td class="col-md-4 bg-lightdanger">@item.ExpirationDate</td>
+                         <td class="col-md-4 bg-lightdanger">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
                      }
                      else
                      {
-                         <td class="col-md-4 bg-lightgreen">@item.ExpirationDate</td>
+                         <td class="col-md-4 bg-lightgreen">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
                      }
 
                  </tr>

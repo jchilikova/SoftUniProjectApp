@@ -12,9 +12,9 @@ namespace Foodnetic.Data.Configuration
                 .WithOne(x => x.Author)
                 .HasForeignKey(x => x.AuthorId);
 
-            builder.HasOne(u => u.DailyMenu)
+            builder.HasMany(u => u.DailyMenus)
                 .WithOne(x => x.User)
-                .HasForeignKey<Menu>(x => x.UserId);
+                .HasForeignKey(x => x.UserId);
 
             builder.HasOne(x => x.VirtualFridge)
                 .WithOne(x => x.Owner)

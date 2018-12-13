@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Foodnetic.Contants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
@@ -16,9 +17,9 @@ namespace Foodnetic.Services
         public bool CheckIfMenuExist(string username)
         {
             var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
-            var menu = this.dbContext.Menus.FirstOrDefault(x => x.UserId == userId);
+            var menu = this.dbContext.Menus.FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
 
-            if (menu != null && menu.CreatedOn == DateTime.Today)
+            if (menu != null)
             {
                 return true;
             }
@@ -108,46 +109,18 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateBreakfast(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var groceriesOutOfStock = new List<Grocery>();
-            var menuBreakfast = new RecipeMenu();
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == "breakfast")?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.BreakfastString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
             {
                 var recipe = recipeTag.Recipe;
-                var isRecipeValid = true;
-
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    if (!isRecipeValid)
-                    {
-                        continue;
-                    }
-                    var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
-
-                    if (grocery != null && grocery.Quantity >= ingredient.Ingredient.Quantity)
-                    {
-                        grocery.Quantity -= ingredient.Ingredient.Quantity;
-
-                        if (grocery.Quantity <= 10)
-                        {
-                            groceriesOutOfStock.Add(grocery);
-                        }
-                    }
-                    else
-                    {
-                        isRecipeValid = false;
-                    }
-                }
-
+                var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
+               
                 if (isRecipeValid)
                 {
-                    menuBreakfast.Recipe = recipe;
-                    menuBreakfast.Menu = menu;
-                    menuBreakfast.MenuType = MenuType.Breakfast;
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.BreakfastString);
 
-                    this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
-                    this.dbContext.SaveChanges();
+                    DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
                 }
             }
@@ -155,49 +128,66 @@ namespace Foodnetic.Services
             return null;
         }
 
+        private RecipeMenu CreateRecipeMenu(Recipe recipe, Menu menu, string menuType)
+        {
+            MenuType menuTypeEnum = (MenuType) 0;
+
+            switch (menuType)
+            {
+                case Constants.Strings.BreakfastString:
+                    menuTypeEnum = MenuType.Breakfast;
+                    break;
+                case Constants.Strings.LunchString:
+                    menuTypeEnum = MenuType.Breakfast;
+                    break;
+                case Constants.Strings.DinnerString:
+                    menuTypeEnum = MenuType.Dinner;
+                    break;
+                case Constants.Strings.DessertString:
+                    menuTypeEnum = MenuType.Dessert;
+                    break;
+            }
+
+            var menuBreakfast = new RecipeMenu
+            {
+                Recipe = recipe,
+                Menu = menu,
+                MenuType = menuTypeEnum
+            };
+
+            return menuBreakfast;
+        }
+
+        private bool CheckIfUserHaveEnoughIngredients(Recipe recipe, List<Grocery> fridgeIngredients)
+        {
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
+
+                if (grocery == null || grocery.Quantity < ingredient.Ingredient.Quantity)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+
+        }
+
         private RecipeMenu CreateLunch(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var groceriesOutOfStock = new List<Grocery>();
-            var menuBreakfast = new RecipeMenu();
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == "lunch")?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.LunchString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
             {
                 var recipe = recipeTag.Recipe;
-                var isRecipeValid = true;
-
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    if (!isRecipeValid)
-                    {
-                        continue;
-                    }
-                    var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
-
-                    if (grocery != null && grocery.Quantity >= ingredient.Ingredient.Quantity)
-                    {
-                        grocery.Quantity -= ingredient.Ingredient.Quantity;
-
-                        if (grocery.Quantity <= 10)
-                        {
-                            groceriesOutOfStock.Add(grocery);
-                        }
-                    }
-                    else
-                    {
-                        isRecipeValid = false;
-                    }
-                }
-
+                var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
+               
                 if (isRecipeValid)
                 {
-                    menuBreakfast.Recipe = recipe;
-                    menuBreakfast.Menu = menu;
-                    menuBreakfast.MenuType = MenuType.Lunch;
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.LunchString);
 
-
-                    this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
-                    this.dbContext.SaveChanges();
+                    DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
                 }
             }
@@ -207,48 +197,18 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDinner(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var groceriesOutOfStock = new List<Grocery>();
-            var menuBreakfast = new RecipeMenu();
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == "dinner")?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DinnerString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
             {
                 var recipe = recipeTag.Recipe;
-                var isRecipeValid = true;
-
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    if (!isRecipeValid)
-                    {
-                        continue;
-                    }
-                    var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
-
-                    if (grocery != null && grocery.Quantity >= ingredient.Ingredient.Quantity)
-                    {
-                        grocery.Quantity -= ingredient.Ingredient.Quantity;
-
-                        if (grocery.Quantity <= 10)
-                        {
-                            groceriesOutOfStock.Add(grocery);
-                        }
-                    }
-                    else
-                    {
-                        isRecipeValid = false;
-                       
-                    }
-                }
-
+                var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
+               
                 if (isRecipeValid)
                 {
-                    menuBreakfast.Recipe = recipe;
-                    menuBreakfast.Menu = menu;
-                    menuBreakfast.MenuType = MenuType.Dinner;
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.DinnerString);
 
-
-                    this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
-                    this.dbContext.SaveChanges();
+                    DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
                 }
             }
@@ -258,48 +218,18 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDessert(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var groceriesOutOfStock = new List<Grocery>();
-            var menuBreakfast = new RecipeMenu();
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == "dessert")?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DessertString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
             {
                 var recipe = recipeTag.Recipe;
-                var isRecipeValid = true;
-
-                foreach (var ingredient in recipe.Ingredients)
-                {
-                    if (!isRecipeValid)
-                    {
-                        continue;
-                    }
-
-                    var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
-
-                    if (grocery != null && grocery.Quantity >= ingredient.Ingredient.Quantity)
-                    {
-                        grocery.Quantity -= ingredient.Ingredient.Quantity;
-
-                        if (grocery.Quantity <= 10)
-                        {
-                            groceriesOutOfStock.Add(grocery);
-                        }
-                    }
-                    else
-                    {
-                        isRecipeValid = false;
-                    }
-                }
-
+                var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
+               
                 if (isRecipeValid)
                 {
-                    menuBreakfast.Recipe = recipe;
-                    menuBreakfast.Menu = menu;
-                    menuBreakfast.MenuType = MenuType.Dessert;
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.DessertString);
 
-
-                    this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
-                    this.dbContext.SaveChanges();
+                    DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
                 }
             }
@@ -307,11 +237,50 @@ namespace Foodnetic.Services
             return null;
         }
 
-        public Menu GetMenu(string currentUser)
+        public Menu GetDailyMenuForUser(string currentUser)
         {
             var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
 
-            return this.dbContext.Menus.Include(x => x.RecipeMenus).ThenInclude(x => x.Recipe).FirstOrDefault(x => x.UserId == userId);
+            return this.dbContext
+                .Menus
+                .Include(x => x.RecipeMenus)
+                .ThenInclude(x => x.Recipe)
+                .FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
+        }
+
+        public ICollection<Menu> GetAllMenusForUser(string currentUser)
+        {
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
+
+            return this.dbContext.Menus
+                    .Include(x => x.RecipeMenus)
+                .ThenInclude(x => x.Recipe)
+                .Where(x => x.UserId == userId).ToList();
+        }
+
+        private void DecreaseQuantityOfProducts(Recipe recipe, List<Grocery> fridgeIngredients)
+        {
+            var groceriesOutOfStock = new List<Grocery>();
+
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
+
+                grocery.Quantity -= ingredient.Ingredient.Quantity;
+
+                if (grocery.Quantity <= 0)
+                {
+                    groceriesOutOfStock.Add(grocery);
+                }
+            }
+
+            RemoveOutOfStockProducts(groceriesOutOfStock);
+        }
+
+        private void RemoveOutOfStockProducts(List<Grocery> groceriesOutOfStock)
+        {
+            this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
+            this.dbContext.SaveChanges();
         }
     }
 }

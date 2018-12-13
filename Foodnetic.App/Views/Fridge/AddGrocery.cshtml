@@ -37,7 +37,7 @@
         <form method="post" asp-controller="Fridge" asp-action="AddGrocery">
             <div class="text-center row d-flex justify-content-center">
                 <div class="container text-center col-md-4 form-group" style="margin-right: 1px; margin-left: 30px">
-                    <select asp-for="Product" size="8" class="custom-select ">
+                    <select asp-for="ProductName" size="8" class="custom-select ">
                         @foreach (var product in Model.Products)
                         {
                             <option value="@product.Name">@product.Name</option>

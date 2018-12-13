@@ -1,4 +1,5 @@
-﻿using Foodnetic.Models;
+﻿using System.Collections.Generic;
+using Foodnetic.Models;
 
 namespace Foodnetic.Services.Contracts
 {
@@ -8,6 +9,8 @@ namespace Foodnetic.Services.Contracts
 
         Menu Create(string username);
 
-        Menu GetMenu(string currentUser);
+        Menu GetDailyMenuForUser(string currentUser);
+
+        ICollection<Menu> GetAllMenusForUser(string currentUser);
     }
 }

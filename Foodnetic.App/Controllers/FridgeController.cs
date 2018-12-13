@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Grocery;
@@ -13,17 +14,28 @@ namespace Foodnetic.App.Controllers
     {
         private readonly IFridgeService fridgeService;
         private readonly IProductService productService;
+        private readonly IMapper mapper;
 
-        public FridgeController(IFridgeService fridgeService, IProductService productService)
+        public FridgeController(IFridgeService fridgeService, IProductService productService, IMapper mapper)
         {
             this.fridgeService = fridgeService;
             this.productService = productService;
+            this.mapper = mapper;
         }
 
         public IActionResult Index()
         {
             IEnumerable<Grocery> groceries = this.fridgeService.GetAll(this.User.Identity.Name);
-            return this.View(groceries);
+
+            var groceriesViewModels = new List<GroceryViewModel>();
+
+            foreach (var grocery in groceries)
+            {
+                var bindingModel = this.mapper.Map<GroceryViewModel>(grocery);
+                groceriesViewModels.Add(bindingModel);
+            }
+
+            return this.View(groceriesViewModels);
         }
 
         [HttpGet]
@@ -36,10 +48,12 @@ namespace Foodnetic.App.Controllers
                 products = products.Where(p => (p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) 
                                                 || p.ProductType.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase)) 
                                                && p.GetType() == typeof(Product));
+
                 var bindingModel = new CreateGroceryViewModel
                 {
                     Products = products
                 };
+
                 return this.View(bindingModel);
             }
 

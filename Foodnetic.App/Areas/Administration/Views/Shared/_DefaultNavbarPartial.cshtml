@@ -1,4 +1,4 @@
-﻿@using Foodnetic.App.Globals
+﻿@using Foodnetic.Contants
 @using Foodnetic.Models
 @using Microsoft.AspNetCore.Identity
 
@@ -7,7 +7,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    if (User.IsInRole(GlobalConstants.AdministratorRole))
+    if (User.IsInRole(Constants.Strings.AdministratorRole))
     {
 <nav class="navbar navbar-expand-lg bg-img1 navbar-default">
     <div class="container">

@@ -1,5 +1,4 @@
-﻿
-@{
+﻿@{
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
@@ -16,6 +15,9 @@
         background-color: black;
         width: 50%
     }
+    .checked {
+        color: orange;
+    }
 </style>
 <body>
     <header>
@@ -28,34 +30,64 @@
         <hr class="hr-green" />
         @if (@Model == null)
         {
+        <div>
             <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
+        </div>
         }
+        <div class="my-3">
+            <a asp-action="History" asp-controller="Menus">View history...</a>
+        </div>
     </div>
     @if (@Model == null)
     {
+        if (this.ViewData["Error"] != null)
+        {
+            <div class="bg-danger text-center container rounded mt-3 py-3">
+                <h5 class="text-white">@ViewData["Error"]</h5>
+            </div>
+        }
         <div class="text-center my-5">
             <h2 class="text-foods my-3">Create your own daily menu for breakfast, lunch, dinner and dessert!</h2>
-            <a asp-action="History" asp-controller="Menus">View history...</a>
         </div>
-       
+
     }
     else
     {
         <div class="row d-flex justify-content-around mt-5 text-center">
-
-
             <div class="col-md-3">
                 <h2 class="text-foods">
                     Breakfast
                 </h2>
                 @if (@Model.Breakfast != null)
                 {
+                    var rating = @Model.Breakfast.Rating;
                     <div class="my-3">
                         <img src="@Model.Breakfast.PictureUrl" class="img-thumbnail" />
                     </div>
                     <div><h4>@Model.Breakfast.Name</h4></div>
                     <div>
                         <p>@Model.Breakfast.Description</p>
+                    </div>
+                    <div>
+                        @for (int j = 0; j < Math.Truncate(rating); j++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @if (rating % 1 == 0)
+                        {
+                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="fa fa-star-half checked"></span>
+                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
                     </div>
                     <div><a asp-route-id="@Model.Breakfast.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
                 }
@@ -70,12 +102,34 @@
                 </h2>
                 @if (@Model.Lunch != null)
                 {
+                    var rating = @Model.Lunch.Rating;
                     <div class="my-3">
                         <img src="@Model.Lunch.PictureUrl" class="img-thumbnail" />
                     </div>
                     <div><h4>@Model.Lunch.Name</h4></div>
                     <div>
                         <p>@Model.Lunch.Description</p>
+                    </div>
+                    <div>
+                        @for (int j = 0; j < Math.Truncate(rating); j++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @if (rating % 1 == 0)
+                        {
+                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="fa fa-star-half checked"></span>
+                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
                     </div>
                     <div><a asp-route-id="@Model.Lunch.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
                 }
@@ -90,12 +144,34 @@
                 </h2>
                 @if (@Model.Dinner != null)
                 {
+                    var rating = @Model.Dinner.Rating;
                     <div class="my-3">
                         <img src="@Model.Dinner.PictureUrl" class="img-thumbnail" />
                     </div>
                     <div><h4>@Model.Dinner.Name</h4></div>
                     <div>
                         <p>@Model.Dinner.Description</p>
+                    </div>
+                    <div>
+                        @for (int j = 0; j < Math.Truncate(rating); j++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @if (rating % 1 == 0)
+                        {
+                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="fa fa-star-half checked"></span>
+                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
                     </div>
                     <div><a asp-route-id="@Model.Dinner.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
                 }
@@ -110,12 +186,34 @@
                 </h2>
                 @if (@Model.Dessert != null)
                 {
+                    var rating = @Model.Dessert.Rating;
                     <div class="my-3">
                         <img src="@Model.Dessert.PictureUrl" class="img-thumbnail" />
                     </div>
                     <div><h4>@Model.Dessert.Name</h4></div>
                     <div>
                         <p>@Model.Dessert.Description</p>
+                    </div>
+                    <div>
+                        @for (int j = 0; j < Math.Truncate(rating); j++)
+                        {
+                            <span class="fa fa-star checked"></span>
+                        }
+                        @if (rating % 1 == 0)
+                        {
+                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
+                        else
+                        {
+                            <span class="fa fa-star-half checked"></span>
+                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
+                            {
+                                <span class="fa fa-star"></span>
+                            }
+                        }
                     </div>
                     <div><a asp-route-id="@Model.Dessert.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
                 }

@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Reflection.Metadata;
-using Foodnetic.ViewModels.Recipes;
 
 namespace Foodnetic.ViewModels.Menu
 {
@@ -8,12 +6,12 @@ namespace Foodnetic.ViewModels.Menu
     {
         public DateTime CreatedOn { get; set; }
 
-        public AllRecipesViewModel Breakfast { get; set; }
+        public MenuRecipeViewModel Breakfast { get; set; }
 
-        public AllRecipesViewModel Lunch { get; set; }
+        public MenuRecipeViewModel Lunch { get; set; }
 
-        public AllRecipesViewModel Dinner { get; set; }
+        public MenuRecipeViewModel Dinner { get; set; }
 
-        public AllRecipesViewModel Dessert { get; set; }
+        public MenuRecipeViewModel Dessert { get; set; }
     }
 }

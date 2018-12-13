@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Foodnetic.Constants\Foodnetic.Constants.csproj" />
     <ProjectReference Include="..\Foodnetic.Data\Foodnetic.Data.csproj" />
     <ProjectReference Include="..\Foodnetic.ViewModels\Foodnetic.ViewModels.csproj" />
   </ItemGroup>

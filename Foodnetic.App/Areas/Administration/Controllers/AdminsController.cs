@@ -1,4 +1,5 @@
-﻿using Foodnetic.Services.Contracts;
+﻿using Foodnetic.Contants;
+using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Products;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,12 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         {
             if (this.ModelState.IsValid)
             {
+                if (this.productService.CheckIfProductExists(bindingModel.Name))
+                {
+                    ViewData["Error"] = Constants.Messages.ProductAlreadyExists;
+                    return this.View(bindingModel);
+                }
+
                 this.productService.Create(bindingModel);
                 return RedirectToAction("CreateProduct");
 

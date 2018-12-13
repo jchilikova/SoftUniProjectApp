@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Foodnetic.App.Globals;
+using Foodnetic.Contants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -86,7 +86,7 @@ namespace Foodnetic.App.Controllers
 
                 if (result.Succeeded)
                 {
-                    await this.signInManager.UserManager.AddToRoleAsync(user, GlobalConstants.UserRole);
+                    await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole);
                     this.signInManager.SignInAsync(user, false).Wait();
                     return this.RedirectToAction("Index", "Home");
                 }
