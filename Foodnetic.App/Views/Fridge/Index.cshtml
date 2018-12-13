@@ -43,7 +43,7 @@
             var index = 1;
             foreach (var item in Model.OrderBy(g => g.ExpirationDate))
             {
-                if (@item.ExpirationDate <= DateTime.Now.Date)
+                if (@item.ExpirationDate <= DateTime.Today)
                 {
                     continue;
                 }

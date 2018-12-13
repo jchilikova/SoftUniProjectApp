@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Foodnetic.Models
 {
@@ -10,6 +11,9 @@ namespace Foodnetic.Models
         }
 
         public DateTime ExpirationDate { get; set; }
+
+        [NotMapped]
+        public bool IsExpired => ExpirationDate <= DateTime.Today;
 
         public string VirtualFridgeId { get; set; }
         public VirtualFridge VirtualFridge { get; set; }

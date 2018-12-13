@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class FoodneticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181212142633_MenuCreateOnAdded")]
+    partial class MenuCreateOnAdded
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

@@ -17,6 +17,8 @@ namespace Foodnetic.Models
 
         public ICollection<RecipeMenu> RecipeMenus { get; set; }
 
+        public DateTime CreatedOn { get; set; }
+
         public string UserId { get; set; }
         public User User { get; set; }
     }

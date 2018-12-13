@@ -75,6 +75,7 @@ namespace Foodnetic.App
                 });
 
             services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecipeService, RecipeService>(); ;

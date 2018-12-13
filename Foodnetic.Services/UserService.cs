@@ -11,10 +11,9 @@ namespace Foodnetic.Services
 {
     public class UserService : IUserService
     {
-        private SignInManager<User> signInManager;
-        private FoodneticDbContext dbContext;
-
-        private IMapper mapper;
+        private readonly SignInManager<User> signInManager;
+        private readonly FoodneticDbContext dbContext;
+        private readonly IMapper mapper;
 
         public UserService(SignInManager<User> signInManager, FoodneticDbContext dbContext, IMapper mapper)
         {

@@ -3,54 +3,130 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+
+@using Foodnetic.ViewModels.Menu
+@model Foodnetic.ViewModels.Menu.MenuViewModel
 <style>
     .text-foods {
         font-family: "Playfair Display",sans-serif;
         font-style: italic;
     }
+
     .hr-green {
         background-color: black;
         width: 50%
     }
 </style>
 <body>
-<header>
-    @{
-        await Html.RenderPartialAsync("_DefaultNavbarPartial");
-    }
-</header>
-<div class="intro-text text-center">
-    <h1 class="intro-lead-in mb-4 mt-4">Daily Menu</h1>
-    <hr class="hr-green"/>
-    <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
-</div>
-<div class="row d-flex justify-content-around mt-5 text-center">
-    <div class="col-md-3">
-        <h2 class="text-foods">
-            Breakfast
-        </h2>
-        <div class="my-3">
-            <img src="~/images/burger.jpg" class="img-thumbnail" />
+    <header>
+        @{
+            await Html.RenderPartialAsync("_DefaultNavbarPartial");
+        }
+    </header>
+    <div class="intro-text text-center">
+        <h1 class="intro-lead-in mb-4 mt-4">Daily Menu</h1>
+        <hr class="hr-green" />
+        @if (@Model == null)
+        {
+            <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
+        }
+    </div>
+    @if (@Model == null)
+    {
+        <div class="text-center my-5">
+            <h2 class="text-foods my-3">Create your own daily menu for breakfast, lunch, dinner and dessert!</h2>
+            <a asp-action="History" asp-controller="Menus">View history...</a>
         </div>
-        <div><h4>Beef burger</h4></div>
-        <div><p>Description about the recipe....</p></div>
-        <div><a href="#">View more...</a></div>
-    </div>
-    <div class="col-md-3">
-        <h2 class="text-foods">
-            Lunch
-        </h2>
-    </div>
-    <div class="col-md-3">
-        <h2 class="text-foods">
-            Dinner
-        </h2>
-    </div>
-    <div class="col-md-3">
-        <h2 class="text-foods">
-            Dessert
-        </h2>
-    </div>
-</div>
+       
+    }
+    else
+    {
+        <div class="row d-flex justify-content-around mt-5 text-center">
+
+
+            <div class="col-md-3">
+                <h2 class="text-foods">
+                    Breakfast
+                </h2>
+                @if (@Model.Breakfast != null)
+                {
+                    <div class="my-3">
+                        <img src="@Model.Breakfast.PictureUrl" class="img-thumbnail" />
+                    </div>
+                    <div><h4>@Model.Breakfast.Name</h4></div>
+                    <div>
+                        <p>@Model.Breakfast.Description</p>
+                    </div>
+                    <div><a asp-route-id="@Model.Breakfast.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                }
+                else
+                {
+                    <h4>You don't have enough grocery for breakfast.</h4>
+                }
+            </div>
+            <div class="col-md-3">
+                <h2 class="text-foods">
+                    Lunch
+                </h2>
+                @if (@Model.Lunch != null)
+                {
+                    <div class="my-3">
+                        <img src="@Model.Lunch.PictureUrl" class="img-thumbnail" />
+                    </div>
+                    <div><h4>@Model.Lunch.Name</h4></div>
+                    <div>
+                        <p>@Model.Lunch.Description</p>
+                    </div>
+                    <div><a asp-route-id="@Model.Lunch.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                }
+                else
+                {
+                    <h4>You don't have enough grocery for lunch.</h4>
+                }
+            </div>
+            <div class="col-md-3">
+                <h2 class="text-foods">
+                    Dinner
+                </h2>
+                @if (@Model.Dinner != null)
+                {
+                    <div class="my-3">
+                        <img src="@Model.Dinner.PictureUrl" class="img-thumbnail" />
+                    </div>
+                    <div><h4>@Model.Dinner.Name</h4></div>
+                    <div>
+                        <p>@Model.Dinner.Description</p>
+                    </div>
+                    <div><a asp-route-id="@Model.Dinner.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                }
+                else
+                {
+                    <h4>You don't have enough grocery for dinner.</h4>
+                }
+            </div>
+            <div class="col-md-3">
+                <h2 class="text-foods">
+                    Dessert
+                </h2>
+                @if (@Model.Dessert != null)
+                {
+                    <div class="my-3">
+                        <img src="@Model.Dessert.PictureUrl" class="img-thumbnail" />
+                    </div>
+                    <div><h4>@Model.Dessert.Name</h4></div>
+                    <div>
+                        <p>@Model.Dessert.Description</p>
+                    </div>
+                    <div><a asp-route-id="@Model.Dessert.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                }
+                else
+                {
+                    <h4>You don't have enough grocery for dessert.</h4>
+                }
+            </div>
+
+
+        </div>
+    }
 </body>
 
