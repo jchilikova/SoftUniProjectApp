@@ -1,7 +1,17 @@
-﻿namespace Foodnetic.ViewModels.Recipes
+﻿using System.Collections.Generic;
+using Foodnetic.ViewModels.Comments;
+using Foodnetic.ViewModels.Products;
+
+namespace Foodnetic.ViewModels.Recipes
 {
     public class RecipeViewModel
     {
+        public RecipeViewModel()
+        {
+            this.IngredientsViewModel = new List<IngredientsViewModel>();
+            this.CommentViewModels = new List<CommentViewModel>();
+        }
+
         public string Id { get; set; }
 
         public string Name { get; set; }
@@ -21,5 +31,9 @@
         public int NumberOfServings { get; set; }
 
         public string Directions { get; set; }
+
+        public ICollection<CommentViewModel> CommentViewModels { get; set; }
+
+        public ICollection<IngredientsViewModel> IngredientsViewModel { get; set; }
     }
 }

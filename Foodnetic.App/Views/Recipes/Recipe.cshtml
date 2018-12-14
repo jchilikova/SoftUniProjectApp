@@ -4,6 +4,13 @@
 }
 @using Foodnetic.ViewModels.Recipes
 @model Foodnetic.ViewModels.Recipes.RecipeViewModel
+
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+
 <body>
     <header>
         @{
@@ -14,8 +21,8 @@
         <h1 class="intro-lead-in mb-4 mt-4">@Model.Name</h1>
         <hr class="hr-green" />
     </div>
-    <div class="row container d-flex justify-content-center">
-        <div class="col-md-5">
+    <div class="row d-flex justify-content-between">
+        <div class="col-md-4">
             <img src="@Model.PictureUrl" class="img-thumbnail" />
             <div class="my-3 text-center d-flex justify-content-around">
                 <i class="fa fa-clock" aria-hidden="true"> Preparation: @Model.PreparationTime mins</i>
@@ -23,66 +30,54 @@
                 <i class="fas fa-chart-pie">Servings: @Model.NumberOfServings</i>
             </div>
             <div class="text-center">
+                @for (int j = 0; j < Math.Truncate(@Model.Rating); j++)
+                {
+                    <span class="fa fa-star checked"></span>
+                }
+                @if (Model.Rating % 1 == 0)
+                {
+                    for (int j = 0; j < 5 - Math.Truncate(Model.Rating); j++)
+                    {
+                        <span class="fa fa-star"></span>
+                    }
+                }
+                else
+                {
+                    <span class="fa fa-star-half checked"></span>
+                    for (int j = 0; j < 5 - (Math.Truncate(Model.Rating) + 1); j++)
+                    {
+                        <span class="fa fa-star"></span>
+                    }
+                }
+            </div>
+            <div class="text-center my-2">
                 <h4>Description</h4>
                 <h5>@Model.Description</h5>
             </div>
         </div>
+        <div class="col-md-3 text-center">
+            <h4 class="mb-4">Ingredients</h4>
+            @{
+                await Html.RenderPartialAsync("_RecipeIngredientsPartial", Model.IngredientsViewModel);
+            }
+        </div>
         <div class="col-md-5 text-center">
-            <h4>Ingredients</h4>
+            <h4 class="mb-4">Directions</h4>
+            <h5>@Model.Directions</h5>
         </div>
     </div>
-    <hr class="hr-green" />
-<div class="text-center container my-5">
-    <h4>Directions</h4>
-    <h5>@Model.Directions</h5>
-</div>
 <hr class="hr-green" />
 <div class="text-center container my-5">
     <h4 class="my-5">Comments</h4>
-    <textarea class="form-control" placeholder="write a comment..." rows="3"></textarea>
-    <br>
-    <button type="button" class="btn btn-green pull-right">Post</button>
-    <div class="clearfix my-3"></div>
-    <hr>
-    <div class="container mt-5">
-        <ul class="media-list">
-            <li class="media">
-               <div class="media-body border my-3">
-                    <span class="text-muted pull-right">
-                        <small class="text-muted">30 min ago</small>
-                    </span>
-                    <strong class="text-success">MartinoMont</strong>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Lorem ipsum dolor sit amet, consecteturadipiscing.
-                    </p>
-                </div>
-            </li>
-            <li class="media">
-              <div class="media-body border my-3">
-                    <span class="text-muted pull-right">
-                        <small class="text-muted">30 min ago</small>
-                    </span>
-                    <strong class="text-success">LaurenceCorreil</strong>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                        Lorem ipsum dolor adipiscing elit.
-                    </p>
-                </div>
-            </li>
-            <li class="media">
-              <div class="media-body border my-3">
-                    <span class="text-muted pull-right">
-                        <small class="text-muted">30 min ago</small>
-                    </span>
-                    <strong class="text-success">JohnNida</strong>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    </p>
-                </div>
-            </li>
-        </ul>
-    </div>
+    <form method="post" asp-controller="Comments" asp-action="Create">
+        <input hidden value="@Model.Id" name="RecipeId" id="RecipeId"/>
+        <textarea id="Content" name="Content" class="form-control" placeholder="write a comment..." rows="3"></textarea>
+        <br>
+        <button type="submit" class="btn btn-green pull-right">Post</button>
+    </form>
+    @{
+        await Html.RenderPartialAsync("_RecipeCommentsPartial", Model.CommentViewModels);
+    }
 </div>
 
 </body>

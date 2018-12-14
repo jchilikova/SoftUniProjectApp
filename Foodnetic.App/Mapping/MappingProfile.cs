@@ -1,9 +1,6 @@
-﻿using System.Globalization;
-using System.Linq;
-using AutoMapper;
+﻿using AutoMapper;
 using Foodnetic.Models;
 using Foodnetic.ViewModels.Grocery;
-using Foodnetic.ViewModels.Menu;
 using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Recipes;
 
@@ -22,7 +19,9 @@ namespace Foodnetic.App.Mapping
 
             CreateMap<AllRecipesViewModel, Recipe>().ReverseMap();
 
-            CreateMap<RecipeViewModel, Recipe>().ReverseMap();
+            CreateMap<RecipeViewModel, Recipe>()
+                .ForPath(e => e.Ingredients, opt => opt.Ignore())
+                .ReverseMap();
 
             CreateMap<Grocery, GroceryViewModel>()
                 //.ForPath(e => e.Name, opt => opt.MapFrom(src => src.Name))

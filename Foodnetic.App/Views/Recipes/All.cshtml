@@ -3,6 +3,9 @@
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
 @using Foodnetic.ViewModels.Recipes
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @model IEnumerable<Foodnetic.ViewModels.Recipes.AllRecipesViewModel>
 
 <style>
@@ -26,6 +29,12 @@
         <hr class="hr-green" />
         <a asp-controller="Recipes" asp-action="Create" class="btn btn-xl">Create Recipe</a>
     </div>
+    @if (this.ViewData["Error"] != null)
+    {
+        <div class="bg-danger text-center container rounded mt-3 py-3">
+            <h5 class="text-white">@ViewData["Error"]</h5>
+        </div>
+    }
     <div class="dropdown text-center mt-5">
         <button class="btn btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Categories
@@ -48,49 +57,57 @@
         if (row == 1)
         {
             @:<div class="row d-flex justify-content-around mt-5">
-        }
+            }
 
-                  <article class="col-md-3 border border-success text-center">
-                      <div class="my-3">
-                          <img src="@item.PictureUrl" class="img-thumbnail" />
-                      </div>
-                      <div>
-                          @for (int j = 0; j < Math.Truncate(@item.Rating); j++)
-                          {
-                              <span class="fa fa-star checked"></span>
-                          }
-                          @if (@item.Rating % 1 == 0)
-                          {
-                              for (int j = 0; j < 5 - Math.Truncate(@item.Rating); j++)
-                              {
-                                  <span class="fa fa-star"></span>
-                              }
-                          }
-                          else
-                          {
-                              <span class="fa fa-star-half checked"></span>
-                              for (int j = 0; j < 5 - (Math.Truncate(@item.Rating) + 1); j++)
-                              {
-                                  <span class="fa fa-star"></span>
-                              }
-                          }
-                      </div>
-                      <div><h4>@item.Name</h4></div>
-                      <div>
-                          <p>@item.Description</p>
-                      </div>
-                      <div><h5>by @item.Author</h5></div>
-                      <div><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
-                  </article>
-        row = row + 1;
+            <article class="col-md-3 border border-success text-center">
+                <div class="my-3">
+                    <img src="@item.PictureUrl" class="img-thumbnail" />
+                </div>
+                <div>
+                    @for (int j = 0; j < Math.Truncate(@item.Rating); j++)
+                    {
+                        <span class="fa fa-star checked"></span>
+                    }
+                    @if (@item.Rating % 1 == 0)
+                    {
+                        for (int j = 0; j < 5 - Math.Truncate(@item.Rating); j++)
+                        {
+                            <span class="fa fa-star"></span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="fa fa-star-half checked"></span>
+                        for (int j = 0; j < 5 - (Math.Truncate(@item.Rating) + 1); j++)
+                        {
+                            <span class="fa fa-star"></span>
+                        }
+                    }
+                </div>
+                <div><h4>@item.Name</h4></div>
+                <div>
+                    <p>@item.Description</p>
+                </div>
+                <div><h5>by @item.Author</h5></div>
+                <div><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
+            </article>
+            row = row + 1;
 
-        if (row % 4 == 0)
-        {
-            row = 1;
+            if (row % 4 == 0)
+            {
+                row = 1;
             @:</div>
         }
 
     }
+
+              <div class="d-flex justify-content-center my-5">
+                  @Html.PagedListPager((IPagedList)Model, page => Url.Action("All", new { page = page }),
+                      new PagedListRenderOptions {
+                          LiElementClasses = new string[] { "page-item" },
+                          PageClasses = new string[] { "page-link" }
+                      })
+              </div>
 
 </body>
 

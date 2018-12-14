@@ -78,7 +78,8 @@ namespace Foodnetic.App
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IRecipeService, RecipeService>(); ;
+            services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<ICommentService, CommentService>(); ;
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

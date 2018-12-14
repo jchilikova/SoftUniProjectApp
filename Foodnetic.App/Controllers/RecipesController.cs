@@ -1,10 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using AutoMapper;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
+using Foodnetic.ViewModels.Comments;
+using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Recipes;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace Foodnetic.App.Controllers
 {
@@ -12,18 +17,42 @@ namespace Foodnetic.App.Controllers
     {
         private readonly FoodneticDbContext dbContext;
         private readonly IRecipeService recipeService;
+        private readonly IMapper mapper;
 
-        public RecipesController(FoodneticDbContext dbContext, IRecipeService recipeService)
+        public RecipesController(FoodneticDbContext dbContext, IRecipeService recipeService, IMapper mapper)
         {
             this.dbContext = dbContext;
             this.recipeService = recipeService;
+            this.mapper = mapper;
         }
 
-        public IActionResult All()
+        public IActionResult All(string data, int? page)
         {
-            var recipesModels = this.recipeService.GetAll();
+            this.ViewData["Error"] = data;
 
-            return this.View(recipesModels);
+            var recipes = this.recipeService.GetAll();
+
+            var recipeModels = this.MapAllRecipes(recipes);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 3);
+
+            return this.View(pageViewModel);
+        }
+
+        private IEnumerable<AllRecipesViewModel> MapAllRecipes(IEnumerable<Recipe> recipes)
+        {
+            var recipeModels = new List<AllRecipesViewModel>();
+
+            foreach (var recipe in recipes)
+            {
+                var model = this.mapper.Map<AllRecipesViewModel>(recipe);
+
+                recipeModels.Add(model);
+            }
+
+            return recipeModels;
         }
 
         public IActionResult Create()
@@ -118,9 +147,45 @@ namespace Foodnetic.App.Controllers
 
         public IActionResult Recipe(string id)
         {
-            var recipe = this.recipeService.GetById(id);
+            if (this.recipeService.RecipeExists(id))
+            {
+                var recipe = this.recipeService.GetById(id);
 
-            return this.View(recipe);
+                var recipeModel = this.MapSingleRecipe(recipe);
+
+                return this.View(recipeModel);
+            }
+
+            var data = "Invalid recipe!";
+
+            return RedirectToAction("All", new {Data = data});
+        }
+
+        private RecipeViewModel MapSingleRecipe(Recipe recipe)
+        {
+            var recipeModel = this.mapper.Map<RecipeViewModel>(recipe);
+
+            foreach (var ingredient in recipe.Ingredients)
+            {
+                recipeModel.IngredientsViewModel.Add(new IngredientsViewModel
+                {
+                    Name = ingredient.Ingredient.Name,
+                    Quantity = ingredient.Ingredient.Quantity
+                });
+            }
+
+            foreach (var comment in recipe.Comments)
+            {
+                recipeModel.CommentViewModels.Add(new CommentViewModel
+                {
+                    Content = comment.Content,
+                    PostedOn = comment.PostedOn.ToString("dd-MM-yyy hh:mm",CultureInfo.InvariantCulture),
+                    RecipeId = comment.RecipeId,
+                    Username = comment.Author.UserName
+                });
+            }
+
+            return recipeModel;
         }
     }
 }
