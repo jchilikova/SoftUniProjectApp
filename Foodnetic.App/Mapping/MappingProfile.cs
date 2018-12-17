@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Foodnetic.Models;
+using Foodnetic.ViewModels.Account;
 using Foodnetic.ViewModels.Grocery;
 using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Recipes;
@@ -23,11 +24,11 @@ namespace Foodnetic.App.Mapping
                 .ForPath(e => e.Ingredients, opt => opt.Ignore())
                 .ReverseMap();
 
-            CreateMap<Grocery, GroceryViewModel>()
-                //.ForPath(e => e.Name, opt => opt.MapFrom(src => src.Name))
-                //.ForPath(e => e.ExpirationDate, opt => opt.MapFrom(src => src.ExpirationDate)
-                //.ForPath(e => e.Quantity, opt => opt.MapFrom(src => src.Quantity))
-                .ReverseMap();
+            CreateMap<Grocery, GroceryViewModel>().ReverseMap();
+
+            CreateMap<User, RegisterViewModel>().ReverseMap();
+
+            CreateMap<AllProductsViewModel, Product>().ReverseMap();
         }
     }
 }

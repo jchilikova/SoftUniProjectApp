@@ -13,7 +13,6 @@
         background-color: #466618;
         border-color: #466618;
         font-family: "Robot",sans-serif;
-
     }
 </style>
 <body class="bg-img1">
@@ -39,7 +38,12 @@
                 <input asp-for="Password" class="form-control" placeholder="Password...">
             </div>
             <div class="form-group text-center">
-                <label asp-for="RememberMe"><input asp-for="RememberMe" value="RememberMe">&nbsp;Remember me?</label>
+                <div class="checkbox">
+                    <label asp-for="RememberMe">
+                        <input asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
             </div>
             <div class="col-md-offset-5 col-sm-offset-5 col-xs-offset-5">
                 <button type="submit" class="btn btn-green">Login</button>
@@ -52,16 +56,12 @@
             </div>
         </form>
         <form asp-controller="Account" asp-action="ExternalLogin" method="post">
-            <div>
-                <p>
-                    @foreach (var provider in SignInManager.GetExternalAuthenticationSchemesAsync().Result)
-                    {
-                        <div class="button-holder d-flex justify-content-center mb-2">
-                            <button type="submit" class="btn btn-green" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
-                        </div>
-                    }
-                </p>
-            </div>
+            @foreach (var provider in SignInManager.GetExternalAuthenticationSchemesAsync().Result)
+            {
+                <div class="text-center" style="margin-top: 10px; margin-bottom: 10px;">
+                    <button type="submit" class="btn btn-green" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">Using your @provider.DisplayName</button>
+                </div>
+            }
         </form>
     </div>
 </body>

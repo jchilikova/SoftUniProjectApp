@@ -20,7 +20,7 @@ namespace Foodnetic.Services
 
         public IEnumerable<Recipe> GetAll()
         {
-            var recipes = this.dbContext.Recipes.Include(r => r.Author);
+            var recipes = this.dbContext.Recipes.Include(x => x.Stars).Include(r => r.Author);
 
             return recipes;
         }
@@ -28,6 +28,7 @@ namespace Foodnetic.Services
         public Recipe GetById(string id)
         {
             var recipe = this.dbContext.Recipes
+                    .Include(x => x.Stars)
                 .Include(x => x.Author)
                 .Include(x => x.Comments)
                 .ThenInclude(x => x.Author)

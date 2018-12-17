@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "CreateProduct";
+    Layout = "~/Areas/Administration/Views/Shared/_SecondaryLayout.cshtml";
+}
+
+@using Foodnetic.ViewModels.Products
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model IEnumerable<AllProductsViewModel>
+
+    <body>
+        <header>
+            @{
+        await Html.RenderPartialAsync("_DefaultNavbarPartial");
+            }
+        </header>
+        <div class="intro-text text-center">
+            <h1 class="intro-lead-in mb-4 mt-4">Menu history</h1>
+            <hr class="hr-green" />
+        </div>
+        <table class="table w-75 mx-auto table-hover">
+            <thead>
+                <tr class="row border">
+                    <th class="col-md-6">Id</th>
+                    <th class="col-md-3">Name</th>
+                    <th class="col-md-3">Product Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+    {
+                <tr class="row border">
+                    <td class="col-md-6">@item.Id</td>
+                    <td class="col-md-3">@item.Name</td>
+                    <td class="col-md-3">@item.ProductType</td>
+                </tr>
+    }
+            </tbody>
+        </table>
+        <div class="d-flex justify-content-center">
+            @Html.PagedListPager((IPagedList)Model, page => Url.Action("AllProducts", new { page = page }),
+                new PagedListRenderOptions {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" }
+                })
+        </div>
+    </body>

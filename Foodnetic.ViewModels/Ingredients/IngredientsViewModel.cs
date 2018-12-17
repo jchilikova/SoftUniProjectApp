@@ -1,4 +1,4 @@
-﻿namespace Foodnetic.ViewModels.Products
+﻿namespace Foodnetic.ViewModels.Ingredients
 {
     public class IngredientsViewModel
     {

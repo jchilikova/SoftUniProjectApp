@@ -126,7 +126,7 @@ namespace Foodnetic.App.Controllers
             if (menu.RecipeMenus.Count <= 0)
             {
                 data =
-                   Constants.Messages.NotEnoughGroceriesError;
+                   Constants.Messages.NotEnoughGroceriesErrorMsg;
             }
 
             return RedirectToAction("Index",  new { Data = data });
@@ -136,7 +136,7 @@ namespace Foodnetic.App.Controllers
         {
             var currentUser = this.User.Identity.Name;
 
-            var menus = this.menuService.GetAllMenusForUser(currentUser);
+            var menus = this.menuService.GetAllMenusForUser(currentUser).OrderByDescending(x => x.CreatedOn);
 
             var menusBindingModels = new List<AllMenusViewModel>();
 

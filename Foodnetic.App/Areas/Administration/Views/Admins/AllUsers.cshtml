@@ -1,0 +1,70 @@
+﻿@{
+    ViewData["Title"] = "AllUsers";
+    Layout = "~/Areas/Administration/Views/Shared/_SecondaryLayout.cshtml";
+}
+
+@using Foodnetic.Contants
+@using Foodnetic.Models
+@using Microsoft.AspNetCore.Identity
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
+@model IEnumerable<Foodnetic.ViewModels.Users.AllUsersViewModel>
+@inject SignInManager<User> SignInManager
+
+<body>
+    <header>
+        @{
+            await Html.RenderPartialAsync("_DefaultNavbarPartial");
+        }
+    </header>
+<div class="intro-text text-center">
+    <h1 class="intro-lead-in mb-4 mt-4">All Users</h1>
+    <hr class="hr-green" />
+</div>
+@if (this.ViewData[Constants.Strings.SuccessString] != null)
+{
+    <div class="bg-success text-center container rounded mt-3 py-3">
+        <h5 class="text-dark">@ViewData["Success"]</h5>
+    </div>
+}
+    <table class="table w-75 mx-auto table-hover">
+        <thead>
+            <tr class="row border">
+                <th class="col-md-6">Id</th>
+                <th class="col-md-3">Name</th>
+                <th class="col-md-3">Product Type</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="row border">
+                    <td class="col-md-6">@item.Id</td>
+                    <td class="col-md-3">@item.Username</td>
+                    <td class="col-md-3">
+                        @{
+                            var user = this.SignInManager.UserManager.Users.FirstOrDefault(x => x.UserName == item.Username);
+                        }
+                        @if (this.SignInManager.UserManager.IsInRoleAsync(user, Constants.Strings.ModeratorRole).Result)
+                        {
+                            <a asp-action="DemoteUserFromModerator" asp-controller="Admins" asp-route-id="@item.Id" class="btn btn-green">Demote</a>
+                        }
+                        else
+                        {
+                            <a asp-action="MakeUserModerator" asp-controller="Admins" asp-route-id="@item.Id" class="btn btn-green">Make Moderator</a>
+                        }
+                       
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-center">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("AllProducts", new { page = page }),
+            new PagedListRenderOptions {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+    </div>
+</body>

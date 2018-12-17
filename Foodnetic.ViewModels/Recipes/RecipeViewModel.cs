@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Foodnetic.ViewModels.Comments;
+using Foodnetic.ViewModels.Ingredients;
 using Foodnetic.ViewModels.Products;
 
 namespace Foodnetic.ViewModels.Recipes

@@ -34,6 +34,8 @@ namespace Foodnetic.Data
 
         public DbSet<VirtualFridge> VirtualFridges { get; set; }
 
+        public DbSet<Rate> Rates { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new RecipeMenuConfiguration());

@@ -27,6 +27,11 @@ namespace Foodnetic.App.Controllers
         {
             IEnumerable<Grocery> groceries = this.fridgeService.GetAll(this.User.Identity.Name);
 
+            if (groceries == null)
+            {
+                return this.View();
+            }
+
             var groceriesViewModels = new List<GroceryViewModel>();
 
             foreach (var grocery in groceries)
@@ -51,7 +56,7 @@ namespace Foodnetic.App.Controllers
 
                 var bindingModel = new CreateGroceryViewModel
                 {
-                    Products = products
+                    Products = products,
                 };
 
                 return this.View(bindingModel);
@@ -69,7 +74,7 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("Index");
             }
 
-            return View();
+            return RedirectToAction("AddGrocery");
         }
     }
 }

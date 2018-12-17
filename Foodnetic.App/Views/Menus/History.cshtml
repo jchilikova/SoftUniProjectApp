@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             <tbody>
-            @foreach (var menusView in Model.OrderByDescending(x => x.CreatedOn))
+            @foreach (var menusView in Model)
             {
                 <tr class="row border">
                     <td class="col-md-4">@menusView.CreatedOn.ToShortDateString()</td>

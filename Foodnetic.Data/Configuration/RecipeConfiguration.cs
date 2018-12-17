@@ -11,6 +11,10 @@ namespace Foodnetic.Data.Configuration
             builder.HasMany(r => r.Comments)
                 .WithOne(x => x.Recipe)
                 .HasForeignKey(x => x.RecipeId);
+
+            builder.HasMany(r => r.Stars)
+                .WithOne(x => x.Recipe)
+                .HasForeignKey(x => x.RecipeId);
         }
     }
 }

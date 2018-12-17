@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class FoodneticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181217122246_AddedRatingForRecipes")]
+    partial class AddedRatingForRecipes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,22 +78,6 @@ namespace Foodnetic.Data.Migrations
                     b.ToTable("Products");
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Product");
-                });
-
-            modelBuilder.Entity("Foodnetic.Models.Rate", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int>("RateNumber");
-
-                    b.Property<string>("RecipeId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("Rates");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Recipe", b =>
@@ -416,13 +402,6 @@ namespace Foodnetic.Data.Migrations
                     b.HasOne("Foodnetic.Models.User", "User")
                         .WithMany("DailyMenus")
                         .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("Foodnetic.Models.Rate", b =>
-                {
-                    b.HasOne("Foodnetic.Models.Recipe", "Recipe")
-                        .WithMany("Stars")
-                        .HasForeignKey("RecipeId");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Recipe", b =>

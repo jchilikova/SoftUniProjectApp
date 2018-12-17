@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using Foodnetic.Models;
-using Foodnetic.ViewModels.Products;
 
 namespace Foodnetic.Services.Contracts
 {
     public interface IProductService
     {
-        void Create(CreateProductViewModel bindingModel);
+        void Create(Product bindingModel);
 
         ICollection<Product> GetAll();
 

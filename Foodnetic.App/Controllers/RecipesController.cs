@@ -6,6 +6,7 @@ using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Comments;
+using Foodnetic.ViewModels.Ingredients;
 using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Recipes;
 using Microsoft.AspNetCore.Mvc;
@@ -36,7 +37,7 @@ namespace Foodnetic.App.Controllers
 
             var nextPage = page ?? 1;
 
-            var pageViewModel = recipeModels.ToPagedList(nextPage, 3);
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
 
             return this.View(pageViewModel);
         }

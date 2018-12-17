@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Foodnetic.Data;
 using Foodnetic.Models;
@@ -20,6 +21,11 @@ namespace Foodnetic.Services
         {
             User currentUser = (User)this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
 
+            if (string.IsNullOrWhiteSpace(bindingModel.Content))
+            {
+                bindingModel.Content = $"Rated {bindingModel.Rate}/5";
+            }
+
             var comment = new Comment
             {
                 Author = currentUser,
@@ -27,6 +33,14 @@ namespace Foodnetic.Services
                 RecipeId = bindingModel.RecipeId,
                 PostedOn = DateTime.Now
             };
+
+            var recipe = this.dbContext.Recipes.FirstOrDefault(r => r.Id == bindingModel.RecipeId);
+
+            recipe?.Stars.Add(new Rate
+            {
+                RateNumber = bindingModel.Rate,
+                Recipe = recipe
+            });
 
             this.dbContext.Comments.Add(comment);
             this.dbContext.SaveChanges();

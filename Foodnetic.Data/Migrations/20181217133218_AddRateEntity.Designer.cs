@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class FoodneticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181217133218_AddRateEntity")]
+    partial class AddRateEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -91,7 +93,7 @@ namespace Foodnetic.Data.Migrations
 
                     b.HasIndex("RecipeId");
 
-                    b.ToTable("Rates");
+                    b.ToTable("Rate");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Recipe", b =>
@@ -420,7 +422,7 @@ namespace Foodnetic.Data.Migrations
 
             modelBuilder.Entity("Foodnetic.Models.Rate", b =>
                 {
-                    b.HasOne("Foodnetic.Models.Recipe", "Recipe")
+                    b.HasOne("Foodnetic.Models.Recipe")
                         .WithMany("Stars")
                         .HasForeignKey("RecipeId");
                 });

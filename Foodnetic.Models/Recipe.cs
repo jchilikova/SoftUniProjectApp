@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Linq;
 
 namespace Foodnetic.Models
 {
@@ -11,6 +13,7 @@ namespace Foodnetic.Models
             this.Comments = new HashSet<Comment>();
             this.Tags = new HashSet<RecipeTag>();
             this.Id = Guid.NewGuid().ToString();
+            this.Stars = new HashSet<Rate>();
         }
 
         public string Id { get; set; }
@@ -32,16 +35,18 @@ namespace Foodnetic.Models
         public string AuthorId { get; set; }
         public User Author { get; set; }
 
-        public decimal Rating { get; set; }
+        public decimal Rating => (decimal) (this.Stars.Count == 0 ? 0 : this.Stars.Select(s => s.RateNumber).Average());
 
         public bool IsDeleted { get; set; }
 
         public ICollection<RecipeIngredient> Ingredients { get; set; }
 
-        public ICollection<RecipeMenu> Menus { get; set; }    
+        public ICollection<Rate> Stars { get; set; }
 
-        public  ICollection<Comment> Comments { get; set; }
+        public ICollection<RecipeMenu> Menus { get; set; }
 
-        public  ICollection<RecipeTag> Tags { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<RecipeTag> Tags { get; set; }
     }
 }

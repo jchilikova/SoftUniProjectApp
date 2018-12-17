@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Foodnetic.Contants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
@@ -12,13 +11,13 @@ namespace Foodnetic.App.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SignInManager<User> signInManager;
         private readonly IUserService userService;
+        private readonly SignInManager<User> signInManager;
 
-        public AccountController(SignInManager<User> signInManager, IUserService userService)
+        public AccountController(IUserService userService, SignInManager<User> signInManager)
         {
-            this.signInManager = signInManager;
             this.userService = userService;
+            this.signInManager = signInManager;
         }
 
         [HttpGet]
@@ -28,22 +27,18 @@ namespace Foodnetic.App.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> Login(LoginViewModel bindingModel)
+        public async Task<IActionResult> Login(LoginViewModel bindingModel)
         {
-            if (ModelState.IsValid)
-            {
-                var result = await signInManager.PasswordSignInAsync(bindingModel.Username,
-                    bindingModel.Password, bindingModel.RememberMe,false); 
+            if (!ModelState.IsValid) return View(bindingModel);
 
-                if (result.Succeeded)
-                {
-                    return RedirectToAction(actionName: "Index", controllerName: "Home");
-                }
-                else
-                {
-                    this.ViewData["Error"] = ("User with that username and password does not exists!");
-                }
+            var result = this.userService.SignInUser(bindingModel);
+
+            if (await result)
+            {
+                return RedirectToAction(actionName: "Index", controllerName: "Home");
             }
+
+            this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.UserAlreadyExistsErrorMsg;
 
             return View(bindingModel); 
         }
@@ -55,43 +50,33 @@ namespace Foodnetic.App.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IActionResult> Register(RegisterViewModel bindingModel)
+        public async Task<IActionResult> Register(RegisterViewModel bindingModel)
         {
-            var userExists = this.signInManager.UserManager.Users.Any(x => x.UserName == bindingModel.Username);
-            var emailExists = this.signInManager.UserManager.Users.Any(x => x.Email == bindingModel.Email);
+            var userExists = this.userService.CheckIfUserExists(bindingModel.Username);
 
             if (userExists)
             {
-                this.ViewData["Error"] = "User with that username already exists!";
+                this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.UsernameAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
+            var emailExists = this.userService.CheckIfEmailExists(bindingModel.Email);
+
             if (emailExists)
             {
-                this.ViewData["Error"] = "User with that email already exists!";
+                this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.EmailAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
             if (ModelState.IsValid)
             {
-                var user = new User
-                {
-                    FirstName = bindingModel.FirstName,
-                    LastName = bindingModel.LastName,
-                    UserName = bindingModel.Username,
-                    Email = bindingModel.Email,
-                };
+                var user = this.userService.CreateUser(bindingModel);
 
-                var result = this.signInManager.UserManager.CreateAsync(user, bindingModel.Password).Result;
+                if (user == null) return this.View();
 
-                if (result.Succeeded)
-                {
-                    await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole);
-                    this.signInManager.SignInAsync(user, false).Wait();
-                    return this.RedirectToAction("Index", "Home");
-                }
-
-                return this.View();
+                await this.userService.AddToRole(user);
+                this.signInManager.SignInAsync(user, false).Wait();
+                return this.RedirectToAction("Index", "Home");
 
             }
            
@@ -120,7 +105,7 @@ namespace Foodnetic.App.Controllers
         [HttpPost]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            var redirectUrl = "/Account/ExternalLogin";
+            const string redirectUrl = Constants.Strings.ExternalLoginRedirect;
             var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }

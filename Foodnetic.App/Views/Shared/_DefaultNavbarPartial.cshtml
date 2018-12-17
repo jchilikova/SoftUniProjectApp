@@ -32,8 +32,16 @@
                         <li class="nav-item">
                             <a asp-action="Index" asp-controller="Fridge" class="nav-link">Virtual Fridge</a>
                         </li>
-                        <li class="nav-item">
-                            <a asp-area="Administration" asp-controller="Admins" asp-action="CreateProduct" class="nav-link">Add Product</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Admin Panel</a>
+                            <ul class="dropdown-menu dark-bg">
+                                <li>
+                                    <a asp-area="Administration" asp-controller="Admins" asp-action="CreateProduct" class="nav-link">Add Product</a>
+                                </li>
+                                <li>
+                                    <a asp-area="Administration" asp-controller="Admins" asp-action="AllUsers" class="nav-link">Registered Users</a>
+                                </li>
+                            </ul>
                         </li>
                         <li class="nav-item">
                             <a asp-action="Logout" asp-controller="Account" class="nav-link">Logout</a>

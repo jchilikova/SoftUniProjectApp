@@ -9,37 +9,45 @@
 {
     if (User.IsInRole(Constants.Strings.AdministratorRole))
     {
-<nav class="navbar navbar-expand-lg bg-img1 navbar-default">
-    <div class="container">
-        <a class="navbar-brand page-scroll" href="#page-top"><img src="~/images/logo2.png" alt="Foodnetic theme logo" width="250" height="50"></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="nav navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a asp-area="" asp-action="Index" asp-controller="Home" class="nav-link">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="All" asp-controller="Recipes" asp-area="" class="nav-link">Recipes</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Menus" asp-area=""  class="nav-link">Menu</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Index" asp-controller="Fridge" asp-area=""  class="nav-link">Virtual Fridge</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-area="Administration" asp-controller="Admins" asp-action="CreateProduct" class="nav-link">Add Product</a>
-                </li>
-                <li class="nav-item">
-                    <a asp-action="Logout" asp-controller="Account" asp-area=""  class="nav-link">Logout</a>
-                </li>
+        <nav class="navbar navbar-expand-lg bg-img1 navbar-default">
+            <div class="container">
+                <a class="navbar-brand page-scroll" href="#page-top"><img src="~/images/logo2.png" alt="Foodnetic theme logo" width="250" height="50"></a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a asp-area="" asp-action="Index" asp-controller="Home" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="All" asp-controller="Recipes" asp-area="" class="nav-link">Recipes</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Menus" asp-area="" class="nav-link">Menu</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Index" asp-controller="Fridge" asp-area="" class="nav-link">Virtual Fridge</a>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">Admin Panel</a>
+                            <ul class="dropdown-menu dark-bg">
+                                <li>
+                                    <a asp-area="Administration" asp-controller="Admins" asp-action="CreateProduct" class="nav-link">Add Product</a>
+                                </li>
+                                <li>
+                                    <a asp-area="Administration" asp-controller="Admins" asp-action="AllUsers" class="nav-link">Registered Users</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-action="Logout" asp-controller="Account" asp-area="" class="nav-link">Logout</a>
+                        </li>
 
-            </ul>
-        </div>
-    </div>
-</nav>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     }
 }
 
