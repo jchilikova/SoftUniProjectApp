@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
@@ -25,13 +24,20 @@ namespace Foodnetic.App.Controllers
 
         public IActionResult Index()
         {
-            IEnumerable<Grocery> groceries = this.fridgeService.GetAll(this.User.Identity.Name);
+            var groceries = this.fridgeService.GetAll(this.User.Identity.Name);
 
             if (groceries == null)
             {
                 return this.View();
             }
 
+            var groceriesViewModels = this.MapAllGroceries(groceries);
+
+            return this.View(groceriesViewModels);
+        }
+
+        private IEnumerable<GroceryViewModel> MapAllGroceries(IEnumerable<Grocery> groceries)
+        {
             var groceriesViewModels = new List<GroceryViewModel>();
 
             foreach (var grocery in groceries)
@@ -40,29 +46,34 @@ namespace Foodnetic.App.Controllers
                 groceriesViewModels.Add(bindingModel);
             }
 
-            return this.View(groceriesViewModels);
+            return groceriesViewModels;
         }
 
         [HttpGet]
         public IActionResult AddGrocery(string searchString)
         {
-            IEnumerable<Product> products = this.productService.GetAll();
+            var products = this.productService.GetAll();
 
-            if (!string.IsNullOrEmpty(searchString))
+            if (string.IsNullOrEmpty(searchString)) return this.View();
+
+            var bindingModel = this.SearchForGrocery(products, searchString);
+
+            return this.View(bindingModel);
+
+        }
+
+        private CreateGroceryViewModel SearchForGrocery(IEnumerable<Product> products, string searchString)
+        {
+            products = products.Where(p => (p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) 
+                                            || p.ProductType.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase)) 
+                                           && p.GetType() == typeof(Product));
+
+            var bindingModel = new CreateGroceryViewModel
             {
-                products = products.Where(p => (p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase) 
-                                                || p.ProductType.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase)) 
-                                               && p.GetType() == typeof(Product));
+                Products = products
+            };
 
-                var bindingModel = new CreateGroceryViewModel
-                {
-                    Products = products,
-                };
-
-                return this.View(bindingModel);
-            }
-
-            return this.View();
+            return bindingModel;
         }
 
         [HttpPost]

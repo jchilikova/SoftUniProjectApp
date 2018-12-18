@@ -1,0 +1,47 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Foodnetic.ViewModels.Contact
+@model Foodnetic.ViewModels.Contact.ContactUsViewModel
+<style>
+    .btn-green {
+        color: #fff;
+        background-color: #466618;
+        border-color: #466618;
+        font-family: "Robot",sans-serif;
+    }
+</style>
+<body class="bg-img1">
+    @{
+        await Html.RenderPartialAsync("_LoginRegisterNavbarPartial");
+    }
+    @if (ViewData.ContainsKey("Error"))
+    {
+        <div class="bg-danger text-center container rounded mt-3 py-3">
+            <h5 class="text-white">@ViewData["Error"]</h5>
+        </div>
+    }
+    <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%;   background: rgba(0, 0, 0, 0.5);">
+        <h1 class="text-center" style="color: white">Contact Us</h1>
+        <hr class="bg-eventure hr-2" />
+        <form class="mx-auto half-width" method="post" asp-controller="Home" asp-action="Contact">
+            <div class="form-group text-center">
+                <strong><label asp-for="Name"></label></strong>
+                <input asp-for="Name" class="form-control" placeholder="Your name...">
+            </div>
+            <div class="form-group text-center">
+                <strong><label asp-for="Email"></label></strong>
+                <input asp-for="Email" class="form-control" placeholder="Email...">
+            </div>
+            <div class="form-group text-center">
+                <strong><label asp-for="Message"></label></strong>
+                <textarea asp-for="Message" class="form-control" placeholder="Message..."></textarea>
+            </div>
+            <div class="col-md-offset-5 col-sm-offset-5 col-xs-offset-5" style="margin-bottom: 20px; margin-top:20px">
+                <button type="submit" class="btn btn-green">Send</button>
+            </div>
+        </form>
+    </div>
+</body>

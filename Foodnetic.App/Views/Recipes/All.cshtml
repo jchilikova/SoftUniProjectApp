@@ -2,6 +2,7 @@
     ViewData["Title"] = "All Recipes";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+@using Foodnetic.Contants
 @using Foodnetic.ViewModels.Recipes
 @using X.PagedList
 @using X.PagedList.Mvc.Common
@@ -49,8 +50,8 @@
     @{
         var recipes = Model as AllRecipesViewModel[] ?? Model.ToArray();
         var row = 1;
+        var itemsCount = 1;
     }
-
 
     @foreach (var item in recipes)
     {
@@ -89,25 +90,34 @@
                     <p>@item.Description</p>
                 </div>
                 <div><h5>by @item.Author</h5></div>
-                <div><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
+                <div class="my-3"><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
+                @if (this.User.IsInRole(Constants.Strings.ModeratorRole))
+                {
+                    <form class="my-3" asp-controller="Moderators" asp-action="DeleteRecipe" method="post">
+                        <input type="text" name="@(nameof(item.Id))" value="@item.Id" hidden />
+                        <button type="submit" class="btn btn-xs">Delete</button>
+                        <br />
+                    </form>
+                }
             </article>
             row = row + 1;
+            itemsCount = itemsCount + 1;
 
-            if (row % 4 == 0)
+            if (row % 4 == 0 || itemsCount == recipes.Length+1)
             {
                 row = 1;
             @:</div>
-        }
+             }
 
     }
 
-              <div class="d-flex justify-content-center my-5">
-                  @Html.PagedListPager((IPagedList)Model, page => Url.Action("All", new { page = page }),
-                      new PagedListRenderOptions {
-                          LiElementClasses = new string[] { "page-item" },
-                          PageClasses = new string[] { "page-link" }
-                      })
-              </div>
+    <div class="row d-flex justify-content-center my-5">
+        @Html.PagedListPager((IPagedList)Model, page => Url.Action("All", new { page = page }),
+            new PagedListRenderOptions {
+                LiElementClasses = new string[] { "page-item" },
+                PageClasses = new string[] { "page-link" }
+            })
+    </div>
 
 </body>
 

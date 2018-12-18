@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Foodnetic.Contants;
@@ -38,7 +39,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             {
                 if (this.productService.CheckIfProductExists(bindingModel.Name))
                 {
-                    ViewData["Error"] = Constants.Messages.ProductAlreadyExistsErrorMsg;
+                    ViewData[Constants.Strings.ErrorString] = Constants.Messages.ProductAlreadyExistsErrorMsg;
                     return this.View(bindingModel);
                 }
 
@@ -55,9 +56,18 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         {
             var products = this.productService.GetAll().OrderBy(x => x.ProductType).ThenBy(x => x.Name);
 
-            var productBindingModels = new List<AllProductsViewModel>();
-
             var nextPage = page ?? 1;
+
+            var productBindingModels = this.MapAllProducts(products);
+           
+            var pageViewModel = productBindingModels.ToPagedList(nextPage, 20);
+
+            return this.View(pageViewModel);
+        }
+
+        private IEnumerable<AllProductsViewModel> MapAllProducts(IEnumerable<Product> products)
+        {
+            var productBindingModels = new List<AllProductsViewModel>();
 
             foreach (var product in products)
             {
@@ -66,9 +76,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
                 productBindingModels.Add(bindingModel);
             }
 
-            var pageViewModel = productBindingModels.ToPagedList(nextPage, 20);
-
-            return this.View(pageViewModel);
+            return productBindingModels;
         }
 
         public IActionResult AllUsers(string data, int? page)
@@ -76,7 +84,19 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             this.ViewData[Constants.Strings.SuccessString] = data;
 
             var users = this.userService.GetAll().OrderBy(x => x.UserName);
-            var userBindingModels = new List<AllUsersViewModel>();
+
+            var userBindingModels = this.MapAllUsers(users);
+          
+            var nextPage = page ?? 1;
+
+            var pageViewModel = userBindingModels.ToPagedList(nextPage, 20);
+
+            return this.View(pageViewModel);
+        }
+
+        private IEnumerable<AllUsersViewModel> MapAllUsers(IEnumerable<User> users)
+        {
+            var userBindingModels =  new List<AllUsersViewModel>();
 
             foreach (var user in users)
             {
@@ -84,11 +104,8 @@ namespace Foodnetic.App.Areas.Administration.Controllers
 
                 userBindingModels.Add(bindingModel);
             }
-            var nextPage = page ?? 1;
 
-            var pageViewModel = userBindingModels.ToPagedList(nextPage, 20);
-
-            return this.View(pageViewModel);
+            return userBindingModels;
         }
 
         public IActionResult MakeUserModerator(string id)

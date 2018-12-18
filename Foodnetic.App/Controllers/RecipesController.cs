@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using AutoMapper;
+using Foodnetic.Contants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
@@ -157,7 +158,7 @@ namespace Foodnetic.App.Controllers
                 return this.View(recipeModel);
             }
 
-            var data = "Invalid recipe!";
+            var data = Constants.Messages.InvalidRecipeMsgError;
 
             return RedirectToAction("All", new {Data = data});
         }
@@ -182,7 +183,8 @@ namespace Foodnetic.App.Controllers
                     Content = comment.Content,
                     PostedOn = comment.PostedOn.ToString("dd-MM-yyy hh:mm",CultureInfo.InvariantCulture),
                     RecipeId = comment.RecipeId,
-                    Username = comment.Author.UserName
+                    Username = comment.Author.UserName,
+                    Id=comment.Id
                 });
             }
 

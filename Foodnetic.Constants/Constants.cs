@@ -11,6 +11,9 @@
             public const string EmailAlreadyExistsErrorMsg = "User with that email already exists!";
             public const string PromotedUserMsg = "promoted to moderator successfully!";
             public const string DemotedUserMsg = "demoted from moderator successfully!";
+            public const string InvalidRecipeMsgError = "Invalid recipe!";
+            public const string ModeratorDeleteCommentContentMsg = "Comment is deleted by Moderator";
+            public const string NoContentCommentMsg = "Rated {0}/5";
         }
 
         public static class Strings

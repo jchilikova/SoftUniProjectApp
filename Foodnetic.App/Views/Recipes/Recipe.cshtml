@@ -2,6 +2,7 @@
     ViewData["Title"] = "Recipe";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+@using Foodnetic.Contants
 @using Foodnetic.ViewModels.Recipes
 @model Foodnetic.ViewModels.Recipes.RecipeViewModel
 
@@ -53,6 +54,14 @@
             <div class="text-center my-2">
                 <h4>Description</h4>
                 <h5>@Model.Description</h5>
+                @if (this.User.IsInRole(Constants.Strings.ModeratorRole))
+                {
+                    <form asp-controller="Moderators" asp-action="DeleteRecipe" method="post">
+                        <input type="text" name="@(nameof(@Model.Id))" value="@Model.Id" hidden />
+                        <button type="submit" class="btn btn-xs">Delete</button>
+                        <br />
+                    </form>
+                }
             </div>
         </div>
         <div class="col-md-3 text-center">

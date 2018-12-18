@@ -13,7 +13,6 @@ using Foodnetic.Services;
 using Foodnetic.Services.Contracts;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 namespace Foodnetic.App
 {
@@ -36,10 +35,31 @@ namespace Foodnetic.App
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
-
             services.AddDbContext<FoodneticDbContext>(options =>
                 options.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection")));
 
+            this.AddIdentityService(services);
+
+            this.AddAutoMapperConfig(services);
+
+            this.ConfigExternalLoginOptions(services);
+
+            this.AddDependencyServices(services);
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+        }
+
+        private void AddAutoMapperConfig(IServiceCollection services)
+        {
+            var mappingConfig = new MapperConfiguration(mc =>
+                mc.AddProfile(new MappingProfile())
+            );
+            IMapper mapper = mappingConfig.CreateMapper();
+            services.AddSingleton(mapper);
+        }
+
+        private void AddIdentityService(IServiceCollection services)
+        {
             services.AddIdentity<User, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedEmail = false;
@@ -56,31 +76,33 @@ namespace Foodnetic.App
                 .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<FoodneticDbContext>();
 
-            var mappingConfig = new MapperConfiguration(mc =>
-                mc.AddProfile(new MappingProfile())
-            );
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+        }
 
-            services.AddAuthentication()
-                .AddFacebook(facebookOptions =>
-            {
-                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-            })
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-                });
-
+        private void AddDependencyServices(IServiceCollection services)
+        {
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IMenuService, MenuService>();
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecipeService, RecipeService>();
             services.AddScoped<ICommentService, CommentService>(); ;
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+            
+        }
+
+        private void ConfigExternalLoginOptions(IServiceCollection services)
+        {
+            services.AddAuthentication()
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+                })
+                .AddGoogle(googleOptions =>
+                {
+                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+                });
+
         }
 
 

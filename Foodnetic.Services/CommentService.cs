@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata;
+using Foodnetic.Contants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
@@ -23,7 +25,7 @@ namespace Foodnetic.Services
 
             if (string.IsNullOrWhiteSpace(bindingModel.Content))
             {
-                bindingModel.Content = $"Rated {bindingModel.Rate}/5";
+                bindingModel.Content = string.Format(Constants.Messages.NoContentCommentMsg, bindingModel.Rate);
             }
 
             var comment = new Comment
@@ -43,6 +45,13 @@ namespace Foodnetic.Services
             });
 
             this.dbContext.Comments.Add(comment);
+            this.dbContext.SaveChanges();
+        }
+
+        public void DeleteCommentContent(string id)
+        {
+            var comment = this.dbContext.Comments.FirstOrDefault(x => x.Id == id);
+            comment.Content = Constants.Messages.ModeratorDeleteCommentContentMsg;
             this.dbContext.SaveChanges();
         }
     }

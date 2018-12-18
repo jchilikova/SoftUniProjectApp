@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Foodnetic.App.Models;
+using Foodnetic.ViewModels.Contact;
 
 namespace Foodnetic.App.Controllers
 {
@@ -11,13 +12,15 @@ namespace Foodnetic.App.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult Contact()
         {
             return View();
         }
 
-        public IActionResult Contact()
+        [HttpPost]
+        public IActionResult Contact(ContactUsViewModel bindingModel)
         {
+
             return View();
         }
 

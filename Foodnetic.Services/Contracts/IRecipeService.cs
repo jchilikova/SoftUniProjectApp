@@ -10,5 +10,6 @@ namespace Foodnetic.Services.Contracts
 
         Recipe GetById(string id);
         bool RecipeExists(string id);
+        void DeleteRecipe(string id);
     }
 }

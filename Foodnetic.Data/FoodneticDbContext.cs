@@ -28,6 +28,8 @@ namespace Foodnetic.Data
 
         public DbSet<RecipeMenu> RecipeMenus { get; set; }
 
+        public DbSet<ContactMessage> ContactMessages { get; set; }
+
         public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
 
         public DbSet<RecipeTag> RecipeTags { get; set; }

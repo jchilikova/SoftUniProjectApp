@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class FoodneticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181218170247_AddContactMessages")]
+    partial class AddContactMessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,22 +41,6 @@ namespace Foodnetic.Data.Migrations
                     b.HasIndex("RecipeId");
 
                     b.ToTable("Comments");
-                });
-
-            modelBuilder.Entity("Foodnetic.Models.ContactMessage", b =>
-                {
-                    b.Property<string>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Message");
-
-                    b.Property<string>("UserEmail");
-
-                    b.Property<string>("UserName");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("ContactMessages");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Menu", b =>

@@ -1,4 +1,6 @@
-﻿@model IEnumerable<Foodnetic.ViewModels.Comments.CommentViewModel>
+﻿@using Foodnetic.Contants
+@model IEnumerable<Foodnetic.ViewModels.Comments.CommentViewModel>
+
 
 <div class="clearfix my-3"></div>
 <hr>
@@ -17,9 +19,17 @@
                             @item.Content
                         </strong>
                     </h5>
+                    @if (this.User.IsInRole(Constants.Strings.ModeratorRole) && item.Content != Constants.Messages.ModeratorDeleteCommentContentMsg)
+                    {
+                        <form asp-controller="Moderators" asp-action="DeleteComment" method="post">
+                            <input type="text" name="@(nameof(item.Id))" value="@item.Id" hidden />
+                            <input type="text" name="@(nameof(item.RecipeId))" value="@item.RecipeId" hidden />
+                            <button type="submit" class="btn btn-xs">Delete</button>
+                            <br />
+                        </form>
+                    }
                 </div>
             </li>
         }
     </ul>
-
 </div>

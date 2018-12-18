@@ -35,7 +35,7 @@ namespace Foodnetic.App.Controllers
 
             if (await result)
             {
-                return RedirectToAction(actionName: "Index", controllerName: "Home");
+                return RedirectToAction("Index", "Home");
             }
 
             this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.UserAlreadyExistsErrorMsg;
