@@ -3,8 +3,10 @@
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
 
+@using Foodnetic.Contants
 @using Foodnetic.ViewModels.Menu
-@model Foodnetic.ViewModels.Menu.MenuViewModel
+@using Foodnetic.ViewModels.Menus
+@model Foodnetic.ViewModels.Menus.MenuViewModel
 <style>
     .text-foods {
         font-family: "Playfair Display",sans-serif;
@@ -40,10 +42,10 @@
     </div>
     @if (@Model == null)
     {
-        if (this.ViewData["Error"] != null)
+        if (this.ViewData[Constants.Strings.ErrorString] != null)
         {
             <div class="bg-danger text-center container rounded mt-3 py-3">
-                <h5 class="text-white">@ViewData["Error"]</h5>
+                <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
             </div>
         }
         <div class="text-center my-5">

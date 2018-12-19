@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Eventures.Web.Middlewares.MiddlewareExtensions;
 using Foodnetic.App.Mapping;
 using Microsoft.AspNetCore.Builder;
@@ -11,6 +12,7 @@ using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services;
 using Foodnetic.Services.Contracts;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -47,6 +49,13 @@ namespace Foodnetic.App
             this.AddDependencyServices(services);
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
+
+            services.PostConfigure<CookieAuthenticationOptions>(IdentityConstants.ApplicationScheme,
+                opt => {
+                    //configure your other properties
+                    opt.LoginPath = "/Account/Login";
+                    opt.AccessDeniedPath = "/Account/AccessDenied";
+                });
         }
 
         private void AddAutoMapperConfig(IServiceCollection services)
@@ -85,8 +94,8 @@ namespace Foodnetic.App
             services.AddScoped<IFridgeService, FridgeService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRecipeService, RecipeService>();
-            services.AddScoped<ICommentService, CommentService>(); ;
-            
+            services.AddScoped<ICommentService, CommentService>();
+            services.AddScoped<IContactService, ContactService>();
         }
 
         private void ConfigExternalLoginOptions(IServiceCollection services)
@@ -120,12 +129,11 @@ namespace Foodnetic.App
                 app.UseHsts();
             }
 
+            app.UseAuthentication();
             app.UseSeedRolesMiddleware();
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
-
-            app.UseAuthentication();
 
             app.UseMvc(routes =>
             {

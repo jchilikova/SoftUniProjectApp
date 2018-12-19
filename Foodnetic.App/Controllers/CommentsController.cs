@@ -1,5 +1,6 @@
 ﻿using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Comments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Foodnetic.App.Controllers
@@ -14,6 +15,7 @@ namespace Foodnetic.App.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public IActionResult Create(CreateCommentViewModel bindingModel)
         {
             var currentUsername = this.User.Identity.Name;

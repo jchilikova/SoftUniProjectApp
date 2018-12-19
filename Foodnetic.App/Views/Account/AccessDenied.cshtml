@@ -1,0 +1,17 @@
+﻿@using Foodnetic.Contants
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .text-danger {
+        color: #dc3545 !important
+    }
+</style>
+<body class="bg-img1">
+    @{
+        await Html.RenderPartialAsync("_LoginRegisterNavbarPartial");
+    }
+    <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%;   background: rgba(0, 0, 0, 0.5);">
+        <h1 class="text-center text-danger">Access Denied!</h1>
+    </div>
+</body>

@@ -1,36 +1,87 @@
-<nav class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a asp-action="Index" asp-controller="Home"><img src="~/images/logo2.png" alt="Foodnetic theme logo" width="250" height="50"></a>
+@using Foodnetic.Contants
+@using Foodnetic.Models
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-action="Index" asp-controller="Home"><img src="~/images/logo2.png" alt="Foodnetic theme logo" width="250" height="50"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Home" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="All" asp-controller="Recipes" class="nav-link">Recipes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Menus" class="nav-link">Menu</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Index" asp-controller="Fridge" class="nav-link">Virtual Fridge</a>
+                    </li>
+                    <li  class="nav-item">
+                        <a asp-action="Contact" asp-controller="Home">Contact Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a asp-action="Logout" asp-controller="Account" class="nav-link">Logout</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-                <li class="hidden">
-                    <a href="#page-top"></a>
-                </li>
-                <li>
-                    <a asp-action="Register" asp-controller="Account">Register</a>
-                </li>
-                <li>
-                    <a asp-action="Login" asp-controller="Account">Login</a>
-                </li>
-                <li>
-                    <a asp-action="Contact" asp-controller="Home">Contact</a>
-                </li>
-                <li>
-                    <a class="page-scroll" href="#about">About</a>
-                </li>
-            </ul>
+    </nav>
+}
+else
+{
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header page-scroll">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-action="Index" asp-controller="Home"><img src="~/images/logo2.png" alt="Foodnetic theme logo" width="250" height="50"></a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="hidden">
+                        <a href="#page-top"></a>
+                    </li>
+                    <li>
+                        <a asp-action="Register" asp-controller="Account">Register</a>
+                    </li>
+                    <li>
+                        <a asp-action="Login" asp-controller="Account">Login</a>
+                    </li>
+                    <li>
+                        <a asp-action="Contact" asp-controller="Home">Contact Us</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" asp-fragment="about" asp-action="Index" asp-controller="Home">About</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+}
+
+
 
 

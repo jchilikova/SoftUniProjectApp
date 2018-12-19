@@ -4,7 +4,9 @@ using System.Linq;
 using AutoMapper;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
+using Foodnetic.ViewModels.Groceries;
 using Foodnetic.ViewModels.Grocery;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Foodnetic.App.Controllers
@@ -22,9 +24,10 @@ namespace Foodnetic.App.Controllers
             this.mapper = mapper;
         }
 
+        [Authorize]
         public IActionResult Index()
         {
-            var groceries = this.fridgeService.GetAll(this.User.Identity.Name);
+            var groceries = this.fridgeService.GetAllGroceries(this.User.Identity.Name);
 
             if (groceries == null)
             {
@@ -34,6 +37,32 @@ namespace Foodnetic.App.Controllers
             var groceriesViewModels = this.MapAllGroceries(groceries);
 
             return this.View(groceriesViewModels);
+        }
+        
+        [HttpGet]
+        [Authorize]
+        public IActionResult AddGrocery(string searchString)
+        {
+            var products = this.productService.GetAll();
+
+            if (string.IsNullOrEmpty(searchString)) return this.View();
+
+            var bindingModel = this.SearchForGrocery(products, searchString);
+
+            return this.View(bindingModel);
+        }
+        
+        [HttpPost]
+        [Authorize]
+        public IActionResult AddGrocery(CreateGroceryViewModel bindingModel)
+        {
+            if (this.ModelState.IsValid)
+            {
+                this.fridgeService.CreateGrocery(bindingModel, this.User.Identity.Name);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("AddGrocery");
         }
 
         private IEnumerable<GroceryViewModel> MapAllGroceries(IEnumerable<Grocery> groceries)
@@ -47,19 +76,6 @@ namespace Foodnetic.App.Controllers
             }
 
             return groceriesViewModels;
-        }
-
-        [HttpGet]
-        public IActionResult AddGrocery(string searchString)
-        {
-            var products = this.productService.GetAll();
-
-            if (string.IsNullOrEmpty(searchString)) return this.View();
-
-            var bindingModel = this.SearchForGrocery(products, searchString);
-
-            return this.View(bindingModel);
-
         }
 
         private CreateGroceryViewModel SearchForGrocery(IEnumerable<Product> products, string searchString)
@@ -76,16 +92,5 @@ namespace Foodnetic.App.Controllers
             return bindingModel;
         }
 
-        [HttpPost]
-        public IActionResult AddGrocery(CreateGroceryViewModel bindingModel)
-        {
-            if (this.ModelState.IsValid)
-            {
-                this.fridgeService.CreateGrocery(bindingModel, this.User.Identity.Name);
-                return RedirectToAction("Index");
-            }
-
-            return RedirectToAction("AddGrocery");
-        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Foodnetic.Models;
 
-namespace Foodnetic.ViewModels.Grocery
+namespace Foodnetic.ViewModels.Groceries
 {
     public class CreateGroceryViewModel
     {

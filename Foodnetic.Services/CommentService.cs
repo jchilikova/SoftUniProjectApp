@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Metadata;
 using Foodnetic.Contants;
 using Foodnetic.Data;
 using Foodnetic.Models;
@@ -21,7 +19,7 @@ namespace Foodnetic.Services
 
         public void Create(CreateCommentViewModel bindingModel, string username)
         {
-            User currentUser = (User)this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
+            var currentUser = (User)this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
 
             if (string.IsNullOrWhiteSpace(bindingModel.Content))
             {
@@ -36,6 +34,14 @@ namespace Foodnetic.Services
                 PostedOn = DateTime.Now
             };
 
+            this.AddRatingToRecipe(bindingModel);
+
+            this.dbContext.Comments.Add(comment);
+            this.dbContext.SaveChanges();
+        }
+
+        private void AddRatingToRecipe(CreateCommentViewModel bindingModel)
+        {
             var recipe = this.dbContext.Recipes.FirstOrDefault(r => r.Id == bindingModel.RecipeId);
 
             recipe?.Stars.Add(new Rate
@@ -44,15 +50,18 @@ namespace Foodnetic.Services
                 Recipe = recipe
             });
 
-            this.dbContext.Comments.Add(comment);
             this.dbContext.SaveChanges();
         }
 
         public void DeleteCommentContent(string id)
         {
             var comment = this.dbContext.Comments.FirstOrDefault(x => x.Id == id);
+
+            if (comment == null) return;
+
             comment.Content = Constants.Messages.ModeratorDeleteCommentContentMsg;
             this.dbContext.SaveChanges();
+
         }
     }
 }

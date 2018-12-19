@@ -45,6 +45,9 @@
                                 <li>
                                     <a asp-area="Administration" asp-controller="Admins" asp-action="AllUsers" class="nav-link">Registered Users</a>
                                 </li>
+                                <li>
+                                    <a asp-area="Administration" asp-controller="Admins" asp-action="AllContactUsMessages" class="nav-link">Contact Us Messages</a>
+                                </li>
                             </ul>
                         </li>
                         <li>
@@ -85,6 +88,9 @@
                             <a asp-action="Index" asp-controller="Fridge">Virtual Fridge</a>
                         </li>
                         <li>
+                            <a asp-action="Contact" asp-controller="Home">Contact Us</a>
+                        </li>
+                        <li>
                             <a asp-action="Logout" asp-controller="Account">Logout</a>
                         </li>
                     </ul>
@@ -120,7 +126,7 @@ else
                         <a asp-action="Login" asp-controller="Account">Login</a>
                     </li>
                     <li>
-                        <a asp-action="Contact" asp-controller="Home">Contact</a>
+                        <a asp-action="Contact" asp-controller="Home">Contact Us</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#about">About</a>

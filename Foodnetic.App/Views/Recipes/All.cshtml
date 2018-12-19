@@ -30,10 +30,10 @@
         <hr class="hr-green" />
         <a asp-controller="Recipes" asp-action="Create" class="btn btn-xl">Create Recipe</a>
     </div>
-    @if (this.ViewData["Error"] != null)
+    @if (this.ViewData[Constants.Strings.ErrorString] != null)
     {
         <div class="bg-danger text-center container rounded mt-3 py-3">
-            <h5 class="text-white">@ViewData["Error"]</h5>
+            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
         </div>
     }
     <div class="dropdown text-center mt-5">

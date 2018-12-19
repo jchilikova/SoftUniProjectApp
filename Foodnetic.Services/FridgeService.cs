@@ -5,6 +5,7 @@ using AutoMapper;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
+using Foodnetic.ViewModels.Groceries;
 using Foodnetic.ViewModels.Grocery;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace Foodnetic.Services
         {
             var product = this.dbContext.Products.FirstOrDefault(x => x.Name == bindingmodel.ProductName);
 
-            User user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
+            var user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
 
             var fridge = this.dbContext.VirtualFridges.Include(f => f.Groceries).FirstOrDefault(x => x.OwnerId == user.Id);
 
@@ -42,7 +43,7 @@ namespace Foodnetic.Services
 
             Grocery grocery;
 
-            if (this.CheckIfGroceryExists(bindingmodel.ProductName, user, fridge))
+            if (this.CheckIfGroceryExists(bindingmodel.ProductName, fridge))
             {
                 grocery = fridge.Groceries.FirstOrDefault(g => g.Name == bindingmodel.ProductName);
 
@@ -65,14 +66,15 @@ namespace Foodnetic.Services
             this.dbContext.SaveChanges();
         }
 
-        private bool CheckIfGroceryExists(string productName, User user, VirtualFridge fridge)
+        private bool CheckIfGroceryExists(string productName,VirtualFridge fridge)
         {
             return fridge.Groceries.Any(g => g.Name == productName);
         }
 
-        public IEnumerable<Grocery> GetAll(string name)
+        public IEnumerable<Grocery> GetAllGroceries(string username)
         {
-            User user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == name);
+            var user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
+
             var virtualFridgeId = this.dbContext.VirtualFridges.FirstOrDefault(f => f.OwnerId == user.Id)?.Id;
 
             if (virtualFridgeId == null)

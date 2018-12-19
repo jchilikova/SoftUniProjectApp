@@ -5,8 +5,10 @@ using AutoMapper;
 using Foodnetic.Contants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
+using Foodnetic.ViewModels.Contact;
 using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 
@@ -18,21 +20,25 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         private readonly IProductService productService;
         private readonly IUserService userService;
         private readonly IMapper mapper;
+        private readonly IContactService contactService;
 
-        public AdminsController(IProductService productService, IMapper mapper, IUserService userService)
+        public AdminsController(IProductService productService, IMapper mapper, IUserService userService, IContactService contactService)
         {
             this.productService = productService;
             this.mapper = mapper;
             this.userService = userService;
+            this.contactService = contactService;
         }
 
         [HttpGet]
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult CreateProduct()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult CreateProduct(CreateProductViewModel bindingModel)
         {
             if (this.ModelState.IsValid)
@@ -52,6 +58,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return this.View(bindingModel);
         }
 
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult AllProducts(int? page)
         {
             var products = this.productService.GetAll().OrderBy(x => x.ProductType).ThenBy(x => x.Name);
@@ -79,6 +86,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return productBindingModels;
         }
 
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult AllUsers(string data, int? page)
         {
             this.ViewData[Constants.Strings.SuccessString] = data;
@@ -108,6 +116,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return userBindingModels;
         }
 
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult MakeUserModerator(string id)
         {
             var data = this.userService.MakeModerator(id).Result;
@@ -115,11 +124,41 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return RedirectToAction("AllUsers", new {Data = data});
         }
 
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult DemoteUserFromModerator(string id)
         {
             var data = this.userService.DemoteFromModerator(id).Result;
 
             return RedirectToAction("AllUsers", new {Data = data});
+        }
+
+        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        public IActionResult AllContactUsMessages(int? page)
+        {
+            var contactMessages = contactService.GetAll();
+
+            var bindingModels = this.MapAllMessages(contactMessages);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = bindingModels.ToPagedList(nextPage, 20);
+
+
+            return this.View(pageViewModel);
+        }
+
+        private IEnumerable<AllContactUsMessagesViewModel> MapAllMessages(IEnumerable<ContactMessage> messages)
+        {
+            var contactMessagesBindingModels =  new List<AllContactUsMessagesViewModel>();
+
+            foreach (var message in messages)
+            {
+                var bindingModel = this.mapper.Map<AllContactUsMessagesViewModel>(message);
+
+                contactMessagesBindingModels.Add(bindingModel);
+            }
+
+            return contactMessagesBindingModels;
         }
     }
 }

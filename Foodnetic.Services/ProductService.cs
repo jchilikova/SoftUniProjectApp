@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
-using Foodnetic.ViewModels.Products;
 
 namespace Foodnetic.Services
 {

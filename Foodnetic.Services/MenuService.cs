@@ -14,22 +14,17 @@ namespace Foodnetic.Services
     {
         private readonly FoodneticDbContext dbContext;
 
+        public MenuService(FoodneticDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
         public bool CheckIfMenuExist(string username)
         {
             var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
             var menu = this.dbContext.Menus.FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
 
-            if (menu != null)
-            {
-                return true;
-            }
-
-            return false;
-        }
-
-        public MenuService(FoodneticDbContext dbContext)
-        {
-            this.dbContext = dbContext;
+            return menu != null;
         }
 
         public Menu Create(string username)
@@ -102,12 +97,32 @@ namespace Foodnetic.Services
                 this.dbContext.SaveChanges();
             }
 
-
             return menu;
-
         }
 
-        private RecipeMenu CreateBreakfast(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
+        public Menu GetDailyMenuForUser(string currentUser)
+        {
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
+
+            return this.dbContext
+                .Menus
+                .Include(x => x.RecipeMenus)
+                .ThenInclude(x => x.Recipe)
+                .FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
+        }
+
+        public ICollection<Menu> GetAllMenusForUser(string currentUser)
+        {
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
+
+            return this.dbContext.Menus
+                    .Include(x => x.RecipeMenus)
+                .ThenInclude(x => x.Recipe)
+                .Where(x => x.UserId == userId).ToList();
+        }
+
+        
+        private RecipeMenu CreateBreakfast(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.BreakfastString)?.Id;
 
@@ -158,7 +173,7 @@ namespace Foodnetic.Services
             return menuBreakfast;
         }
 
-        private bool CheckIfUserHaveEnoughIngredients(Recipe recipe, List<Grocery> fridgeIngredients)
+        private bool CheckIfUserHaveEnoughIngredients(Recipe recipe, IEnumerable<Grocery> fridgeIngredients)
         {
             foreach (var ingredient in recipe.Ingredients)
             {
@@ -174,7 +189,7 @@ namespace Foodnetic.Services
 
         }
 
-        private RecipeMenu CreateLunch(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
+        private RecipeMenu CreateLunch(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.LunchString)?.Id;
 
@@ -195,7 +210,7 @@ namespace Foodnetic.Services
             return null;
         }
 
-        private RecipeMenu CreateDinner(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
+        private RecipeMenu CreateDinner(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DinnerString)?.Id;
 
@@ -216,7 +231,7 @@ namespace Foodnetic.Services
             return null;
         }
 
-        private RecipeMenu CreateDessert(List<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
+        private RecipeMenu CreateDessert(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DessertString)?.Id;
 
@@ -237,28 +252,7 @@ namespace Foodnetic.Services
             return null;
         }
 
-        public Menu GetDailyMenuForUser(string currentUser)
-        {
-            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
-
-            return this.dbContext
-                .Menus
-                .Include(x => x.RecipeMenus)
-                .ThenInclude(x => x.Recipe)
-                .FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
-        }
-
-        public ICollection<Menu> GetAllMenusForUser(string currentUser)
-        {
-            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
-
-            return this.dbContext.Menus
-                    .Include(x => x.RecipeMenus)
-                .ThenInclude(x => x.Recipe)
-                .Where(x => x.UserId == userId).ToList();
-        }
-
-        private void DecreaseQuantityOfProducts(Recipe recipe, List<Grocery> fridgeIngredients)
+        private void DecreaseQuantityOfProducts(Recipe recipe, IEnumerable<Grocery> fridgeIngredients)
         {
             var groceriesOutOfStock = new List<Grocery>();
 
@@ -277,7 +271,7 @@ namespace Foodnetic.Services
             RemoveOutOfStockProducts(groceriesOutOfStock);
         }
 
-        private void RemoveOutOfStockProducts(List<Grocery> groceriesOutOfStock)
+        private void RemoveOutOfStockProducts(IEnumerable<Grocery> groceriesOutOfStock)
         {
             this.dbContext.Groceries.RemoveRange(groceriesOutOfStock);
             this.dbContext.SaveChanges();

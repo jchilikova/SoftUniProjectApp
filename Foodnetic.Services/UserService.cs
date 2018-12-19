@@ -4,7 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using Foodnetic.Contants;
-using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -17,13 +16,11 @@ namespace Foodnetic.Services
         private readonly SignInManager<User> signInManager;
         private readonly UserManager<User> userManager;
         private readonly IMapper mapper;
-        private readonly FoodneticDbContext dbContext;
 
-        public UserService(SignInManager<User> signInManager, IMapper mapper, FoodneticDbContext dbContext, UserManager<User> userManager)
+        public UserService(SignInManager<User> signInManager, IMapper mapper, UserManager<User> userManager)
         {
             this.signInManager = signInManager;
             this.mapper = mapper;
-            this.dbContext = dbContext;
             this.userManager = userManager;
         }
 
@@ -58,7 +55,6 @@ namespace Foodnetic.Services
 
         public async Task<bool> ExternalLoginUser(ExternalLoginInfo info)
         {
-
             var firstName = info.Principal.FindFirstValue(ClaimTypes.GivenName);
             var lastName = info.Principal.FindFirstValue(ClaimTypes.Surname);
             var email = info.Principal.FindFirstValue(ClaimTypes.Email);

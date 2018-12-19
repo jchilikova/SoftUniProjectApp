@@ -1,4 +1,6 @@
-﻿namespace Foodnetic.Models
+﻿using System;
+
+namespace Foodnetic.Models
 {
     public class ContactMessage
     {
@@ -9,5 +11,7 @@
         public string UserEmail { get; set; }
 
         public string Message { get; set; }
+
+        public DateTime SentOn { get; set; }
     }
 }

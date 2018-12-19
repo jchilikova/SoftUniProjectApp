@@ -117,5 +117,10 @@ namespace Foodnetic.App.Controllers
 
             return this.RedirectToAction("Index", "Home");
         }
+
+        public IActionResult AccessDenied()
+        {
+            return this.View();
+        }
     }
 }

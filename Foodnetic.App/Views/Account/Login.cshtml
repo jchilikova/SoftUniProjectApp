@@ -2,6 +2,7 @@
     ViewData["Title"] = "Login";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@using Foodnetic.Contants
 @using Foodnetic.Models
 @using Foodnetic.ViewModels.Account
 @using Microsoft.AspNetCore.Identity
@@ -19,10 +20,10 @@
     @{
         await Html.RenderPartialAsync("_LoginRegisterNavbarPartial");
     }
-    @if (ViewData.ContainsKey("Error"))
+    @if (ViewData.ContainsKey(Constants.Strings.ErrorString))
     {
         <div class="bg-danger text-center container rounded mt-3 py-3">
-            <h5 class="text-white">@ViewData["Error"]</h5>
+            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
         </div>
     }
     <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%;   background: rgba(0, 0, 0, 0.5);">
@@ -47,9 +48,6 @@
             </div>
             <div class="col-md-offset-5 col-sm-offset-5 col-xs-offset-5">
                 <button type="submit" class="btn btn-green">Login</button>
-            </div>
-            <div class="text-center" style="margin-top: 10px">
-                <a asp-action="">Forgot your password?</a>
             </div>
             <div class="text-center" style="margin-top: 10px; margin-bottom: 20px">
                 <a asp-action="Register">Register as new user</a>
