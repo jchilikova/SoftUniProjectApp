@@ -44,7 +44,6 @@ namespace Foodnetic.Services
             var recipes = dbContext.RecipeTags
                     .Include(x => x.Recipe)
                 .ThenInclude(x => x.Ingredients)
-                .ThenInclude(x => x.Ingredient)
                 .ToList();
 
             //creating menu
@@ -177,9 +176,9 @@ namespace Foodnetic.Services
         {
             foreach (var ingredient in recipe.Ingredients)
             {
-                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
+                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Name);
 
-                if (grocery == null || grocery.Quantity < ingredient.Ingredient.Quantity)
+                if (grocery == null || grocery.Quantity < ingredient.Quantity)
                 {
                     return false;
                 }
@@ -258,9 +257,9 @@ namespace Foodnetic.Services
 
             foreach (var ingredient in recipe.Ingredients)
             {
-                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Ingredient.Name);
+                var grocery = fridgeIngredients.FirstOrDefault(x => x.Name == ingredient.Name);
 
-                grocery.Quantity -= ingredient.Ingredient.Quantity;
+                grocery.Quantity -= ingredient.Quantity;
 
                 if (grocery.Quantity <= 0)
                 {

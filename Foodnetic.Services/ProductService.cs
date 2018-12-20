@@ -28,7 +28,7 @@ namespace Foodnetic.Services
 
         public ICollection<Product> GetAll()
         {
-            return this.dbContext.Products.ToList();
+            return this.dbContext.Products.Where(x => x.GetType() == typeof(Product)).ToList();
         }
     }
 }

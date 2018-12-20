@@ -4,14 +4,16 @@ using Foodnetic.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Foodnetic.Data.Migrations
 {
     [DbContext(typeof(FoodneticDbContext))]
-    partial class FoodneticDbContextModelSnapshot : ModelSnapshot
+    [Migration("20181220113821_ChangeIngredientToHaveOnlyOneRecipe")]
+    partial class ChangeIngredientToHaveOnlyOneRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -125,15 +127,13 @@ namespace Foodnetic.Data.Migrations
 
                     b.Property<string>("Directions");
 
-                    b.Property<byte[]>("Image");
-
                     b.Property<bool>("IsDeleted");
-
-                    b.Property<bool>("IsInCreate");
 
                     b.Property<string>("Name");
 
                     b.Property<int>("NumberOfServings");
+
+                    b.Property<string>("PictureUrl");
 
                     b.Property<int>("PreparationTime");
 

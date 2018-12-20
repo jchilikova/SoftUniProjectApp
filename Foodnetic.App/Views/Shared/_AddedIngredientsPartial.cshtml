@@ -1,0 +1,12 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@model ICollection<Foodnetic.ViewModels.Ingredients.IngredientsViewModel>
+
+    <ul class="list-group">
+        @foreach (var item in Model)
+        {
+        <li class="list-group-item">@item.Quantity g. @item.Name</li>
+        }
+    </ul>

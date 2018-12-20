@@ -3,14 +3,13 @@
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+@model Foodnetic.ViewModels.Recipes.CreateRecipeViewModel
 <style>
-    .text-foods {
-        font-family: "Playfair Display",sans-serif;
-        font-style: italic;
-    }
-    .hr-green {
-        background-color: black;
-        width: 50%
+    .table-wrapper-scroll-y {
+        max-height: 180px;
+        margin-bottom: 10px;
+        overflow:scroll;
+        -webkit-overflow-scrolling: touch;
     }
 </style>
 <body>
@@ -20,21 +19,51 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">Create Recipe</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">Second Step</h1>
+        <h3 class="intro-lead-in mb-4 mt-4">Create the Recipe</h3>
         <hr class="hr-green" />
     </div>
-    @*<form class="mx-auto half-width" method="post" asp-controller="Recipes" asp-action="Create">
-         <div class="form-group text-center">
-             <strong><label asp-for="Name"></label></strong>
-             <input asp-for="Name" class="form-control" placeholder="Name...">
-         </div>
-         <div class="form-group text-center">
-             <strong><label asp-for="Description"></label></strong>
-             <input asp-for="Description" class="form-control" placeholder="Description...">
-         </div>
-         <div class="col-md-offset-5 col-sm-offset-5 col-xs-offset-5">
-             <button type="submit" class="btn btn-default">Create</button>
-         </div>
-        </form>*@
-
+    <form method="post" asp-controller="Recipes" asp-action="Create" enctype="multipart/form-data">
+        <div class="text-center container-fluid col-md-3 my-3 mb-5">
+            <h5 class="mb-3">Ingredients</h5>
+            <div class="text-center">
+                @{
+                    await Html.RenderPartialAsync("_AddedIngredientsPartial", Model.IngredientsViewModels);
+                }
+            </div>
+        </div>
+        <div class="form-group text-center container-fluid col-md-3">
+            <strong><label asp-for="Name"></label></strong>
+            <input asp-for="Name" class="form-control" placeholder="Name...">
+            <div class="form-group text-center">
+                <strong><label asp-for="Description"></label></strong>
+                <textarea asp-for="Description" class="form-control" placeholder="Description..." rows="3"></textarea>
+            </div>
+            <div class="row">
+                <div class="form-group text-center col-md-6">
+                    <strong><label asp-for="PreparationTime"></label></strong>
+                    <input asp-for="PreparationTime" class="form-control" placeholder="Prep Time...">
+                </div>
+                <div class="form-group text-center col-md-6">
+                    <strong><label asp-for="CookTime"></label></strong>
+                    <input asp-for="CookTime" class="form-control" placeholder="Cook Time...">
+                </div>
+            </div>
+            <div class="form-group text-center">
+                <strong><label asp-for="NumberOfServings"></label></strong>
+                <input asp-for="NumberOfServings" class="form-control" placeholder="Number of servings...">
+            </div>
+        </div>
+        <div class="form-group text-center container-fluid col-md-5">
+            <strong><label asp-for="Directions"></label></strong>
+            <textarea asp-for="Directions" class="form-control" placeholder="Directions..." rows="10"></textarea>
+        </div>
+        <div class="form-group text-center">
+            <strong><label asp-for="Image"></label></strong>
+            <input asp-for="Image" type="file">
+        </div>
+        <div class="text-center my-5">
+            <button type="submit" class="btn btn-green">Create Recipe</button>
+        </div>
+    </form>
 </body>

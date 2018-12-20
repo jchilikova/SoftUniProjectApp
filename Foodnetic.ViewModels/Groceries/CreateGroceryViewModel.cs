@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using Foodnetic.Models;
+using Foodnetic.ViewModels.Products;
 
 namespace Foodnetic.ViewModels.Groceries
 {
@@ -18,6 +19,6 @@ namespace Foodnetic.ViewModels.Groceries
         [DataType(DataType.Date)]
         public DateTime ExpirationDate { get; set; }
 
-        public IEnumerable<Product> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
     }
 }

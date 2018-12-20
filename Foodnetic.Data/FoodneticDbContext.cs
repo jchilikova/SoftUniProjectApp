@@ -30,8 +30,6 @@ namespace Foodnetic.Data
 
         public DbSet<ContactMessage> ContactMessages { get; set; }
 
-        public DbSet<RecipeIngredient> RecipeIngredients { get; set; }
-
         public DbSet<RecipeTag> RecipeTags { get; set; }
 
         public DbSet<VirtualFridge> VirtualFridges { get; set; }
@@ -42,7 +40,6 @@ namespace Foodnetic.Data
         {
             modelBuilder.ApplyConfiguration(new RecipeMenuConfiguration());
             modelBuilder.ApplyConfiguration(new RecipeConfiguration());
-            modelBuilder.ApplyConfiguration(new RecipeIngredientConfiguration());
             modelBuilder.ApplyConfiguration(new RecipeTagConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
 

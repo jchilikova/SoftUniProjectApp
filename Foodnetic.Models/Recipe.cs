@@ -9,7 +9,7 @@ namespace Foodnetic.Models
     {
         public Recipe()
         {
-            this.Ingredients = new HashSet<RecipeIngredient>();
+            this.Ingredients = new HashSet<Ingredient>();
             this.Comments = new HashSet<Comment>();
             this.Tags = new HashSet<RecipeTag>();
             this.Id = Guid.NewGuid().ToString();
@@ -30,7 +30,9 @@ namespace Foodnetic.Models
 
         public string Directions { get; set; }
 
-        public string PictureUrl { get; set; }
+        public byte[] Image { get; set; }
+
+        public bool IsInCreate { get; set; } = false;
 
         public string AuthorId { get; set; }
         public User Author { get; set; }
@@ -39,7 +41,7 @@ namespace Foodnetic.Models
 
         public bool IsDeleted { get; set; }
 
-        public ICollection<RecipeIngredient> Ingredients { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
 
         public ICollection<Rate> Stars { get; set; }
 

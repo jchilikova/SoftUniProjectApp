@@ -5,7 +5,7 @@ using AutoMapper;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Groceries;
-using Foodnetic.ViewModels.Grocery;
+using Foodnetic.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -84,9 +84,11 @@ namespace Foodnetic.App.Controllers
                                             || p.ProductType.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase)) 
                                            && p.GetType() == typeof(Product));
 
+            var productsBindingModels = products.Select(product => this.mapper.Map<ProductViewModel>(product)).ToList();
+
             var bindingModel = new CreateGroceryViewModel
             {
-                Products = products
+                Products = productsBindingModels
             };
 
             return bindingModel;

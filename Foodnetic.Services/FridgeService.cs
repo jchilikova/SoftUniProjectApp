@@ -6,7 +6,6 @@ using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Groceries;
-using Foodnetic.ViewModels.Grocery;
 using Microsoft.EntityFrameworkCore;
 
 namespace Foodnetic.Services

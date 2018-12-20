@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Foodnetic.ViewModels.Grocery
+namespace Foodnetic.ViewModels.Groceries
 {
     public class GroceryViewModel
     {

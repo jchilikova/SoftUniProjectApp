@@ -58,7 +58,7 @@ namespace Foodnetic.App.Controllers
                    Constants.Messages.NotEnoughGroceriesErrorMsg;
             }
 
-            return RedirectToAction("Index",  new { Data = data });
+            return RedirectToAction("Index", new { Data = data });
         }
 
         [Authorize]
@@ -69,7 +69,7 @@ namespace Foodnetic.App.Controllers
             var menus = this.menuService.GetAllMenusForUser(currentUser).OrderByDescending(x => x.CreatedOn);
 
             var menusBindingModels = this.MapAllMenus(menus);
-           
+
             var nextPage = page ?? 1;
 
             var pageViewModel = menusBindingModels.ToPagedList(nextPage, 5);
@@ -125,79 +125,82 @@ namespace Foodnetic.App.Controllers
 
         private MenuViewModel MapMenuModel(Menu menu)
         {
-            var bindingModel =  new MenuViewModel { CreatedOn = menu.CreatedOn.Date };
+            var bindingModel = new MenuViewModel { CreatedOn = menu.CreatedOn.Date };
 
             foreach (var recipeMenu in menu.RecipeMenus)
+            {
+                var base64 = Convert.ToBase64String(recipeMenu.Recipe.Image);
+                var imgSrc = $"data:image/jpg;base64,{base64}";
+
+                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Breakfast)
                 {
-                    if (recipeMenu != null && recipeMenu.MenuType == MenuType.Breakfast)
+                    bindingModel.Breakfast = new MenuRecipeViewModel
                     {
-                        bindingModel.Breakfast = new MenuRecipeViewModel
-                        {
-                            Description = recipeMenu.Recipe.Description,
-                            Id = recipeMenu.RecipeId,
-                            Name = recipeMenu.Recipe.Name,
-                            PictureUrl = recipeMenu.Recipe.PictureUrl,
-                            Rating = recipeMenu.Recipe.Rating
-                        };
+                        Description = recipeMenu.Recipe.Description,
+                        Id = recipeMenu.RecipeId,
+                        Name = recipeMenu.Recipe.Name,
+                        PictureUrl = imgSrc,
+                        Rating = recipeMenu.Recipe.Rating
+                    };
 
-                        continue;
-                    }
-                    else
-                    {
-                        bindingModel.Breakfast = null;
-                    }
-
-                    if (recipeMenu != null && recipeMenu.MenuType == MenuType.Lunch)
-                    {
-                        bindingModel.Lunch = new MenuRecipeViewModel
-                        {
-                            Description = recipeMenu.Recipe.Description,
-                            Id = recipeMenu.RecipeId,
-                            Name = recipeMenu.Recipe.Name,
-                            PictureUrl = recipeMenu.Recipe.PictureUrl,
-                            Rating = recipeMenu.Recipe.Rating
-                        };
-                        continue;
-                    }
-                    else
-                    {
-                        bindingModel.Lunch = null;
-                    }
-
-                    if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dinner)
-                    {
-                        bindingModel.Dinner = new MenuRecipeViewModel
-                        {
-                            Description = recipeMenu.Recipe.Description,
-                            Id = recipeMenu.RecipeId,
-                            Name = recipeMenu.Recipe.Name,
-                            PictureUrl = recipeMenu.Recipe.PictureUrl,
-                            Rating = recipeMenu.Recipe.Rating
-                        };
-                        continue;
-                    }
-                    else
-                    {
-                        bindingModel.Dinner = null;
-                    }
-
-                    if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dessert)
-                    {
-                        bindingModel.Dessert = new MenuRecipeViewModel
-                        {
-                            Description = recipeMenu.Recipe.Description,
-                            Id = recipeMenu.RecipeId,
-                            Name = recipeMenu.Recipe.Name,
-                            PictureUrl = recipeMenu.Recipe.PictureUrl,
-                            Rating = recipeMenu.Recipe.Rating
-                        };
-                        continue;
-                    }
-                    else
-                    {
-                        bindingModel.Dessert = null;
-                    }
+                    continue;
                 }
+                else
+                {
+                    bindingModel.Breakfast = null;
+                }
+
+                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Lunch)
+                {
+                    bindingModel.Lunch = new MenuRecipeViewModel
+                    {
+                        Description = recipeMenu.Recipe.Description,
+                        Id = recipeMenu.RecipeId,
+                        Name = recipeMenu.Recipe.Name,
+                        PictureUrl = imgSrc,
+                        Rating = recipeMenu.Recipe.Rating
+                    };
+                    continue;
+                }
+                else
+                {
+                    bindingModel.Lunch = null;
+                }
+
+                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dinner)
+                {
+                    bindingModel.Dinner = new MenuRecipeViewModel
+                    {
+                        Description = recipeMenu.Recipe.Description,
+                        Id = recipeMenu.RecipeId,
+                        Name = recipeMenu.Recipe.Name,
+                        PictureUrl = imgSrc,
+                        Rating = recipeMenu.Recipe.Rating
+                    };
+                    continue;
+                }
+                else
+                {
+                    bindingModel.Dinner = null;
+                }
+
+                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dessert)
+                {
+                    bindingModel.Dessert = new MenuRecipeViewModel
+                    {
+                        Description = recipeMenu.Recipe.Description,
+                        Id = recipeMenu.RecipeId,
+                        Name = recipeMenu.Recipe.Name,
+                        PictureUrl = imgSrc,
+                        Rating = recipeMenu.Recipe.Rating
+                    };
+                    continue;
+                }
+                else
+                {
+                    bindingModel.Dessert = null;
+                }
+            }
 
             return bindingModel;
         }

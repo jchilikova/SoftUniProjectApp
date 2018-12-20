@@ -3,7 +3,6 @@ using Foodnetic.Models;
 using Foodnetic.ViewModels.Account;
 using Foodnetic.ViewModels.Contact;
 using Foodnetic.ViewModels.Groceries;
-using Foodnetic.ViewModels.Grocery;
 using Foodnetic.ViewModels.Products;
 using Foodnetic.ViewModels.Recipes;
 
@@ -41,6 +40,11 @@ namespace Foodnetic.App.Mapping
                 .ForPath(e => e.UserName, opt => opt.MapFrom(src => src.SenderName))
                 .ForPath(e => e.UserEmail, opt => opt.MapFrom(src => src.SenderEmail))
                 .ForPath(e => e.SentOn, opt => opt.MapFrom(src => src.SentOn))
+                .ReverseMap();
+
+            CreateMap<ProductViewModel, Product>()
+                .ForPath(e => e.Name, opt => opt.MapFrom(src => src.Name))
+                .ForPath(e => e.ProductType, opt => opt.MapFrom(src => src.ProductType))
                 .ReverseMap();
         }
     }
