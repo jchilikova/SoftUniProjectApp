@@ -6,7 +6,8 @@ namespace Foodnetic.Services.Contracts
 {
     public interface IFridgeService
     {
-        void CreateGrocery(CreateGroceryViewModel bindingModel, string userId);
-        IEnumerable<Grocery> GetAllGroceries(string name);
+        void CreateGrocery(CreateGroceryViewModel bindingModel, string username);
+
+        IEnumerable<Grocery> GetAllGroceries(string username);
     }
 }

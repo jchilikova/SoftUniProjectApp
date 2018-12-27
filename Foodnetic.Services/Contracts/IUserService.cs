@@ -16,11 +16,11 @@ namespace Foodnetic.Services.Contracts
 
         bool CheckIfEmailExists(string email);
 
-        User CreateUser(RegisterViewModel bindingModel);
+        FoodneticUser CreateUser(RegisterViewModel bindingModel);
 
-        Task AddToRole(User user);
+        Task AddToRole(FoodneticUser user);
 
-        IEnumerable<User> GetAll();
+        IEnumerable<FoodneticUser> GetAll();
 
         Task<string> DemoteFromModerator(string id);
 

@@ -20,6 +20,6 @@ namespace Foodnetic.Models
         public DateTime CreatedOn { get; set; }
 
         public string UserId { get; set; }
-        public User User { get; set; }
+        public FoodneticUser User { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         [Authorize(Roles = Constants.Strings.ModeratorRole)]
         public IActionResult DeleteComment(string id, string recipeId)
         {
-            this.commentService.DeleteCommentContent(id);
+            this.commentService.AlterCommentContent(id);
 
             return RedirectToAction("Recipe", "Recipes", new{ id = recipeId} );
         }

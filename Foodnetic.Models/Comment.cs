@@ -16,7 +16,7 @@ namespace Foodnetic.Models
         public DateTime PostedOn { get; set; }
 
         public string AuthorId { get; set; }
-        public User Author { get; set; }
+        public FoodneticUser Author { get; set; }
 
         public string RecipeId { get; set; }
         public Recipe Recipe { get; set; }

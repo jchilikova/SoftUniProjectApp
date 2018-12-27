@@ -41,7 +41,7 @@ namespace Foodnetic.App.Controllers
 
             var contactMessage = this.mapper.Map<ContactMessage>(bindingModel);
 
-            this.contactService.SendContactMessage(contactMessage);
+            this.contactService.CreateContactMessage(contactMessage);
 
             return RedirectToAction("Index");
         }

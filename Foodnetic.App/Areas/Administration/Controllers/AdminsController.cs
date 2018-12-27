@@ -102,7 +102,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return this.View(pageViewModel);
         }
 
-        private IEnumerable<AllUsersViewModel> MapAllUsers(IEnumerable<User> users)
+        private IEnumerable<AllUsersViewModel> MapAllUsers(IEnumerable<FoodneticUser> users)
         {
             var userBindingModels =  new List<AllUsersViewModel>();
 

@@ -1,8 +1,8 @@
 @using Foodnetic.Contants
 @using Foodnetic.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<User> SignInManager
-@inject UserManager<User> UserManager
+@inject SignInManager<FoodneticUser> SignInManager
+@inject UserManager<FoodneticUser> UserManager
 
 @if (SignInManager.IsSignedIn(User))
 {

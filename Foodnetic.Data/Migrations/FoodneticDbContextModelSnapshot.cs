@@ -381,7 +381,7 @@ namespace Foodnetic.Data.Migrations
                     b.HasDiscriminator().HasValue("Ingredient");
                 });
 
-            modelBuilder.Entity("Foodnetic.Models.User", b =>
+            modelBuilder.Entity("Foodnetic.Models.FoodneticUser", b =>
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
@@ -391,9 +391,9 @@ namespace Foodnetic.Data.Migrations
 
                     b.Property<string>("VirtualFridgeId");
 
-                    b.ToTable("User");
+                    b.ToTable("FoodneticUser");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.HasDiscriminator().HasValue("FoodneticUser");
                 });
 
             modelBuilder.Entity("Foodnetic.Models.Grocery", b =>
@@ -413,7 +413,7 @@ namespace Foodnetic.Data.Migrations
 
             modelBuilder.Entity("Foodnetic.Models.Comment", b =>
                 {
-                    b.HasOne("Foodnetic.Models.User", "Author")
+                    b.HasOne("Foodnetic.Models.FoodneticUser", "Author")
                         .WithMany("Comments")
                         .HasForeignKey("AuthorId");
 
@@ -424,7 +424,7 @@ namespace Foodnetic.Data.Migrations
 
             modelBuilder.Entity("Foodnetic.Models.Menu", b =>
                 {
-                    b.HasOne("Foodnetic.Models.User", "User")
+                    b.HasOne("Foodnetic.Models.FoodneticUser", "User")
                         .WithMany("DailyMenus")
                         .HasForeignKey("UserId");
                 });
@@ -438,7 +438,7 @@ namespace Foodnetic.Data.Migrations
 
             modelBuilder.Entity("Foodnetic.Models.Recipe", b =>
                 {
-                    b.HasOne("Foodnetic.Models.User", "Author")
+                    b.HasOne("Foodnetic.Models.FoodneticUser", "Author")
                         .WithMany()
                         .HasForeignKey("AuthorId");
                 });
@@ -471,7 +471,7 @@ namespace Foodnetic.Data.Migrations
 
             modelBuilder.Entity("Foodnetic.Models.VirtualFridge", b =>
                 {
-                    b.HasOne("Foodnetic.Models.User", "Owner")
+                    b.HasOne("Foodnetic.Models.FoodneticUser", "Owner")
                         .WithOne("VirtualFridge")
                         .HasForeignKey("Foodnetic.Models.VirtualFridge", "OwnerId");
                 });

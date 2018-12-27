@@ -13,18 +13,18 @@ namespace Foodnetic.Services
 {
     public class UserService : IUserService
     {
-        private readonly SignInManager<User> signInManager;
-        private readonly UserManager<User> userManager;
+        private readonly SignInManager<FoodneticUser> signInManager;
+        private readonly UserManager<FoodneticUser> userManager;
         private readonly IMapper mapper;
 
-        public UserService(SignInManager<User> signInManager, IMapper mapper, UserManager<User> userManager)
+        public UserService(SignInManager<FoodneticUser> signInManager, IMapper mapper, UserManager<FoodneticUser> userManager)
         {
             this.signInManager = signInManager;
             this.mapper = mapper;
             this.userManager = userManager;
         }
 
-        public async Task AddToRole(User user)
+        public async Task AddToRole(FoodneticUser user)
         {
             await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole);
         }
@@ -44,9 +44,9 @@ namespace Foodnetic.Services
             return userExists;
         }
 
-        public User CreateUser(RegisterViewModel bindingModel)
+        public FoodneticUser CreateUser(RegisterViewModel bindingModel)
         {
-            var user = this.mapper.Map<User>(bindingModel);
+            var user = this.mapper.Map<FoodneticUser>(bindingModel);
 
             var result = this.signInManager.UserManager.CreateAsync(user, bindingModel.Password).Result;
 
@@ -63,7 +63,7 @@ namespace Foodnetic.Services
 
             if (user == null)
             {
-                user = new User
+                user = new FoodneticUser
                 {
                     UserName = email,
                     FirstName = firstName,
@@ -109,7 +109,7 @@ namespace Foodnetic.Services
 
         }
 
-        public IEnumerable<User> GetAll()
+        public IEnumerable<FoodneticUser> GetAll()
         {
             return this.signInManager.UserManager.Users.Where(x => x.UserName != Constants.Strings.AdminString);
         }

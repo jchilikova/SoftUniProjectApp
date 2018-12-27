@@ -45,10 +45,14 @@ namespace Foodnetic.Services
 
         public IEnumerable<Recipe> GetAll()
         {
-            var recipes = this.dbContext.Recipes.Include(x => x.Stars).Include(r => r.Author)
-                .Where(x => x.IsDeleted == false && x.IsInCreate == false);
+            if (this.dbContext.Recipes.Any())
+            {
+                var recipes = this.dbContext.Recipes.Include(x => x.Stars).Include(r => r.Author)
+                    .Where(x => x.IsDeleted == false && x.IsInCreate == false);
+                return recipes;
+            }
 
-            return recipes;
+            return null;
         }
 
         public Recipe GetById(string id)
@@ -115,19 +119,18 @@ namespace Foodnetic.Services
             recipe.NumberOfServings = bindingModel.NumberOfServings;
 
             var imageModel = bindingModel.Image;
-            if (imageModel.Length > 0)
+
+            if (imageModel?.Length > 0)
             {
                 using (var ms = new MemoryStream())
                 {
                     imageModel.CopyTo(ms);
                     var fileBytes = ms.ToArray();
-                    string byteImage = Convert.ToBase64String(fileBytes);
                     recipe.Image = fileBytes;
-
-                    this.dbContext.Recipes.Add(recipe);
-                    this.dbContext.SaveChanges();
                 }
             }
+
+            this.dbContext.SaveChanges();
         }
 
         public bool RecipeExists(string id)

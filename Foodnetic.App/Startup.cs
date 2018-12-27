@@ -69,7 +69,7 @@ namespace Foodnetic.App
 
         private void AddIdentityService(IServiceCollection services)
         {
-            services.AddIdentity<User, IdentityRole>(options =>
+            services.AddIdentity<FoodneticUser, IdentityRole>(options =>
                 {
                     options.SignIn.RequireConfirmedEmail = false;
                     options.Password.RequireDigit = false;
@@ -100,17 +100,17 @@ namespace Foodnetic.App
 
         private void ConfigExternalLoginOptions(IServiceCollection services)
         {
-            services.AddAuthentication()
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
-                    facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
-                })
-                .AddGoogle(googleOptions =>
-                {
-                    googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
-                    googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
-                });
+            //services.AddAuthentication()
+            //    .AddFacebook(facebookOptions =>
+            //    {
+            //        facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+            //        facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            //    })
+            //    .AddGoogle(googleOptions =>
+            //    {
+            //        googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
+            //        googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+            //    });
 
         }
 

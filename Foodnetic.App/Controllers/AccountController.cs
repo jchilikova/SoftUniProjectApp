@@ -12,9 +12,9 @@ namespace Foodnetic.App.Controllers
     public class AccountController : Controller
     {
         private readonly IUserService userService;
-        private readonly SignInManager<User> signInManager;
+        private readonly SignInManager<FoodneticUser> signInManager;
 
-        public AccountController(IUserService userService, SignInManager<User> signInManager)
+        public AccountController(IUserService userService, SignInManager<FoodneticUser> signInManager)
         {
             this.userService = userService;
             this.signInManager = signInManager;

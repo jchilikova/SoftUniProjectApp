@@ -18,10 +18,16 @@ namespace Foodnetic.Services
 
         public IEnumerable<ContactMessage> GetAll()
         {
-            return this.dbContext.ContactMessages.OrderBy(x => x.SentOn);
+            if (this.dbContext.ContactMessages.Any())
+            {
+                return this.dbContext.ContactMessages.OrderBy(x => x.SentOn);
+            }
+
+            return null;
+
         }
 
-        public void SendContactMessage(ContactMessage contactMessage)
+        public void CreateContactMessage(ContactMessage contactMessage)
         {
             contactMessage.SentOn = DateTime.UtcNow;
             this.dbContext.ContactMessages.Add(contactMessage);

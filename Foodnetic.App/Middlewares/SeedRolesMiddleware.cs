@@ -20,7 +20,7 @@ namespace Foodnetic.App.Middlewares
         }
 
         public async Task InvokeAsync(HttpContext context,
-            UserManager<User> userManager
+            UserManager<FoodneticUser> userManager
             , RoleManager<IdentityRole> roleManager)
         {
             if (!roleManager.Roles.Any())
@@ -32,7 +32,7 @@ namespace Foodnetic.App.Middlewares
         }
 
         private async Task SeedRoles(
-            UserManager<User> userManager,
+            UserManager<FoodneticUser> userManager,
             RoleManager<IdentityRole> roleManager)
         {
             await roleManager.CreateAsync(new IdentityRole
@@ -50,7 +50,7 @@ namespace Foodnetic.App.Middlewares
                 Name =  Constants.Strings.ModeratorRole
             });
 
-            var user = new User
+            var user = new FoodneticUser
             {
                 UserName = AdminString,
                 FirstName = AdminString,

@@ -35,7 +35,7 @@ namespace Foodnetic.Models
         public bool IsInCreate { get; set; } = false;
 
         public string AuthorId { get; set; }
-        public User Author { get; set; }
+        public FoodneticUser Author { get; set; }
 
         public decimal Rating => (decimal) (this.Stars.Count == 0 ? 0 : this.Stars.Select(s => s.RateNumber).Average());
 

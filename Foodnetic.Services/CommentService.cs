@@ -19,7 +19,7 @@ namespace Foodnetic.Services
 
         public void Create(CreateCommentViewModel bindingModel, string username)
         {
-            var currentUser = (User)this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
+            var currentUser = (FoodneticUser)this.dbContext.Users.FirstOrDefault(u => u.UserName == username);
 
             if (string.IsNullOrWhiteSpace(bindingModel.Content))
             {
@@ -53,7 +53,7 @@ namespace Foodnetic.Services
             this.dbContext.SaveChanges();
         }
 
-        public void DeleteCommentContent(string id)
+        public void AlterCommentContent(string id)
         {
             var comment = this.dbContext.Comments.FirstOrDefault(x => x.Id == id);
 

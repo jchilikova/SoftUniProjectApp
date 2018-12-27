@@ -12,12 +12,10 @@ namespace Foodnetic.Services
 {
     public class FridgeService : IFridgeService
     {
-        private readonly IMapper mapper;
         private readonly FoodneticDbContext dbContext;
 
-        public FridgeService(IMapper mapper, FoodneticDbContext dbContext)
+        public FridgeService(FoodneticDbContext dbContext)
         {
-            this.mapper = mapper;
             this.dbContext = dbContext;
         }
 
@@ -25,7 +23,7 @@ namespace Foodnetic.Services
         {
             var product = this.dbContext.Products.FirstOrDefault(x => x.Name == bindingmodel.ProductName);
 
-            var user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
+            var user = (FoodneticUser)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
 
             var fridge = this.dbContext.VirtualFridges.Include(f => f.Groceries).FirstOrDefault(x => x.OwnerId == user.Id);
 
@@ -72,7 +70,7 @@ namespace Foodnetic.Services
 
         public IEnumerable<Grocery> GetAllGroceries(string username)
         {
-            var user = (User)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
+            var user = (FoodneticUser)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
 
             var virtualFridgeId = this.dbContext.VirtualFridges.FirstOrDefault(f => f.OwnerId == user.Id)?.Id;
 

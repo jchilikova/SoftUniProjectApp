@@ -5,7 +5,7 @@ namespace Foodnetic.Services.Contracts
 {
     public interface IContactService
     {
-        void SendContactMessage(ContactMessage contactMessage);
+        void CreateContactMessage(ContactMessage contactMessage);
 
         IEnumerable<ContactMessage> GetAll();
     }

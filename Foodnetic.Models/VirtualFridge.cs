@@ -12,7 +12,7 @@ namespace Foodnetic.Models
         public string Id { get; set; }
 
         public string OwnerId { get; set; }
-        public User Owner { get; set; }
+        public FoodneticUser Owner { get; set; }
 
         public ICollection<Grocery> Groceries { get; set; }
     }
