@@ -24,7 +24,7 @@ namespace Foodnetic.Services
             this.userManager = userManager;
         }
 
-        public async Task AddToRole(FoodneticUser user)
+        public async Task AddToUserRole(FoodneticUser user)
         {
             await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole);
         }
@@ -44,7 +44,7 @@ namespace Foodnetic.Services
             return userExists;
         }
 
-        public FoodneticUser CreateUser(RegisterViewModel bindingModel)
+        public FoodneticUser RegisterUser(RegisterViewModel bindingModel)
         {
             var user = this.mapper.Map<FoodneticUser>(bindingModel);
 
@@ -144,12 +144,20 @@ namespace Foodnetic.Services
             return $"{user.UserName} {Constants.Messages.DemotedUserMsg}";
         }
 
-        public async Task<bool> SignInUser(LoginViewModel bindingModel)
+        public SignInResult SignInUser(LoginViewModel bindingModel)
         {
-            var result = await signInManager.PasswordSignInAsync(bindingModel.Username,
-                bindingModel.Password, bindingModel.RememberMe, false);
+            var user = this.userManager.Users.FirstOrDefault(x => x.UserName == bindingModel.Username);
 
-            return result.Succeeded;
+            if (user == null)
+            {
+                return SignInResult.Failed;
+            }
+
+            var password = bindingModel.Password;
+            var result = this.signInManager
+                .PasswordSignInAsync(user, password, bindingModel.RememberMe, false).Result;
+
+            return result;
         }
     }
 }

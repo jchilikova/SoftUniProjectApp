@@ -33,7 +33,7 @@ namespace Foodnetic.App.Controllers
 
             var result = this.userService.SignInUser(bindingModel);
 
-            if (await result)
+            if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -70,11 +70,11 @@ namespace Foodnetic.App.Controllers
 
             if (ModelState.IsValid)
             {
-                var user = this.userService.CreateUser(bindingModel);
+                var user = this.userService.RegisterUser(bindingModel);
 
                 if (user == null) return this.View();
 
-                await this.userService.AddToRole(user);
+                await this.userService.AddToUserRole(user);
                 this.signInManager.SignInAsync(user, false).Wait();
                 return this.RedirectToAction("Index", "Home");
 

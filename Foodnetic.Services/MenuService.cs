@@ -112,14 +112,19 @@ namespace Foodnetic.Services
 
         public ICollection<Menu> GetAllMenusForUser(string currentUser)
         {
-            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == currentUser)?.Id;
+            var user = (FoodneticUser)dbContext.Users.FirstOrDefault(x => x.UserName == currentUser);
 
-            return this.dbContext.Menus
+            if (user.DailyMenus.Any())
+            {
+                return this.dbContext.Menus
                     .Include(x => x.RecipeMenus)
-                .ThenInclude(x => x.Recipe)
-                .Where(x => x.UserId == userId).ToList();
-        }
+                    .ThenInclude(x => x.Recipe)
+                    .Where(x => x.UserId == user.Id).ToList();
+            }
 
+            return null;
+
+        }
         
         private RecipeMenu CreateBreakfast(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {

@@ -6,6 +6,7 @@ using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services;
 using Foodnetic.Services.Contracts;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,10 +24,19 @@ namespace Foodnetic.Tests
         public void Init()
         {
             Mapper.Reset();
-            Mapper.Initialize(x => { x.AddProfile<MappingProfile>(); });
+
+            Mapper.Initialize(x =>
+            {
+                x.AddProfile<MappingProfile>();
+            });
+
             var services = SetServices();
+
             this.ServiceProvider = services.BuildServiceProvider();
             this.DbContext = this.ServiceProvider.GetRequiredService<FoodneticDbContext>();
+
+            var httpContext = this.ServiceProvider.GetService<IHttpContextAccessor>();
+            httpContext.HttpContext.RequestServices = this.ServiceProvider.CreateScope().ServiceProvider;
         }
 
         [TearDown]
@@ -40,8 +50,7 @@ namespace Foodnetic.Tests
             var services = new ServiceCollection();
 
             services.AddDbContext<FoodneticDbContext>(
-                opt => opt.UseInMemoryDatabase(Guid.NewGuid()
-                    .ToString()));
+                opt => opt.UseInMemoryDatabase(Guid.NewGuid().ToString()));
 
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IContactService, ContactService>();
@@ -52,11 +61,27 @@ namespace Foodnetic.Tests
             services.AddScoped<IRecipeService, RecipeService>();
 
 
-            services.AddIdentity<FoodneticUser, IdentityRole>()
+            services.AddIdentity<FoodneticUser, IdentityRole>(opt =>
+                    {
+                        opt.Password.RequireDigit = false;
+                        opt.Password.RequireLowercase = false;
+                        opt.Password.RequireNonAlphanumeric = false;
+                        opt.Password.RequireUppercase = false;
+                        opt.Password.RequiredLength = 1;
+                        opt.Password.RequiredUniqueChars = 0;
+                    })
                 .AddEntityFrameworkStores<FoodneticDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddAutoMapper();
+
+            var context = new DefaultHttpContext();
+
+            services.AddSingleton<IHttpContextAccessor>(
+                new HttpContextAccessor()
+                {
+                    HttpContext = context,
+                });
 
             return services;
         }

@@ -18,14 +18,15 @@ namespace Foodnetic.Tests.ContactServiceTests
             {
                 Message = "Test",
                 UserEmail = "test@test.test",
-                UserName = "Test"
+                UserName = "Test",
+                Id = "test"
             };
 
             this.ContactService.CreateContactMessage(contactMessage);
 
-            var count = this.DbContext.ContactMessages.Count();
+            var result = this.DbContext.ContactMessages.FirstOrDefault(x => x.Id == "test");
 
-            Assert.AreEqual(count, 1);
+            Assert.AreEqual(result, contactMessage);
         }
 
         [Test]

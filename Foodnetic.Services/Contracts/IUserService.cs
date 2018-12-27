@@ -10,15 +10,15 @@ namespace Foodnetic.Services.Contracts
     {
         Task<bool> ExternalLoginUser(ExternalLoginInfo info);
 
-        Task<bool> SignInUser(LoginViewModel bindingModel);
+        SignInResult SignInUser(LoginViewModel bindingModel);
 
         bool CheckIfUserExists(string username);
 
         bool CheckIfEmailExists(string email);
 
-        FoodneticUser CreateUser(RegisterViewModel bindingModel);
+        FoodneticUser RegisterUser(RegisterViewModel bindingModel);
 
-        Task AddToRole(FoodneticUser user);
+        Task AddToUserRole(FoodneticUser user);
 
         IEnumerable<FoodneticUser> GetAll();
 
