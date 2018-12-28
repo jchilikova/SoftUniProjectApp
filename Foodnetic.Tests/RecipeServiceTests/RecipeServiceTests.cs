@@ -44,6 +44,25 @@ namespace Foodnetic.Tests.RecipeServiceTests
             Assert.AreEqual(result, 1);
         }
 
+        [Test]
+        public void CancelRecipeShouldDeleteInCreateRecipe()
+        {
+            var recipe = new Recipe
+            {
+                Id = "testRecipe",
+                IsInCreate = true
+            };
+
+            this.DbContext.Recipes.Add(recipe);
+            this.DbContext.SaveChanges();
+
+            this.RecipeService.CancelRecipe();
+
+            var result = this.DbContext.Recipes.Any(x => x.IsInCreate);
+
+            Assert.IsFalse(result);
+        }
+
 
         [Test]
         public void DeleteRecipeShouldSetIsDeletedToTrue()

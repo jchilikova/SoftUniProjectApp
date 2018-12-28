@@ -1,6 +1,6 @@
 ﻿namespace Foodnetic.Models.Enums
 {
-    public enum MenuType
+    public enum DishType
     {
         Breakfast = 1,
         Lunch = 2,

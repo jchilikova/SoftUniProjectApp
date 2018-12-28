@@ -2,7 +2,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Foodnetic.App.Models;
-using Foodnetic.Contants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Contact;
@@ -13,15 +12,18 @@ namespace Foodnetic.App.Controllers
     {
         private readonly IContactService contactService;
         private readonly IMapper mapper;
+        private readonly IRecipeService recipeService;
 
-        public HomeController(IContactService contactService, IMapper mapper)
+        public HomeController(IContactService contactService, IMapper mapper, IRecipeService recipeService)
         {
             this.contactService = contactService;
             this.mapper = mapper;
+            this.recipeService = recipeService;
         }
 
         public IActionResult Index()
         {
+            this.recipeService.CancelRecipe();
             return View();
         }
 

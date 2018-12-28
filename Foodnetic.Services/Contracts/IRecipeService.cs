@@ -20,5 +20,7 @@ namespace Foodnetic.Services.Contracts
         ICollection<IngredientsViewModel> GetIngredients();
 
         void CreateRecipe(CreateRecipeViewModel bindingModel, string username);
+
+        void CancelRecipe();
     }
 }

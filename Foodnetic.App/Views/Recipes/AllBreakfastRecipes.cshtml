@@ -1,5 +1,4 @@
 ﻿@{
-    ViewData["Title"] = "All Recipes";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
 @using Foodnetic.Contants
@@ -26,7 +25,7 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">All Recipes</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">All Breakfast Recipes</h1>
         <hr class="hr-green" />
         <a asp-controller="Recipes" asp-action="AddIngredients" class="btn btn-xl">Create Recipe</a>
     </div>
@@ -43,9 +42,9 @@
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
             <a class="dropdown-item" asp-action="All" asp-controller="Recipes">All</a>
             <a class="dropdown-item" asp-action="AllBreakfastRecipes" asp-controller="Recipes">Breakfast recipes</a>
-            <a class="dropdown-item"asp-action="All" asp-controller="Recipes">Lunch recipes</a>
-            <a class="dropdown-item"asp-action="All" asp-controller="Recipes">Dinner recipes</a>
-            <a class="dropdown-item"asp-action="All" asp-controller="Recipes">Dessert recipes</a>
+            <a class="dropdown-item" asp-action="All" asp-controller="Recipes">Lunch recipes</a>
+            <a class="dropdown-item" asp-action="All" asp-controller="Recipes">Dinner recipes</a>
+            <a class="dropdown-item" asp-action="All" asp-controller="Recipes">Dessert recipes</a>
         </div>
     </div>
     @if (Model != null)

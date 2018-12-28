@@ -61,11 +61,18 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         [Authorize(Roles = Constants.Strings.AdministratorRole)]
         public IActionResult AllProducts(int? page)
         {
-            var products = this.productService.GetAll().OrderBy(x => x.ProductType).ThenBy(x => x.Name);
+            var products = this.productService.GetAll();
+
+            if (products == null)
+            {
+                return this.View();
+            }
+
+            var orderedEnumerable = products.OrderBy(x => x.ProductType).ThenBy(x => x.Name);
 
             var nextPage = page ?? 1;
 
-            var productBindingModels = this.MapAllProducts(products);
+            var productBindingModels = this.MapAllProducts(orderedEnumerable);
            
             var pageViewModel = productBindingModels.ToPagedList(nextPage, 20);
 
@@ -136,6 +143,11 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         public IActionResult AllContactUsMessages(int? page)
         {
             var contactMessages = contactService.GetAll();
+
+            if (contactMessages == null)
+            {
+                return this.View();
+            }
 
             var bindingModels = this.MapAllMessages(contactMessages);
 

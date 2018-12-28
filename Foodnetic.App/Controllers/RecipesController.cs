@@ -38,6 +38,11 @@ namespace Foodnetic.App.Controllers
 
             var recipes = this.recipeService.GetAll();
 
+            if (recipes == null)
+            {
+                return this.View();
+            }
+
             var recipeModels = this.MapAllRecipes(recipes);
 
             var nextPage = page ?? 1;
@@ -45,6 +50,35 @@ namespace Foodnetic.App.Controllers
             var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
 
             return this.View(pageViewModel);
+        }
+
+        [Authorize]
+        public IActionResult AllBreakfastRecipes(int? page)
+        {
+            var recipes = this.recipeService.GetAll();
+
+            if (recipes == null)
+            {
+                return this.View();
+            }
+
+            var recipesOrdered = recipes.Where(x => x.DishType == DishType.Breakfast).OrderBy(x => x.Rating);
+
+            var recipeModels = this.MapAllRecipes(recipesOrdered);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
+
+            return this.View(pageViewModel);
+        }
+
+        [Authorize]
+        public IActionResult Cancel()
+        {
+            this.recipeService.CancelRecipe();
+
+            return this.View("All");
         }
 
         private IEnumerable<AllRecipesViewModel> MapAllRecipes(IEnumerable<Recipe> recipes)
@@ -70,6 +104,12 @@ namespace Foodnetic.App.Controllers
             CreateRecipeViewModel bindingModel =
                 new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients()};
 
+            if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
+            {
+                var data = "You need to add ingredients first!";
+                return RedirectToAction("AddIngredients", new {Data = data});
+            }
+
             return this.View(bindingModel);
         }
 
@@ -77,19 +117,34 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Create(CreateRecipeViewModel bindingModel)
         {
-            var username = this.User.Identity.Name;
-            this.recipeService.CreateRecipe(bindingModel, username);
+            if (this.ModelState.IsValid)
+            {
+                var username = this.User.Identity.Name;
+                this.recipeService.CreateRecipe(bindingModel, username);
 
-            return RedirectToAction("All");
+                return RedirectToAction("All");
+            }
+
+            bindingModel =
+                new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients()};
+
+            if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
+            {
+                var data = "You need to add ingredients first!";
+                return RedirectToAction("AddIngredients", new {Data = data});
+            }
+
+            return this.View(bindingModel);
         }
 
         [HttpGet]
         [Authorize]
-        public IActionResult AddIngredients(string searchString)
+        public IActionResult AddIngredients(string data, string searchString)
         {
+            this.ViewData[Constants.Strings.ErrorString] = data;
             var products = this.productService.GetAll();
 
-            if (string.IsNullOrEmpty(searchString)) return this.View();
+            if (string.IsNullOrEmpty(searchString) || products == null) return this.View();
 
             var bindingModel = this.SearchForGrocery(products, searchString);
             bindingModel.Ingredients = this.recipeService.GetIngredients();
@@ -107,7 +162,8 @@ namespace Foodnetic.App.Controllers
                 return this.View();
             }
 
-            return RedirectToAction("AddIngredients");
+            var data = "Invalid data";
+            return RedirectToAction("AddIngredients", new {Data = data});
         }
 
         private CreateIngredientViewModel SearchForGrocery(IEnumerable<Product> products, string searchString)
@@ -141,33 +197,6 @@ namespace Foodnetic.App.Controllers
 
             return RedirectToAction("All", new {Data = data});
         }
-
-        //[HttpPost]  
-        //public JsonResult GetProductType()  
-        //{  
-        //    var productTypes = new List<string>();
-
-        //    foreach (ProductType type in (ProductType[]) Enum.GetValues(typeof(ProductType)))
-        //    {
-        //        productTypes.Add(type.ToString());
-        //    }
-
-        //    return Json(productTypes);  
-        //}   
-
-        //[HttpPost]  
-        //public JsonResult GetProduct(string productType)  
-        //{  
-        //    var products = new List<string>();
-        //    var type = (ProductType)Enum.Parse(typeof(ProductType), productType);
-
-        //    if (!string.IsNullOrWhiteSpace(productType))
-        //    {
-        //        products = this.dbContext.Products.Where(x => x.ProductType == type && x.GetType() == typeof(Product)).Select(x => x.Name).ToList();
-        //    }  
-
-        //    return Json(products);  
-        //}   
 
         private RecipeViewModel MapSingleRecipe(Recipe recipe)
         {

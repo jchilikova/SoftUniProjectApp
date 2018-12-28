@@ -20,32 +20,39 @@
         <h1 class="intro-lead-in mb-4 mt-4">All Contact Us Messages</h1>
         <hr class="hr-green" />
     </div>
-    <table class="table w-75 mx-auto table-hover">
-        <thead>
+<table class="table w-75 mx-auto table-hover">
+    <thead>
+    <tr class="row border">
+        <th class="col-md-2">Sender Name</th>
+        <th class="col-md-3">Sender Email</th>
+        <th class="col-md-5">Message</th>
+        <th class="col-md-2">Sent On</th>
+    </tr>
+    </thead>
+    <tbody>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
+        {
             <tr class="row border">
-                <th class="col-md-2">Sender Name</th>
-                <th class="col-md-3">Sender Email</th>
-                <th class="col-md-5">Message</th>
-                <th class="col-md-2">Sent On</th>
+                <td class="col-md-2">@item.SenderName</td>
+                <td class="col-md-3">@item.SenderEmail</td>
+                <td class="col-md-5">@item.Message</td>
+                <td class="col-md-2">@item.SentOn</td>
             </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr class="row border">
-                    <td class="col-md-2">@item.SenderName</td>
-                    <td class="col-md-3">@item.SenderEmail</td>
-                    <td class="col-md-5">@item.Message</td>
-                    <td class="col-md-2">@item.SentOn</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+        }
+    }
+    </tbody>
+</table>
+@if (Model != null)
+{
     <div class="d-flex justify-content-center">
-        @Html.PagedListPager((IPagedList)Model, page => Url.Action("AllContactUsMessages", new { page = page }),
-            new PagedListRenderOptions {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
+        @Html.PagedListPager((IPagedList) Model, page => Url.Action("AllContactUsMessages", new {page = page}),
+            new PagedListRenderOptions
+            {
+                LiElementClasses = new string[] {"page-item"},
+                PageClasses = new string[] {"page-link"}
             })
     </div>
+}
 </body>

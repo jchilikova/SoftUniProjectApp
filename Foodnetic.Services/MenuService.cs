@@ -130,14 +130,14 @@ namespace Foodnetic.Services
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.BreakfastString)?.Id;
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
+            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Breakfast))
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
                
                 if (isRecipeValid)
                 {
-                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.BreakfastString);
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu);
 
                     DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
@@ -147,31 +147,12 @@ namespace Foodnetic.Services
             return null;
         }
 
-        private RecipeMenu CreateRecipeMenu(Recipe recipe, Menu menu, string menuType)
+        private RecipeMenu CreateRecipeMenu(Recipe recipe, Menu menu)
         {
-            MenuType menuTypeEnum = (MenuType) 0;
-
-            switch (menuType)
-            {
-                case Constants.Strings.BreakfastString:
-                    menuTypeEnum = MenuType.Breakfast;
-                    break;
-                case Constants.Strings.LunchString:
-                    menuTypeEnum = MenuType.Breakfast;
-                    break;
-                case Constants.Strings.DinnerString:
-                    menuTypeEnum = MenuType.Dinner;
-                    break;
-                case Constants.Strings.DessertString:
-                    menuTypeEnum = MenuType.Dessert;
-                    break;
-            }
-
             var menuBreakfast = new RecipeMenu
             {
                 Recipe = recipe,
                 Menu = menu,
-                MenuType = menuTypeEnum
             };
 
             return menuBreakfast;
@@ -197,14 +178,14 @@ namespace Foodnetic.Services
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.LunchString)?.Id;
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
+            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Lunch))
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
                
                 if (isRecipeValid)
                 {
-                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.LunchString);
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu);
 
                     DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
@@ -218,14 +199,14 @@ namespace Foodnetic.Services
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DinnerString)?.Id;
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
+            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dinner))
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
                
                 if (isRecipeValid)
                 {
-                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.DinnerString);
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu);
 
                     DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;
@@ -239,14 +220,14 @@ namespace Foodnetic.Services
         {
             var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DessertString)?.Id;
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId))
+            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dessert))
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
                
                 if (isRecipeValid)
                 {
-                    var menuBreakfast = CreateRecipeMenu(recipe, menu, Constants.Strings.DessertString);
+                    var menuBreakfast = CreateRecipeMenu(recipe, menu);
 
                     DecreaseQuantityOfProducts(recipe, fridgeIngredients);
                     return menuBreakfast;

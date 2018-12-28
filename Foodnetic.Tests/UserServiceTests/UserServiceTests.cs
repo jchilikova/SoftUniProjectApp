@@ -13,6 +13,7 @@ namespace Foodnetic.Tests.UserServiceTests
     public class UserServiceTests : BaseService
     {
         protected UserManager<FoodneticUser> UserManager => this.ServiceProvider.GetRequiredService<UserManager<FoodneticUser>>();
+        protected RoleManager<IdentityRole> RoleManager => this.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
       protected IUserService UserService => this.ServiceProvider.GetRequiredService<IUserService>();
 
 
@@ -142,5 +143,68 @@ namespace Foodnetic.Tests.UserServiceTests
 
             Assert.AreEqual(3, result.Count());
         }
+
+        [Test]
+        public async Task DemoteFromModeratorShouldMakeModeratorToUserRole()
+        {
+            var user = new FoodneticUser
+            {
+                Id="test",
+                UserName = "test"
+            };
+
+            var userPassword = "test";
+
+            await RoleManager.CreateAsync(new IdentityRole
+            {
+                Name =  Constants.Strings.UserRole
+            });
+
+            await RoleManager.CreateAsync(new IdentityRole
+            {
+                Name =  Constants.Strings.ModeratorRole
+            });
+
+            this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
+            this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
+            await this.UserManager.AddToRoleAsync(user, "Moderator");
+
+            var result = this.UserService.DemoteFromModerator("test");
+
+            Assert.AreEqual($"test {Constants.Messages.DemotedUserMsg}", result.Result);
+        }
+
+        [Test]
+        public async Task MakeModeratorShouldMakeUserWithUserRoleToModerator()
+        {
+            var user = new FoodneticUser
+            {
+                Id="test",
+                UserName = "test"
+            };
+
+            var userPassword = "test";
+
+            await RoleManager.CreateAsync(new IdentityRole
+            {
+                Name =  Constants.Strings.UserRole
+            });
+
+            await RoleManager.CreateAsync(new IdentityRole
+            {
+                Name =  Constants.Strings.ModeratorRole
+            });
+
+            this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
+            this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
+            this.DbContext.SaveChanges();
+            await this.UserManager.AddToRoleAsync(user, "User");
+            this.DbContext.SaveChanges();
+
+            var result = this.UserService.MakeModerator("test");
+
+            Assert.AreEqual($"test {Constants.Messages.PromotedUserMsg}", result.Result);
+        }
+
     }
 }

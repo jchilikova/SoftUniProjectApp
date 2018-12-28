@@ -35,35 +35,56 @@
         <div class="form-group text-center container-fluid col-md-3">
             <strong><label asp-for="Name"></label></strong>
             <input asp-for="Name" class="form-control" placeholder="Name...">
+            <span asp-validation-for="Name" class="text-danger"></span>
             <div class="form-group text-center">
                 <strong><label asp-for="Description"></label></strong>
                 <textarea asp-for="Description" class="form-control" placeholder="Description..." rows="3"></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="row">
                 <div class="form-group text-center col-md-6">
                     <strong><label asp-for="PreparationTime"></label></strong>
-                    <input asp-for="PreparationTime" class="form-control" placeholder="Prep Time...">
+                    <input asp-for="PreparationTime" class="form-control" placeholder="Prep Time in minutes..." min="1">
+                    <span asp-validation-for="PreparationTime" class="text-danger"></span>
                 </div>
                 <div class="form-group text-center col-md-6">
                     <strong><label asp-for="CookTime"></label></strong>
-                    <input asp-for="CookTime" class="form-control" placeholder="Cook Time...">
+                    <input asp-for="CookTime" class="form-control" placeholder="Cook Time in minutes..."  min="1">
+                    <span asp-validation-for="CookTime" class="text-danger"></span>
                 </div>
             </div>
             <div class="form-group text-center">
                 <strong><label asp-for="NumberOfServings"></label></strong>
-                <input asp-for="NumberOfServings" class="form-control" placeholder="Number of servings...">
+                <input asp-for="NumberOfServings" class="form-control" placeholder="Number of servings..."  min="1">
+                <span asp-validation-for="NumberOfServings" class="text-danger"></span>
             </div>
         </div>
         <div class="form-group text-center container-fluid col-md-5">
             <strong><label asp-for="Directions"></label></strong>
             <textarea asp-for="Directions" class="form-control" placeholder="Directions..." rows="10"></textarea>
+            <span asp-validation-for="Directions" class="text-danger"></span>
         </div>
-        <div class="form-group text-center">
+        <div class="form-group text-center container-fluid col-md-5">
+            <strong><label asp-for="Tags"></label></strong>
+            <input asp-for="Tags" class="form-control" placeholder="e.g. breakfast, healthy, sweet, christmas...">
+            <span asp-validation-for="Tags" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center container-fluid col-md-5">
+            <strong><label asp-for="DishType"></label></strong>
+            <select asp-for="DishType" asp-items="Html.GetEnumSelectList<Foodnetic.Models.Enums.DishType>()"></select>
+            <span asp-validation-for="DishType" class="text-danger"></span>
+        </div>
+        <div class="form-group text-center container-fluid col-md-5">
             <strong><label asp-for="Image"></label></strong>
             <input asp-for="Image" type="file">
+            <span asp-validation-for="Image" class="text-danger"></span>
         </div>
         <div class="text-center my-5">
             <button type="submit" class="btn btn-green">Create Recipe</button>
         </div>
+        <div class="text-center my-5">
+            <a class="btn btn-green" href="javascript:history.go(-1)">< Back</a>
+        </div>
+      
     </form>
 </body>

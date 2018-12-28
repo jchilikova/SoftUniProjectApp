@@ -1,4 +1,6 @@
-﻿namespace Foodnetic.ViewModels.Ingredients
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Foodnetic.ViewModels.Ingredients
 {
     public class IngredientsViewModel
     {

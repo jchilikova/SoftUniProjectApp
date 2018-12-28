@@ -22,17 +22,27 @@ namespace Foodnetic.Services
 
         public void CreateIngredient(CreateIngredientViewModel bindingModel)
         {
-            Recipe recipe = this.dbContext.Recipes.FirstOrDefault(x => x.IsInCreate);
+            Recipe recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+            Ingredient ingredient;
 
-            var ingredient = new Ingredient
+            if (recipe.Ingredients.Any(x => x.Name == bindingModel.Name))
             {
-                Name = bindingModel.Name,
-                Quantity = bindingModel.Quantity,
-                Recipe = recipe
-            };
+                ingredient = recipe.Ingredients.FirstOrDefault(x => x.Name == bindingModel.Name);
+                ingredient.Quantity += bindingModel.Quantity;
+            }
+            else
+            {
+                ingredient = new Ingredient
+                {
+                    Name = bindingModel.Name,
+                    Quantity = bindingModel.Quantity,
+                    Recipe = recipe
+                };
 
-            this.dbContext.Ingredients.Add(ingredient);
-            recipe.Ingredients.Add(ingredient);
+                this.dbContext.Ingredients.Add(ingredient);
+                recipe.Ingredients.Add(ingredient);
+            }
+          
             this.dbContext.SaveChanges();
         }
 
@@ -117,7 +127,16 @@ namespace Foodnetic.Services
             recipe.Directions = bindingModel.Directions;
             recipe.Name = bindingModel.Name;
             recipe.NumberOfServings = bindingModel.NumberOfServings;
+            recipe.DishType = bindingModel.DishType;
 
+            this.AddTagsToRecipe(bindingModel, recipe);
+            this.AddImageToRecipe(bindingModel, recipe);
+
+            this.dbContext.SaveChanges();
+        }
+
+        private void AddImageToRecipe(CreateRecipeViewModel bindingModel, Recipe recipe)
+        {
             var imageModel = bindingModel.Image;
 
             if (imageModel?.Length > 0)
@@ -133,9 +152,65 @@ namespace Foodnetic.Services
             this.dbContext.SaveChanges();
         }
 
+        private void AddTagsToRecipe(CreateRecipeViewModel bindingModel, Recipe recipe)
+        {
+            var tagStrings = bindingModel
+                .Tags
+                .Split(new char[] {' ', ',', ';', '.', '-'}, StringSplitOptions.RemoveEmptyEntries)
+                .ToList();
+
+            var recipeTags = new List<RecipeTag>();
+
+            foreach (var tagString in tagStrings)
+            {
+                var id = Guid.NewGuid().ToString();
+
+                var tag = new Tag
+                {
+                    Name = tagString,
+                    Id = id
+                };
+
+                if (this.dbContext.Tags.Any(x => x.Name == tagString))
+                {
+                    id = this.dbContext.Tags.FirstOrDefault(x => x.Name == tagString)?.Id;
+                }
+                else
+                {
+                    this.dbContext.Tags.Add(tag);
+                    this.dbContext.SaveChanges();
+                }
+
+                recipeTags.Add(new RecipeTag
+                {
+                    Recipe = recipe,
+                    TagId = id
+                });
+
+            }
+
+            this.dbContext.RecipeTags.AddRange(recipeTags);
+            this.dbContext.SaveChanges();
+        }
+
         public bool RecipeExists(string id)
         {
             return this.dbContext.Recipes.Any(x => x.Id == id && x.IsDeleted == false);
+        }
+
+        public void CancelRecipe()
+        {
+            var recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+            if (recipe == null)
+            {
+                return;
+            }
+
+            var ingredients = this.dbContext.Ingredients.Where(x => x.RecipeId == null || x.RecipeId == recipe.Id);
+            
+            this.dbContext.Ingredients.RemoveRange(ingredients);
+            this.dbContext.Recipes.Remove(recipe);
+            this.dbContext.SaveChanges();
         }
     }
 }

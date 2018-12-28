@@ -66,9 +66,16 @@ namespace Foodnetic.App.Controllers
         {
             var currentUser = this.User.Identity.Name;
 
-            var menus = this.menuService.GetAllMenusForUser(currentUser).OrderByDescending(x => x.CreatedOn);
+            var menus = this.menuService.GetAllMenusForUser(currentUser);
 
-            var menusBindingModels = this.MapAllMenus(menus);
+            if (menus == null)
+            {
+                return this.View();
+            }
+
+            var orderByDescendingMenus = menus.OrderByDescending(x => x.CreatedOn);
+
+            var menusBindingModels = this.MapAllMenus(orderByDescendingMenus);
 
             var nextPage = page ?? 1;
 
@@ -92,28 +99,28 @@ namespace Foodnetic.App.Controllers
                     LunchRecipe = "-"
                 };
 
-                if (menu.RecipeMenus.Any(x => x.MenuType == MenuType.Breakfast))
+                if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Breakfast))
                 {
                     bindingModel.BreakfastRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == MenuType.Breakfast)?.Recipe.Name;
+                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Breakfast)?.Recipe.Name;
                 }
 
-                if (menu.RecipeMenus.Any(x => x.MenuType == MenuType.Lunch))
+                if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Lunch))
                 {
                     bindingModel.LunchRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == MenuType.Lunch)?.Recipe.Name;
+                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Lunch)?.Recipe.Name;
                 }
 
-                if (menu.RecipeMenus.Any(x => x.MenuType == MenuType.Dinner))
+                if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Dinner))
                 {
                     bindingModel.DinnerRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == MenuType.Dinner)?.Recipe.Name;
+                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dinner)?.Recipe.Name;
                 }
 
-                if (menu.RecipeMenus.Any(x => x.MenuType == MenuType.Dessert))
+                if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Dessert))
                 {
                     bindingModel.DessertRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == MenuType.Dessert)?.Recipe.Name;
+                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dessert)?.Recipe.Name;
                 }
 
                 menusBindingModels.Add(bindingModel);
@@ -132,7 +139,7 @@ namespace Foodnetic.App.Controllers
                 var base64 = Convert.ToBase64String(recipeMenu.Recipe.Image);
                 var imgSrc = $"data:image/jpg;base64,{base64}";
 
-                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Breakfast)
+                if (recipeMenu != null && recipeMenu.MenuType == DishType.Breakfast)
                 {
                     bindingModel.Breakfast = new MenuRecipeViewModel
                     {
@@ -150,7 +157,7 @@ namespace Foodnetic.App.Controllers
                     bindingModel.Breakfast = null;
                 }
 
-                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Lunch)
+                if (recipeMenu != null && recipeMenu.MenuType == DishType.Lunch)
                 {
                     bindingModel.Lunch = new MenuRecipeViewModel
                     {
@@ -167,7 +174,7 @@ namespace Foodnetic.App.Controllers
                     bindingModel.Lunch = null;
                 }
 
-                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dinner)
+                if (recipeMenu != null && recipeMenu.MenuType == DishType.Dinner)
                 {
                     bindingModel.Dinner = new MenuRecipeViewModel
                     {
@@ -184,7 +191,7 @@ namespace Foodnetic.App.Controllers
                     bindingModel.Dinner = null;
                 }
 
-                if (recipeMenu != null && recipeMenu.MenuType == MenuType.Dessert)
+                if (recipeMenu != null && recipeMenu.MenuType == DishType.Dessert)
                 {
                     bindingModel.Dessert = new MenuRecipeViewModel
                     {

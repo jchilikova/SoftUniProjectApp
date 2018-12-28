@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using Foodnetic.Models.Enums;
 
 namespace Foodnetic.Models
 {
@@ -29,6 +29,8 @@ namespace Foodnetic.Models
         public int NumberOfServings { get; set; }
 
         public string Directions { get; set; }
+
+        public DishType DishType { get; set; }
 
         public byte[] Image { get; set; }
 

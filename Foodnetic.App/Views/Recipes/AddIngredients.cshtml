@@ -2,10 +2,11 @@
 
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
+@using Foodnetic.Contants
 @using Foodnetic.ViewModels.Ingredients
 @model CreateIngredientViewModel
-
 <style>
+
     .text-foods {
         font-family: "Playfair Display",sans-serif;
         font-style: italic;
@@ -27,13 +28,22 @@
         <h3 class="intro-lead-in mb-4 mt-4">Add the ingredients</h3>
         <hr class="hr-green" />
     </div>
+    @if (ViewData[Constants.Strings.ErrorString] != null)
+    {
+        <div class="bg-danger text-center container rounded mt-3 py-3">
+            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+        </div>
+    }
     <div class="container col-md-5 text-center">
         <form asp-controller="Recipes" asp-action="AddIngredients" method="get">
             <label for="searchString">Product or Product Type: </label><input type="text" name="searchString" id="searchString" class="form-control" placeholder="e.g. Dairy, Meat, Fish, Spices...">
             <input type="submit" value="Search" class="btn btn-green my-4" />
         </form>
+        <div class="text-center">
+            <a asp-action="Create" asp-controller="Recipes" class="btn btn-green">Next ></a>
+            <a asp-action="Cancel" asp-controller="Recipes" class="btn btn-green">Cancel</a>
+        </div>
     </div>
-
     @if (Model != null)
     {
         <form method="post" asp-controller="Recipes" asp-action="AddIngredients">
@@ -47,11 +57,10 @@
                     </select>
                     <span asp-validation-for="Name" class="text-danger"></span>
                     <strong><label asp-for="Quantity"></label></strong>
-                    <input asp-for="Quantity" class="form-control" placeholder="Quantity...">
+                    <input asp-for="Quantity" class="form-control" placeholder="Quantity in grams..." min="1" value="1">
                     <span asp-validation-for="Quantity" class="text-danger"></span>
                     <div class="text-center my-3">
                         <button type="submit" class="btn btn-green">Add Ingredient</button>
-
                     </div>
                 </div>
                 <div class="text-center col-md-3" style="margin-right: 30px; margin-left: 1px; margin-bottom: 30px">
@@ -63,23 +72,6 @@
                     }
                 </div>
             </div>
-            <div class="text-center">
-                <a asp-action="Create" asp-controller="Recipes" class="btn btn-green">Next ></a>
-            </div>
         </form>
     }
-    @*<form class="mx-auto half-width" method="post" asp-controller="Recipes" asp-action="Create">
-         <div class="form-group text-center">
-             <strong><label asp-for="Name"></label></strong>
-             <input asp-for="Name" class="form-control" placeholder="Name...">
-         </div>
-         <div class="form-group text-center">
-             <strong><label asp-for="Description"></label></strong>
-             <input asp-for="Description" class="form-control" placeholder="Description...">
-         </div>
-         <div class="col-md-offset-5 col-sm-offset-5 col-xs-offset-5">
-             <button type="submit" class="btn btn-default">Create</button>
-         </div>
-        </form>*@
-
 </body>

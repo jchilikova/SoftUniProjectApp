@@ -1,4 +1,5 @@
-﻿using Foodnetic.Models.Enums;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Foodnetic.Models.Enums;
 
 namespace Foodnetic.Models
 {
@@ -10,6 +11,7 @@ namespace Foodnetic.Models
         public string MenuId { get; set; }
         public Menu Menu { get; set; }
 
-        public MenuType MenuType { get; set; }
+        [NotMapped]
+        public DishType MenuType => this.Recipe.DishType;
     }
 }

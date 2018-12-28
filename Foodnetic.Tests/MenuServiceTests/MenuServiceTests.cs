@@ -165,7 +165,8 @@ namespace Foodnetic.Tests.MenuServiceTests
 
             var recipe = new Recipe
             {
-                Id = "test"
+                Id = "test",
+                DishType = DishType.Breakfast
             };
 
             var tag = new Tag

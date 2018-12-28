@@ -18,29 +18,34 @@
         <h1 class="intro-lead-in mb-4 mt-4">Menu history</h1>
         <hr class="hr-green" />
     </div>
-        <table class="table w-75 mx-auto table-hover">
-            <thead>
-                <tr class="row border">
-                    <th class="col-md-4">Created On</th>
-                    <th class="col-md-2">Breakfast</th>
-                    <th class="col-md-2">Lunch</th>
-                    <th class="col-md-2">Dinner</th>
-                    <th class="col-md-2">Dessert</th>
-                </tr>
-            </thead>
-            <tbody>
-            @foreach (var menusView in Model)
+    <table class="table w-75 mx-auto table-hover">
+        <thead>
+            <tr class="row border">
+                <th class="col-md-4">Created On</th>
+                <th class="col-md-2">Breakfast</th>
+                <th class="col-md-2">Lunch</th>
+                <th class="col-md-2">Dinner</th>
+                <th class="col-md-2">Dessert</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
             {
-                <tr class="row border">
-                    <td class="col-md-4">@menusView.CreatedOn.ToShortDateString()</td>
-                    <td class="col-md-2">@menusView.BreakfastRecipe</td>
-                    <td class="col-md-2">@menusView.LunchRecipe</td>
-                    <td class="col-md-2">@menusView.DinnerRecipe</td>
-                    <td class="col-md-2">@menusView.DessertRecipe</td>
-                </tr>
+                foreach (var menusView in Model)
+                {
+                    <tr class="row border">
+                        <td class="col-md-4">@menusView.CreatedOn.ToShortDateString()</td>
+                        <td class="col-md-2">@menusView.BreakfastRecipe</td>
+                        <td class="col-md-2">@menusView.LunchRecipe</td>
+                        <td class="col-md-2">@menusView.DinnerRecipe</td>
+                        <td class="col-md-2">@menusView.DessertRecipe</td>
+                    </tr>
+                }
             }
-            </tbody>
-        </table>
+        </tbody>
+    </table>
+    @if (Model != null)
+    {
         <div class="d-flex justify-content-center">
             @Html.PagedListPager((IPagedList)Model, page => Url.Action("History", new { page = page }),
                 new PagedListRenderOptions {
@@ -48,5 +53,5 @@
                     PageClasses = new string[] { "page-link" }
                 })
         </div>
-
+    }
 </body>

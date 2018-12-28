@@ -24,7 +24,6 @@ namespace Foodnetic.Services
             }
 
             return null;
-
         }
 
         public void CreateContactMessage(ContactMessage contactMessage)
