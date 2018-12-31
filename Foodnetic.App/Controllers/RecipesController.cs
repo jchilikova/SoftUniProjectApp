@@ -74,9 +74,73 @@ namespace Foodnetic.App.Controllers
         }
 
         [Authorize]
+        public IActionResult AllLunchRecipes(int? page)
+        {
+            var recipes = this.recipeService.GetAll();
+
+            if (recipes == null)
+            {
+                return this.View();
+            }
+
+            var recipesOrdered = recipes.Where(x => x.DishType == DishType.Lunch).OrderBy(x => x.Rating);
+
+            var recipeModels = this.MapAllRecipes(recipesOrdered);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
+
+            return this.View(pageViewModel);
+        }
+
+        [Authorize]
+        public IActionResult AllDinnerRecipes(int? page)
+        {
+            var recipes = this.recipeService.GetAll();
+
+            if (recipes == null)
+            {
+                return this.View();
+            }
+
+            var recipesOrdered = recipes.Where(x => x.DishType == DishType.Dinner).OrderBy(x => x.Rating);
+
+            var recipeModels = this.MapAllRecipes(recipesOrdered);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
+
+            return this.View(pageViewModel);
+        }
+
+        [Authorize]
+        public IActionResult AllDessertRecipes(int? page)
+        {
+            var recipes = this.recipeService.GetAll();
+
+            if (recipes == null)
+            {
+                return this.View();
+            }
+
+            var recipesOrdered = recipes.Where(x => x.DishType == DishType.Dessert).OrderBy(x => x.Rating);
+
+            var recipeModels = this.MapAllRecipes(recipesOrdered);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
+
+            return this.View(pageViewModel);
+        }
+
+        [Authorize]
         public IActionResult Cancel()
         {
-            this.recipeService.CancelRecipe();
+            var username = this.User.Identity.Name;
+            this.recipeService.CancelRecipe(username);
 
             return this.View("All");
         }
@@ -101,8 +165,9 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Create()
         {
+            var username = this.User.Identity.Name;
             CreateRecipeViewModel bindingModel =
-                new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients()};
+                new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients(username)};
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
@@ -117,16 +182,17 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Create(CreateRecipeViewModel bindingModel)
         {
-            if (this.ModelState.IsValid)
-            {
-                var username = this.User.Identity.Name;
+            var username = this.User.Identity.Name;
+
+            if (this.ModelState.IsValid){
+                
                 this.recipeService.CreateRecipe(bindingModel, username);
 
                 return RedirectToAction("All");
             }
 
             bindingModel =
-                new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients()};
+                new CreateRecipeViewModel {IngredientsViewModels = this.recipeService.GetIngredients(username)};
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
@@ -141,13 +207,14 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult AddIngredients(string data, string searchString)
         {
+            var username = this.User.Identity.Name;
             this.ViewData[Constants.Strings.ErrorString] = data;
             var products = this.productService.GetAll();
 
             if (string.IsNullOrEmpty(searchString) || products == null) return this.View();
 
             var bindingModel = this.SearchForGrocery(products, searchString);
-            bindingModel.Ingredients = this.recipeService.GetIngredients();
+            bindingModel.Ingredients = this.recipeService.GetIngredients(username);
 
             return this.View(bindingModel);
         }
@@ -158,7 +225,8 @@ namespace Foodnetic.App.Controllers
         {
             if (this.ModelState.IsValid)
             {
-                this.recipeService.CreateIngredient(bindingModel);
+                var username = this.User.Identity.Name;
+                this.recipeService.CreateIngredient(bindingModel, username);
                 return this.View();
             }
 

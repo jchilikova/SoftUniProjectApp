@@ -25,7 +25,7 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">All Breakfast Recipes</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">All Dessert Recipes</h1>
         <hr class="hr-green" />
         <a asp-controller="Recipes" asp-action="AddIngredients" class="btn btn-xl">Create Recipe</a>
     </div>
@@ -112,7 +112,7 @@
         }
 
         <div class="row d-flex justify-content-center my-5">
-            @Html.PagedListPager((IPagedList) Model, page => Url.Action("AllBreakfastRecipes", new {page = page}),
+            @Html.PagedListPager((IPagedList) Model, page => Url.Action("AllDessertRecipes", new {page = page}),
                 new PagedListRenderOptions
                 {
                     LiElementClasses = new string[] {"page-item"},

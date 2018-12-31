@@ -41,6 +41,10 @@ body {
     font-family: "Open Sans", Sans-serif;
 }
 
+html {
+    overflow-y: scroll;
+}
+
 h1,
 h2,
 h3,

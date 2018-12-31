@@ -20,9 +20,11 @@ namespace Foodnetic.Services
             this.dbContext = dbContext;
         }
 
-        public void CreateIngredient(CreateIngredientViewModel bindingModel)
+        public void CreateIngredient(CreateIngredientViewModel bindingModel, string username)
         {
-            Recipe recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
+
+            Recipe recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate && x.AuthorId == userId);
             Ingredient ingredient;
 
             if (recipe.Ingredients.Any(x => x.Name == bindingModel.Name))
@@ -79,15 +81,16 @@ namespace Foodnetic.Services
             return recipe;
         }
 
-        public ICollection<IngredientsViewModel> GetIngredients()
+        public ICollection<IngredientsViewModel> GetIngredients(string username)
         {
             var bindingModels = new List<IngredientsViewModel>();
 
             Recipe recipe;
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
 
-            if (this.dbContext.Recipes.Any(x => x.IsInCreate == true))
+            if (this.dbContext.Recipes.Any(x => x.IsInCreate && x.AuthorId == userId))
             {
-                recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+                recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate && x.AuthorId == userId);
                 foreach (var recipeIngredient in recipe.Ingredients)
                 {
                     bindingModels.Add(new IngredientsViewModel
@@ -104,6 +107,7 @@ namespace Foodnetic.Services
                 recipe = new Recipe
                 {
                     IsInCreate = true,
+                    AuthorId = userId
                 };
 
                 this.dbContext.Recipes.Add(recipe);
@@ -117,9 +121,8 @@ namespace Foodnetic.Services
         public void CreateRecipe(CreateRecipeViewModel bindingModel, string username)
         {
             var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
-            var recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+            var recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate && x.AuthorId == userId);
 
-            recipe.AuthorId = userId;
             recipe.PreparationTime = bindingModel.PreparationTime;
             recipe.CookTime = bindingModel.CookTime;
             recipe.IsInCreate = false;
@@ -198,9 +201,11 @@ namespace Foodnetic.Services
             return this.dbContext.Recipes.Any(x => x.Id == id && x.IsDeleted == false);
         }
 
-        public void CancelRecipe()
+        public void CancelRecipe(string username)
         {
-            var recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate);
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
+
+            var recipe = this.dbContext.Recipes.Include(x => x.Ingredients).FirstOrDefault(x => x.IsInCreate && x.AuthorId ==userId);
             if (recipe == null)
             {
                 return;

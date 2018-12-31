@@ -14,5 +14,7 @@
         Legumes,
         Nuts,
         Sweets,
+        Miscellaneous,
+        Alcohols
     }
 }

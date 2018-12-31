@@ -15,12 +15,12 @@ namespace Foodnetic.Services.Contracts
 
         void DeleteRecipe(string id);
 
-        void CreateIngredient(CreateIngredientViewModel bindingModel);
+        void CreateIngredient(CreateIngredientViewModel bindingModel, string username);
 
-        ICollection<IngredientsViewModel> GetIngredients();
+        ICollection<IngredientsViewModel> GetIngredients(string username);
 
         void CreateRecipe(CreateRecipeViewModel bindingModel, string username);
 
-        void CancelRecipe();
+        void CancelRecipe(string username);
     }
 }

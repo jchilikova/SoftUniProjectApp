@@ -23,7 +23,6 @@ namespace Foodnetic.App.Controllers
 
         public IActionResult Index()
         {
-            this.recipeService.CancelRecipe();
             return View();
         }
 
