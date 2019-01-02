@@ -4,13 +4,16 @@
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
 @using System.Globalization
+@using X.PagedList
+@using X.PagedList.Mvc.Common
+@using X.PagedList.Mvc.Core
 @model IEnumerable<Foodnetic.ViewModels.Groceries.GroceryViewModel>
 <style>
-    .bg-lightgreen {
+    .bg-lightGreen {
         background-color: #90EE90
     }
 
-    .bg-lightdanger {
+    .bg-lightDanger {
         background-color: #FFb6c1
     }
 
@@ -30,42 +33,47 @@
         <hr class="hr-green" />
         <a asp-controller="Fridge" asp-action="AddGrocery" class="btn btn-xl">Add Grocery</a>
     </div>
-    <table class="table w-75 mx-auto table-hover my-5 table-bordered">
-        <thead>
-        <tr class="row">
-            <th class="col-md-1">#</th>
-            <th class="col-md-4">Name</th>
-            <th class="col-md-3">Quantity</th>
-            <th class="col-md-4">Expiration Date</th>
-        </tr>
-        </thead>
-        @if (Model != null)
+<table class="table w-50 mx-auto table-hover my-5 table-bordered">
+    <thead>
+    <tr class="row">
+        <th class="col-md-5">Name</th>
+        <th class="col-md-3">Quantity</th>
+        <th class="col-md-4">Expiration Date</th>
+    </tr>
+    </thead>
+    @if (Model != null)
+    {
+        foreach (var item in Model)
         {
-            var index = 1;
-            foreach (var item in Model.OrderBy(g => g.ExpirationDate))
+            if (@item.ExpirationDate <= DateTime.Today)
             {
-                if (@item.ExpirationDate <= DateTime.Today)
+                continue;
+            }
+
+            <tbody>
+            <tr class="row text-center">
+                <td class="col-md-5">@item.Name</td>
+                <td class="col-md-3">@item.Quantity</td>
+                @if (@item.ExpirationDate.AddDays(-2) <= DateTime.Now)
                 {
-                    continue;
+                    <td class="col-md-4 bg-lightDanger">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
+                }
+                else
+                {
+                    <td class="col-md-4 bg-lightGreen">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
                 }
 
-                 <tbody>
-                 <tr class="row text-center">
-                     <td class="col-md-1">@(index++)</td>
-                     <td class="col-md-4">@item.Name</td>
-                     <td class="col-md-3">@item.Quantity</td>
-                     @if (@item.ExpirationDate.AddDays(-2) <= DateTime.Now)
-                     {
-                         <td class="col-md-4 bg-lightdanger">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
-                     }
-                     else
-                     {
-                         <td class="col-md-4 bg-lightgreen">@item.ExpirationDate.ToString("dd-MM-yyyy", CultureInfo.InvariantCulture)</td>
-                     }
-
-                 </tr>
-                 </tbody>
-             }
+            </tr>
+            </tbody>
         }
-    </table>
+    }
+</table>
+<div class="row d-flex justify-content-center my-5">
+    @Html.PagedListPager((IPagedList) Model, page => Url.Action("Index", new {page = page}),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] {"page-item"},
+            PageClasses = new string[] {"page-link"}
+        })
+</div>
 </body>

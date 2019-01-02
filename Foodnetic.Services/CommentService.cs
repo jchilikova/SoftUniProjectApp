@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
@@ -23,7 +23,7 @@ namespace Foodnetic.Services
 
             if (string.IsNullOrWhiteSpace(bindingModel.Content))
             {
-                bindingModel.Content = string.Format(Constants.Messages.NoContentCommentMsg, bindingModel.Rate);
+                bindingModel.Content = string.Format(Constants.Constants.Messages.NoContentCommentMsg, bindingModel.Rate);
             }
 
             var comment = new Comment
@@ -59,7 +59,7 @@ namespace Foodnetic.Services
 
             if (comment == null) return;
 
-            comment.Content = Constants.Messages.ModeratorDeleteCommentContentMsg;
+            comment.Content = Constants.Constants.Messages.ModeratorDeleteCommentContentMsg;
             this.dbContext.SaveChanges();
 
         }

@@ -8,6 +8,7 @@ using Foodnetic.ViewModels.Groceries;
 using Foodnetic.ViewModels.Products;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using X.PagedList;
 
 namespace Foodnetic.App.Controllers
 {
@@ -25,7 +26,7 @@ namespace Foodnetic.App.Controllers
         }
 
         [Authorize]
-        public IActionResult Index()
+        public IActionResult Index(int? page)
         {
             var groceries = this.fridgeService.GetAllGroceries(this.User.Identity.Name);
 
@@ -34,15 +35,23 @@ namespace Foodnetic.App.Controllers
                 return this.View();
             }
 
-            var groceriesViewModels = this.MapAllGroceries(groceries);
+            var orderedGroceries = groceries.OrderBy(x => x.ExpirationDate);
 
-            return this.View(groceriesViewModels);
+            var groceriesViewModels = this.MapAllGroceries(orderedGroceries);
+
+            var nextPage = page ?? 1;
+
+            var pageViewModel = groceriesViewModels.ToPagedList(nextPage, 10);
+
+            return this.View(pageViewModel);
         }
         
         [HttpGet]
         [Authorize]
-        public IActionResult AddGrocery(string searchString)
+        public IActionResult AddGrocery(string searchString, string data)
         {
+            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+
             var products = this.productService.GetAll();
 
             if (string.IsNullOrEmpty(searchString)) return this.View();
@@ -62,7 +71,8 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("Index");
             }
 
-            return RedirectToAction("AddGrocery");
+            var data = Constants.Constants.Messages.InvalidDataMsg;
+            return RedirectToAction("AddGrocery", new {Data = data});
         }
 
         private IEnumerable<GroceryViewModel> MapAllGroceries(IEnumerable<Grocery> groceries)

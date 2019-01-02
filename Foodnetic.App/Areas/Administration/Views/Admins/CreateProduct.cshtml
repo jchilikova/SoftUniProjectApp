@@ -1,4 +1,4 @@
-﻿@using Foodnetic.Contants
+﻿@using Foodnetic.Constants
 @{
     ViewData["Title"] = "CreateProduct";
     Layout = "~/Areas/Administration/Views/Shared/_SecondaryLayout.cshtml";
@@ -35,6 +35,7 @@
         <div class="form-control text-center">
             <strong><label asp-for="Name"></label></strong>
             <input asp-for="Name" class="form-control" placeholder="Name...">
+            <span asp-validation-for="Name" class="text-danger"></span>
         </div>
         <div class="form-control">
             <strong><label asp-for="ProductType"></label></strong>

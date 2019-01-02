@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
@@ -29,7 +29,7 @@ namespace Foodnetic.Services
 
         public Menu Create(string username)
         {
-            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
+                var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
 
             //user's groceries
             var fridgeIngredients = this.dbContext.
@@ -55,6 +55,11 @@ namespace Foodnetic.Services
             };
 
             this.dbContext.Menus.Add(menu);
+
+            if (fridgeIngredients == null)
+            {
+                return menu;
+            }
 
             //creating breakfast
             var breakfastMenu = CreateBreakfast(recipes, fridgeIngredients, menu);
@@ -128,7 +133,7 @@ namespace Foodnetic.Services
         
         private RecipeMenu CreateBreakfast(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.BreakfastString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.BreakfastString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Breakfast))
             {
@@ -176,7 +181,7 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateLunch(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.LunchString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.LunchString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Lunch))
             {
@@ -197,7 +202,7 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDinner(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DinnerString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.DinnerString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dinner))
             {
@@ -218,7 +223,7 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDessert(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Strings.DessertString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.DessertString)?.Id;
 
             foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dessert))
             {

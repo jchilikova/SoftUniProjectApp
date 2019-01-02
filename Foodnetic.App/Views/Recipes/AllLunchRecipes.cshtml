@@ -1,7 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
-@using Foodnetic.Contants
+@using Foodnetic.Constants
 @using Foodnetic.ViewModels.Recipes
 @using X.PagedList
 @using X.PagedList.Mvc.Common
@@ -16,6 +16,14 @@
     .hr-green {
         background-color: black;
         width: 50%
+    }
+    .img {
+        max-height: 20vw;
+        min-height: 17vw;
+        max-width:23vw;
+        min-width: 17vw;
+        margin-right: 20px;
+        margin-left: 0px;
     }
 </style>
 <body>
@@ -62,7 +70,7 @@
 
                 <article class="col-md-3 border border-success text-center">
                     <div class="my-3">
-                        <img src="@item.PictureUrl" class="img-thumbnail" />
+                        <img src="@item.PictureUrl" class="img" />
                     </div>
                     <div>
                         @for (int j = 0; j < Math.Truncate(@item.Rating); j++)

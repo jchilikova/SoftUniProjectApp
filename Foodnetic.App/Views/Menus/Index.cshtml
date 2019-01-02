@@ -3,7 +3,7 @@
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
 
-@using Foodnetic.Contants
+@using Foodnetic.Constants
 @using Foodnetic.ViewModels.Menu
 @using Foodnetic.ViewModels.Menus
 @model Foodnetic.ViewModels.Menus.MenuViewModel
@@ -20,6 +20,14 @@
     .checked {
         color: orange;
     }
+    .img {
+        max-height: 18vw;
+        min-height: 17vw;
+        max-width:23vw;
+        min-width: 12vw;
+        margin-right: 20px;
+        margin-left: 0px;
+    }
 </style>
 <body>
     <header>
@@ -28,7 +36,10 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">Daily Menu</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">Daily Menu  @if (Model != null)
+                                                        {
+                                                            <a>for @DateTime.Today.Date.ToString("D")</a>
+                                                        }</h1>
         <hr class="hr-green" />
         @if (@Model == null)
         {
@@ -55,7 +66,7 @@
     }
     else
     {
-        <div class="row d-flex justify-content-around mt-5 text-center">
+        <div class="row d-flex justify-content-between mx-2 mt-5 text-center">
             <div class="col-md-3">
                 <h2 class="text-foods">
                     Breakfast
@@ -64,7 +75,7 @@
                 {
                     var rating = @Model.Breakfast.Rating;
                     <div class="my-3">
-                        <img src="@Model.Breakfast.PictureUrl" class="img-thumbnail" />
+                        <img src="@Model.Breakfast.PictureUrl" class="img" />
                     </div>
                     <div><h4>@Model.Breakfast.Name</h4></div>
                     <div>
@@ -106,7 +117,7 @@
                 {
                     var rating = @Model.Lunch.Rating;
                     <div class="my-3">
-                        <img src="@Model.Lunch.PictureUrl" class="img-thumbnail" />
+                        <img src="@Model.Lunch.PictureUrl" class="img" />
                     </div>
                     <div><h4>@Model.Lunch.Name</h4></div>
                     <div>
@@ -148,7 +159,7 @@
                 {
                     var rating = @Model.Dinner.Rating;
                     <div class="my-3">
-                        <img src="@Model.Dinner.PictureUrl" class="img-thumbnail" />
+                        <img src="@Model.Dinner.PictureUrl" class="img" />
                     </div>
                     <div><h4>@Model.Dinner.Name</h4></div>
                     <div>
@@ -190,7 +201,7 @@
                 {
                     var rating = @Model.Dessert.Rating;
                     <div class="my-3">
-                        <img src="@Model.Dessert.PictureUrl" class="img-thumbnail" />
+                        <img src="@Model.Dessert.PictureUrl" class="img" />
                     </div>
                     <div><h4>@Model.Dessert.Name</h4></div>
                     <div>

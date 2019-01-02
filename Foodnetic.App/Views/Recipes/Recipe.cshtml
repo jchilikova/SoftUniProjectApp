@@ -2,13 +2,21 @@
     ViewData["Title"] = "Recipe";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
-@using Foodnetic.Contants
+@using Foodnetic.Constants
 @using Foodnetic.ViewModels.Recipes
 @model Foodnetic.ViewModels.Recipes.RecipeViewModel
 
 <style>
     .checked {
         color: orange;
+    }
+    .img {
+        max-height: 20vw;
+        min-height: 17vw;
+        max-width:23vw;
+        min-width: 17vw;
+        margin-right: 20px;
+        margin-left: 0px;
     }
 </style>
 
@@ -24,7 +32,9 @@
     </div>
     <div class="row d-flex justify-content-between">
         <div class="col-md-4">
-            <img src="@Model.PictureUrl" class="img-thumbnail" />
+            <div class="container-fluid text-center">
+                <img src="@Model.PictureUrl" class="img"/>
+            </div>
             <div class="my-3 text-center d-flex justify-content-around">
                 <i class="fa fa-clock" aria-hidden="true"> Preparation: @Model.PreparationTime minutes</i>
                 <i class="fas fa-calendar-minus"> Cook Time: @Model.CookTime minutes</i>
@@ -57,9 +67,9 @@
                 @if (this.User.IsInRole(Constants.Strings.ModeratorRole))
                 {
                     <form asp-controller="Moderators" asp-action="DeleteRecipe" method="post">
-                        <input type="text" name="@(nameof(@Model.Id))" value="@Model.Id" hidden />
+                        <input type="text" name="@(nameof(@Model.Id))" value="@Model.Id" hidden/>
                         <button type="submit" class="btn btn-xs">Delete</button>
-                        <br />
+                        <br/>
                     </form>
                 }
             </div>

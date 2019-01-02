@@ -1,4 +1,4 @@
-﻿namespace Foodnetic.Contants
+﻿namespace Foodnetic.Constants
 {
     public static class Constants
     {
@@ -14,6 +14,8 @@
             public const string InvalidRecipeMsgError = "Invalid recipe!";
             public const string ModeratorDeleteCommentContentMsg = "Comment is deleted by Moderator";
             public const string NoContentCommentMsg = "Rated {0}/5";
+            public const string AddIngredientFirstMsg = "You need to add ingredients first!";
+            public const string InvalidDataMsg = "Invalid data";
         }
 
         public static class Strings

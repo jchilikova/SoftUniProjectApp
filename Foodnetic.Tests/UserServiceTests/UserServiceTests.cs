@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -157,21 +157,21 @@ namespace Foodnetic.Tests.UserServiceTests
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Strings.UserRole
+                Name =  Constants.Constants.Strings.UserRole
             });
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Strings.ModeratorRole
+                Name =  Constants.Constants.Strings.ModeratorRole
             });
 
             this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
             this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
-            await this.UserManager.AddToRoleAsync(user, "Moderator");
+            await this.UserManager.AddToRoleAsync(user,  Constants.Constants.Strings.ModeratorRole);
 
             var result = this.UserService.DemoteFromModerator("test");
 
-            Assert.AreEqual($"test {Constants.Messages.DemotedUserMsg}", result.Result);
+            Assert.AreEqual($"test {Constants.Constants.Messages.DemotedUserMsg}", result.Result);
         }
 
         [Test]
@@ -187,23 +187,23 @@ namespace Foodnetic.Tests.UserServiceTests
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Strings.UserRole
+                Name =  Constants.Constants.Strings.UserRole
             });
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Strings.ModeratorRole
+                Name =  Constants.Constants.Strings.ModeratorRole
             });
 
             this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
             this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
             this.DbContext.SaveChanges();
-            await this.UserManager.AddToRoleAsync(user, "User");
+            await this.UserManager.AddToRoleAsync(user,  Constants.Constants.Strings.UserRole);
             this.DbContext.SaveChanges();
 
             var result = this.UserService.MakeModerator("test");
 
-            Assert.AreEqual($"test {Constants.Messages.PromotedUserMsg}", result.Result);
+            Assert.AreEqual($"test {Constants.Constants.Messages.PromotedUserMsg}", result.Result);
         }
 
     }

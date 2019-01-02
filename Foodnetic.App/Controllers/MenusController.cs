@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
 using Foodnetic.Services.Contracts;
@@ -26,7 +26,7 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Index(string data)
         {
-            this.ViewData[Constants.Strings.ErrorString] = data;
+            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
             var currentUser = this.User.Identity.Name;
 
             if (menuService.CheckIfMenuExist(currentUser))
@@ -55,7 +55,7 @@ namespace Foodnetic.App.Controllers
             if (menu.RecipeMenus.Count <= 0)
             {
                 data =
-                   Constants.Messages.NotEnoughGroceriesErrorMsg;
+                   Constants.Constants.Messages.NotEnoughGroceriesErrorMsg;
             }
 
             return RedirectToAction("Index", new { Data = data });
@@ -139,7 +139,7 @@ namespace Foodnetic.App.Controllers
                 var base64 = Convert.ToBase64String(recipeMenu.Recipe.Image);
                 var imgSrc = $"data:image/jpg;base64,{base64}";
 
-                if (recipeMenu != null && recipeMenu.MenuType == DishType.Breakfast)
+                if (recipeMenu.MenuType == DishType.Breakfast)
                 {
                     bindingModel.Breakfast = new MenuRecipeViewModel
                     {
@@ -152,12 +152,7 @@ namespace Foodnetic.App.Controllers
 
                     continue;
                 }
-                else
-                {
-                    bindingModel.Breakfast = null;
-                }
-
-                if (recipeMenu != null && recipeMenu.MenuType == DishType.Lunch)
+                if (recipeMenu.MenuType == DishType.Lunch)
                 {
                     bindingModel.Lunch = new MenuRecipeViewModel
                     {
@@ -169,12 +164,7 @@ namespace Foodnetic.App.Controllers
                     };
                     continue;
                 }
-                else
-                {
-                    bindingModel.Lunch = null;
-                }
-
-                if (recipeMenu != null && recipeMenu.MenuType == DishType.Dinner)
+               if (recipeMenu.MenuType == DishType.Dinner)
                 {
                     bindingModel.Dinner = new MenuRecipeViewModel
                     {
@@ -186,12 +176,7 @@ namespace Foodnetic.App.Controllers
                     };
                     continue;
                 }
-                else
-                {
-                    bindingModel.Dinner = null;
-                }
-
-                if (recipeMenu != null && recipeMenu.MenuType == DishType.Dessert)
+                if (recipeMenu.MenuType == DishType.Dessert)
                 {
                     bindingModel.Dessert = new MenuRecipeViewModel
                     {
@@ -202,10 +187,6 @@ namespace Foodnetic.App.Controllers
                         Rating = recipeMenu.Recipe.Rating
                     };
                     continue;
-                }
-                else
-                {
-                    bindingModel.Dessert = null;
                 }
             }
 

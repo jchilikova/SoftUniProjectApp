@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Contact;
@@ -31,21 +31,21 @@ namespace Foodnetic.App.Areas.Administration.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult CreateProduct()
         {
             return View();
         }
 
         [HttpPost]
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult CreateProduct(CreateProductViewModel bindingModel)
         {
             if (this.ModelState.IsValid)
             {
                 if (this.productService.CheckIfProductExists(bindingModel.Name))
                 {
-                    ViewData[Constants.Strings.ErrorString] = Constants.Messages.ProductAlreadyExistsErrorMsg;
+                    ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.ProductAlreadyExistsErrorMsg;
                     return this.View(bindingModel);
                 }
 
@@ -58,7 +58,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return this.View(bindingModel);
         }
 
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult AllProducts(int? page)
         {
             var products = this.productService.GetAll();
@@ -93,10 +93,10 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return productBindingModels;
         }
 
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult AllUsers(string data, int? page)
         {
-            this.ViewData[Constants.Strings.SuccessString] = data;
+            this.ViewData[Constants.Constants.Strings.SuccessString] = data;
 
             var users = this.userService.GetAll().OrderBy(x => x.UserName);
 
@@ -123,7 +123,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return userBindingModels;
         }
 
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult MakeUserModerator(string id)
         {
             var data = this.userService.MakeModerator(id).Result;
@@ -131,7 +131,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return RedirectToAction("AllUsers", new {Data = data});
         }
 
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult DemoteUserFromModerator(string id)
         {
             var data = this.userService.DemoteFromModerator(id).Result;
@@ -139,7 +139,7 @@ namespace Foodnetic.App.Areas.Administration.Controllers
             return RedirectToAction("AllUsers", new {Data = data});
         }
 
-        [Authorize(Roles = Constants.Strings.AdministratorRole)]
+        [Authorize(Roles = Constants.Constants.Strings.AdministratorRole)]
         public IActionResult AllContactUsMessages(int? page)
         {
             var contactMessages = contactService.GetAll();

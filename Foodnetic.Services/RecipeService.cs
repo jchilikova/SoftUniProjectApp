@@ -211,8 +211,9 @@ namespace Foodnetic.Services
                 return;
             }
 
-            var ingredients = this.dbContext.Ingredients.Where(x => x.RecipeId == null || x.RecipeId == recipe.Id);
-            
+            var ingredients = this.dbContext.Ingredients.Where(x => x.GetType() == typeof(Ingredient));
+            ingredients = ingredients.Where(x => x.RecipeId == null || x.RecipeId == recipe.Id);
+
             this.dbContext.Ingredients.RemoveRange(ingredients);
             this.dbContext.Recipes.Remove(recipe);
             this.dbContext.SaveChanges();

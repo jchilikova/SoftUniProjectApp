@@ -12,13 +12,11 @@ namespace Foodnetic.App.Controllers
     {
         private readonly IContactService contactService;
         private readonly IMapper mapper;
-        private readonly IRecipeService recipeService;
 
-        public HomeController(IContactService contactService, IMapper mapper, IRecipeService recipeService)
+        public HomeController(IContactService contactService, IMapper mapper)
         {
             this.contactService = contactService;
             this.mapper = mapper;
-            this.recipeService = recipeService;
         }
 
         public IActionResult Index()

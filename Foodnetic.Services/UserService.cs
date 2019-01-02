@@ -3,7 +3,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -26,7 +26,7 @@ namespace Foodnetic.Services
 
         public async Task AddToUserRole(FoodneticUser user)
         {
-            await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole);
+            await this.signInManager.UserManager.AddToRoleAsync(user, Constants.Constants.Strings.UserRole);
         }
 
         public bool CheckIfEmailExists(string email)
@@ -79,7 +79,7 @@ namespace Foodnetic.Services
 
                     if (addExternalLogin.Succeeded)
                     {
-                        var roleResult = this.signInManager.UserManager.AddToRoleAsync(user, Constants.Strings.UserRole).Result;
+                        var roleResult = this.signInManager.UserManager.AddToRoleAsync(user, Constants.Constants.Strings.UserRole).Result;
 
                         if (roleResult.Errors.Any())
                         {
@@ -111,37 +111,37 @@ namespace Foodnetic.Services
 
         public IEnumerable<FoodneticUser> GetAll()
         {
-            return this.signInManager.UserManager.Users.Where(x => x.UserName != Constants.Strings.AdminString);
+            return this.signInManager.UserManager.Users.Where(x => x.UserName != Constants.Constants.Strings.AdminString);
         }
 
         public async Task<string> MakeModerator(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
 
-            if (user == null || await this.userManager.IsInRoleAsync(user, Constants.Strings.ModeratorRole))
+            if (user == null || await this.userManager.IsInRoleAsync(user, Constants.Constants.Strings.ModeratorRole))
             {
                 return "";
             }
 
-            await this.userManager.RemoveFromRoleAsync(user, Constants.Strings.UserRole);
-            await this.userManager.AddToRoleAsync(user, Constants.Strings.ModeratorRole);
+            await this.userManager.RemoveFromRoleAsync(user, Constants.Constants.Strings.UserRole);
+            await this.userManager.AddToRoleAsync(user, Constants.Constants.Strings.ModeratorRole);
 
-            return $"{user.UserName} {Constants.Messages.PromotedUserMsg}";
+            return $"{user.UserName} {Constants.Constants.Messages.PromotedUserMsg}";
         }
 
         public async Task<string> DemoteFromModerator(string id)
         {
             var user = await this.userManager.FindByIdAsync(id);
 
-            if (user == null || await this.userManager.IsInRoleAsync(user, Constants.Strings.UserRole))
+            if (user == null || await this.userManager.IsInRoleAsync(user, Constants.Constants.Strings.UserRole))
             {
                 return "";
             }
 
-            await this.userManager.RemoveFromRoleAsync(user, Constants.Strings.ModeratorRole);
-            await this.userManager.AddToRoleAsync(user, Constants.Strings.UserRole);
+            await this.userManager.RemoveFromRoleAsync(user, Constants.Constants.Strings.ModeratorRole);
+            await this.userManager.AddToRoleAsync(user, Constants.Constants.Strings.UserRole);
 
-            return $"{user.UserName} {Constants.Messages.DemotedUserMsg}";
+            return $"{user.UserName} {Constants.Constants.Messages.DemotedUserMsg}";
         }
 
         public SignInResult SignInUser(LoginViewModel bindingModel)

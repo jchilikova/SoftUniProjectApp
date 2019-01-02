@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -38,7 +38,7 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.UserAlreadyExistsErrorMsg;
+            this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.UserAlreadyExistsErrorMsg;
 
             return View(bindingModel); 
         }
@@ -56,7 +56,7 @@ namespace Foodnetic.App.Controllers
 
             if (userExists)
             {
-                this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.UsernameAlreadyExistsErrorMsg;
+                this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.UsernameAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
@@ -64,7 +64,7 @@ namespace Foodnetic.App.Controllers
 
             if (emailExists)
             {
-                this.ViewData[Constants.Strings.ErrorString] = Constants.Messages.EmailAlreadyExistsErrorMsg;
+                this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.EmailAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
@@ -105,7 +105,7 @@ namespace Foodnetic.App.Controllers
         [HttpPost]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            const string redirectUrl = Constants.Strings.ExternalLoginRedirect;
+            const string redirectUrl = Constants.Constants.Strings.ExternalLoginRedirect;
             var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }

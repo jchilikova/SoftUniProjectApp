@@ -2,7 +2,7 @@
 
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
-@using Foodnetic.Contants
+@using Foodnetic.Constants
 @using Foodnetic.ViewModels.Ingredients
 @model CreateIngredientViewModel
 <style>
@@ -34,21 +34,23 @@
             <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
         </div>
     }
-    <div class="container col-md-5 text-center">
-        <form asp-controller="Recipes" asp-action="AddIngredients" method="get">
-            <label for="searchString">Product or Product Type: </label><input type="text" name="searchString" id="searchString" class="form-control" placeholder="e.g. Dairy, Meat, Fish, Spices...">
-            <input type="submit" value="Search" class="btn btn-green my-4" />
-        </form>
-        <div class="text-center">
-            <a asp-action="Create" asp-controller="Recipes" class="btn btn-green">Next ></a>
-            <a asp-action="Cancel" asp-controller="Recipes" class="btn btn-green">Cancel</a>
-        </div>
+<div class="container col-md-5 text-center">
+    <form asp-controller="Recipes" asp-action="AddIngredients" method="get">
+        <label for="searchString">Product or Product Type: </label><input type="text" name="searchString" id="searchString" class="form-control" placeholder="e.g. Dairy, Meat, Fish, Spices...">
+        <input type="submit" value="Search" class="btn btn-green my-4" />
+    </form>
+    <div class="text-center">
+        <a asp-action="Create" asp-controller="Recipes" class="btn btn-green">Next ></a>
+        <a asp-action="Cancel" asp-controller="Recipes" class="btn btn-green">Cancel</a>
     </div>
+</div>
+<div class="row d-flex justify-content-center">
+<div class="col-md-5">
     @if (Model != null)
     {
         <form method="post" asp-controller="Recipes" asp-action="AddIngredients">
             <div class="text-center row d-flex justify-content-center">
-                <div class="container text-center col-md-3 form-group" style="margin-right: 1px; margin-left: 30px; margin-top: 28px">
+                <div class="container-fluid text-center form-group" style="margin-right: 1px; margin-left: 30px; margin-top: 28px">
                     <select asp-for="Name" size="5" class="custom-select ">
                         @foreach (var product in Model.Products)
                         {
@@ -64,14 +66,18 @@
                     </div>
                 </div>
                 <div class="text-center col-md-3" style="margin-right: 30px; margin-left: 1px; margin-bottom: 30px">
-                    <p class="mb-1 text-success"><strong>Ingredients Added</strong></p>
-                    @if (Model.Ingredients != null)
-                    {
-                        await Html.RenderPartialAsync("_AddedIngredientsPartial", Model.Ingredients);
-
-                    }
                 </div>
             </div>
         </form>
     }
+    </div>
+    <div class="col-md-3">
+        <p class="mb-1 text-success"><strong>Ingredients Added</strong></p>
+        @if (Model?.Ingredients != null)
+        {
+            await Html.RenderPartialAsync("_AddedIngredientsPartial", Model.Ingredients);
+
+        }
+    </div>
+</div>
 </body>

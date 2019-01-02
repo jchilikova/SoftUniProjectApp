@@ -18,9 +18,14 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Create(CreateCommentViewModel bindingModel)
         {
-            var currentUsername = this.User.Identity.Name;
+            if (this.ModelState.IsValid)
+            {
+                var currentUsername = this.User.Identity.Name;
 
-            this.commentService.Create(bindingModel, currentUsername);
+                this.commentService.Create(bindingModel, currentUsername);
+
+                return RedirectToAction("Recipe", "Recipes", new {Id = bindingModel.RecipeId});
+            }
 
             return RedirectToAction("Recipe", "Recipes", new {Id = bindingModel.RecipeId});
         }

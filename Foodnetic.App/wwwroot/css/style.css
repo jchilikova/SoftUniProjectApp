@@ -45,6 +45,15 @@ html {
     overflow-y: scroll;
 }
 
+.img {
+    max-height: 20vw;
+    min-height: 17vw;
+    max-width:23vw;
+    min-width: 17vw;
+    margin-right: 20px;
+    margin-left: 0px;
+}
+
 h1,
 h2,
 h3,

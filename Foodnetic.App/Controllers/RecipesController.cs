@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Data;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
@@ -34,8 +34,8 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult All(string data, int? page)
         {
-            this.ViewData[Constants.Strings.ErrorString] = data;
-
+            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+        
             var recipes = this.recipeService.GetAll();
 
             if (recipes == null)
@@ -131,7 +131,7 @@ namespace Foodnetic.App.Controllers
 
             var nextPage = page ?? 1;
 
-            var pageViewModel = recipeModels.ToPagedList(nextPage, 6);
+            var pageViewModel = recipeModels.ToPagedList(nextPage, 9);
 
             return this.View(pageViewModel);
         }
@@ -142,7 +142,7 @@ namespace Foodnetic.App.Controllers
             var username = this.User.Identity.Name;
             this.recipeService.CancelRecipe(username);
 
-            return this.View("All");
+            return this.RedirectToAction("All");
         }
 
         private IEnumerable<AllRecipesViewModel> MapAllRecipes(IEnumerable<Recipe> recipes)
@@ -171,7 +171,7 @@ namespace Foodnetic.App.Controllers
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
-                var data = "You need to add ingredients first!";
+                var data = Constants.Constants.Messages.AddIngredientFirstMsg;
                 return RedirectToAction("AddIngredients", new {Data = data});
             }
 
@@ -184,8 +184,8 @@ namespace Foodnetic.App.Controllers
         {
             var username = this.User.Identity.Name;
 
-            if (this.ModelState.IsValid){
-                
+            if (this.ModelState.IsValid)
+            {
                 this.recipeService.CreateRecipe(bindingModel, username);
 
                 return RedirectToAction("All");
@@ -196,7 +196,7 @@ namespace Foodnetic.App.Controllers
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
-                var data = "You need to add ingredients first!";
+                var data = Constants.Constants.Messages.AddIngredientFirstMsg;
                 return RedirectToAction("AddIngredients", new {Data = data});
             }
 
@@ -208,12 +208,19 @@ namespace Foodnetic.App.Controllers
         public IActionResult AddIngredients(string data, string searchString)
         {
             var username = this.User.Identity.Name;
-            this.ViewData[Constants.Strings.ErrorString] = data;
+            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
             var products = this.productService.GetAll();
+            var bindingModel = new CreateIngredientViewModel();
 
-            if (string.IsNullOrEmpty(searchString) || products == null) return this.View();
+            if (!string.IsNullOrEmpty(searchString) && products != null)
+            {
+                this.SearchForGrocery(products, searchString, bindingModel);
+            }
+            else if(string.IsNullOrEmpty(searchString) && products != null)
+            {
+                bindingModel.Products = products.Select(product => this.mapper.Map<ProductViewModel>(product)).ToList();
+            }
 
-            var bindingModel = this.SearchForGrocery(products, searchString);
             bindingModel.Ingredients = this.recipeService.GetIngredients(username);
 
             return this.View(bindingModel);
@@ -227,26 +234,22 @@ namespace Foodnetic.App.Controllers
             {
                 var username = this.User.Identity.Name;
                 this.recipeService.CreateIngredient(bindingModel, username);
-                return this.View();
+                return RedirectToAction("AddIngredients");
             }
 
-            var data = "Invalid data";
+            var data = Constants.Constants.Messages.InvalidDataMsg;
             return RedirectToAction("AddIngredients", new {Data = data});
         }
 
-        private CreateIngredientViewModel SearchForGrocery(IEnumerable<Product> products, string searchString)
+        private void SearchForGrocery(IEnumerable<Product> products, string searchString,
+            CreateIngredientViewModel model)
         {
             products = products.Where(p => (p.Name.Contains(searchString, StringComparison.OrdinalIgnoreCase)
                                             || p.ProductType.ToString().Contains(searchString, StringComparison.OrdinalIgnoreCase)));
 
             var productsBindingModels = products.Select(product => this.mapper.Map<ProductViewModel>(product)).ToList();
 
-            var bindingModel = new CreateIngredientViewModel
-            {
-                Products = productsBindingModels
-            };
-
-            return bindingModel;
+            model.Products = productsBindingModels;
         }
 
         [Authorize]
@@ -261,7 +264,7 @@ namespace Foodnetic.App.Controllers
                 return this.View(recipeModel);
             }
 
-            var data = Constants.Messages.InvalidRecipeMsgError;
+            var data = Constants.Constants.Messages.InvalidRecipeMsgError;
 
             return RedirectToAction("All", new {Data = data});
         }

@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Foodnetic.Contants;
+using Foodnetic.Constants;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Comments;
@@ -60,7 +60,7 @@ namespace Foodnetic.Tests.CommentServiceTests
            this.CommentService.AlterCommentContent("1");
             var result = this.DbContext.Comments.FirstOrDefault()?.Content;
 
-            Assert.AreEqual(result, Constants.Messages.ModeratorDeleteCommentContentMsg);
+            Assert.AreEqual(result, Constants.Constants.Messages.ModeratorDeleteCommentContentMsg);
         }
     }
 }
