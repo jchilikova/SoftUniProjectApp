@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using Foodnetic.Constants;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -8,7 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.UserServiceTests
+namespace Foodnetic.Services.Tests.UserServiceTests
 {
     public class UserServiceTests : BaseService
     {
@@ -157,21 +158,21 @@ namespace Foodnetic.Tests.UserServiceTests
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.UserRole
+                Name =  GlobalConstants.UserRole
             });
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.ModeratorRole
+                Name =  GlobalConstants.ModeratorRole
             });
 
             this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
             this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
-            await this.UserManager.AddToRoleAsync(user,  Constants.Constants.Strings.ModeratorRole);
+            await this.UserManager.AddToRoleAsync(user,  GlobalConstants.ModeratorRole);
 
             var result = this.UserService.DemoteFromModerator("test");
 
-            Assert.AreEqual($"test {Constants.Constants.Messages.DemotedUserMsg}", result.Result);
+            Assert.AreEqual($"test {ConstantMessages.DemotedUserMsg}", result.Result);
         }
 
         [Test]
@@ -187,23 +188,23 @@ namespace Foodnetic.Tests.UserServiceTests
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.UserRole
+                Name =  GlobalConstants.UserRole
             });
 
             await RoleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.ModeratorRole
+                Name =  GlobalConstants.ModeratorRole
             });
 
             this.UserManager.CreateAsync(user).GetAwaiter().GetResult();
             this.UserManager.AddPasswordAsync(user, userPassword).GetAwaiter().GetResult();
             this.DbContext.SaveChanges();
-            await this.UserManager.AddToRoleAsync(user,  Constants.Constants.Strings.UserRole);
+            await this.UserManager.AddToRoleAsync(user,  GlobalConstants.UserRole);
             this.DbContext.SaveChanges();
 
             var result = this.UserService.MakeModerator("test");
 
-            Assert.AreEqual($"test {Constants.Constants.Messages.PromotedUserMsg}", result.Result);
+            Assert.AreEqual($"test {ConstantMessages.PromotedUserMsg}", result.Result);
         }
 
     }

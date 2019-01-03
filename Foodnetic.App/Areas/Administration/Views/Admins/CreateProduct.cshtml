@@ -23,10 +23,10 @@
 <div class="intro-text text-center">
     <h1 class="intro-lead-in mb-4 mt-4">Create Product</h1>
     <hr class="hr-green" />
-    @if (ViewData[Constants.Strings.ErrorString] != null)
+    @if (ViewData[GlobalConstants.ErrorString] != null)
     {
         <div class="bg-danger text-center container rounded mt-3 py-3">
-            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+            <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
         </div>
     }
 </div>

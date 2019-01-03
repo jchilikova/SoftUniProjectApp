@@ -1,6 +1,4 @@
-using System;
-
-namespace Foodnetic.App.Models
+namespace Foodnetic.ViewModels
 {
     public class ErrorViewModel
     {

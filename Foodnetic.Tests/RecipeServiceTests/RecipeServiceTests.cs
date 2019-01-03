@@ -1,16 +1,14 @@
-﻿using System.IO;
-using System.Linq;
+﻿using System.Linq;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Ingredients;
 using Foodnetic.ViewModels.Recipes;
-using Microsoft.AspNetCore.Http.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.RecipeServiceTests
+namespace Foodnetic.Services.Tests.RecipeServiceTests
 {
     public class RecipeServiceTests : BaseService
     {

@@ -23,6 +23,7 @@ namespace Foodnetic.App.Mapping
 
             CreateMap<RecipeViewModel, Recipe>()
                 .ForPath(e => e.Ingredients, opt => opt.Ignore())
+                .ForPath(e => e.Author.UserName, opt => opt.MapFrom(src => src.Author))
                 .ReverseMap();
 
             CreateMap<Grocery, GroceryViewModel>().ReverseMap();

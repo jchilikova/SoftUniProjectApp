@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Services", "Foodn
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.ViewModels", "Foodnetic.ViewModels\Foodnetic.ViewModels.csproj", "{123746C5-3649-486E-B98E-A3301F45FC17}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Constants", "Foodnetic.Constants\Foodnetic.Constants.csproj", "{48157EC1-897F-448B-8AE0-9E9F0ECF1A28}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Infrastructure", "Foodnetic.Constants\Foodnetic.Infrastructure.csproj", "{48157EC1-897F-448B-8AE0-9E9F0ECF1A28}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Tests", "Foodnetic.Tests\Foodnetic.Tests.csproj", "{74A13E0E-BD09-4B31-BE54-CD584682D768}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Foodnetic.Services.Tests", "Foodnetic.Tests\Foodnetic.Services.Tests.csproj", "{74A13E0E-BD09-4B31-BE54-CD584682D768}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

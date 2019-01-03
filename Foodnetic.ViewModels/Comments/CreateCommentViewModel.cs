@@ -8,6 +8,7 @@ namespace Foodnetic.ViewModels.Comments
 
         public string RecipeId { get; set; }
 
+        [Required]
         public int Rate { get; set; }
     }
 }

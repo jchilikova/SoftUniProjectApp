@@ -4,7 +4,7 @@ using System.Globalization;
 using System.Linq;
 using AutoMapper;
 using Foodnetic.Constants;
-using Foodnetic.Data;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
 using Foodnetic.Services.Contracts;
@@ -16,8 +16,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 
-namespace Foodnetic.App.Controllers
+namespace Foodnetic.App.Areas.Recipes.Controllers
 {
+    [Area(GlobalConstants.RecipesAreaString)]
     public class RecipesController : Controller
     {
         private readonly IRecipeService recipeService;
@@ -34,7 +35,7 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult All(string data, int? page)
         {
-            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+            this.ViewData[GlobalConstants.ErrorString] = data;
         
             var recipes = this.recipeService.GetAll();
 
@@ -171,7 +172,7 @@ namespace Foodnetic.App.Controllers
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
-                var data = Constants.Constants.Messages.AddIngredientFirstMsg;
+                var data = ConstantMessages.AddIngredientFirstMsg;
                 return RedirectToAction("AddIngredients", new {Data = data});
             }
 
@@ -196,7 +197,7 @@ namespace Foodnetic.App.Controllers
 
             if (bindingModel.IngredientsViewModels == null || bindingModel.IngredientsViewModels.Count == 0)
             {
-                var data = Constants.Constants.Messages.AddIngredientFirstMsg;
+                var data = ConstantMessages.AddIngredientFirstMsg;
                 return RedirectToAction("AddIngredients", new {Data = data});
             }
 
@@ -208,7 +209,7 @@ namespace Foodnetic.App.Controllers
         public IActionResult AddIngredients(string data, string searchString)
         {
             var username = this.User.Identity.Name;
-            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+            this.ViewData[GlobalConstants.ErrorString] = data;
             var products = this.productService.GetAll();
             var bindingModel = new CreateIngredientViewModel();
 
@@ -237,7 +238,7 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("AddIngredients");
             }
 
-            var data = Constants.Constants.Messages.InvalidDataMsg;
+            var data = ConstantMessages.InvalidDataMsg;
             return RedirectToAction("AddIngredients", new {Data = data});
         }
 
@@ -264,7 +265,7 @@ namespace Foodnetic.App.Controllers
                 return this.View(recipeModel);
             }
 
-            var data = Constants.Constants.Messages.InvalidRecipeMsgError;
+            var data = ConstantMessages.InvalidRecipeMsgError;
 
             return RedirectToAction("All", new {Data = data});
         }

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
 using Foodnetic.Constants;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
 using Foodnetic.Services.Contracts;
-using Foodnetic.ViewModels.Menu;
 using Foodnetic.ViewModels.Menus;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +16,7 @@ namespace Foodnetic.App.Controllers
 {
     public class MenusController : Controller
     {
+        private const string Dash = "-";
         private readonly IMenuService menuService;
 
         public MenusController(IMenuService menuService)
@@ -26,7 +27,7 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult Index(string data)
         {
-            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+            this.ViewData[GlobalConstants.ErrorString] = data;
             var currentUser = this.User.Identity.Name;
 
             if (menuService.CheckIfMenuExist(currentUser))
@@ -55,7 +56,7 @@ namespace Foodnetic.App.Controllers
             if (menu.RecipeMenus.Count <= 0)
             {
                 data =
-                   Constants.Constants.Messages.NotEnoughGroceriesErrorMsg;
+                   ConstantMessages.NotEnoughGroceriesErrorMsg;
             }
 
             return RedirectToAction("Index", new { Data = data });
@@ -93,34 +94,38 @@ namespace Foodnetic.App.Controllers
                 var bindingModel = new AllMenusViewModel
                 {
                     CreatedOn = menu.CreatedOn,
-                    BreakfastRecipe = "-",
-                    DessertRecipe = "-",
-                    DinnerRecipe = "-",
-                    LunchRecipe = "-"
+                    BreakfastRecipe = Dash,
+                    DessertRecipe = Dash,
+                    DinnerRecipe = Dash,
+                    LunchRecipe = Dash
                 };
 
                 if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Breakfast))
                 {
-                    bindingModel.BreakfastRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Breakfast)?.Recipe.Name;
+                    var recipe = menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Breakfast)?.Recipe;
+                    bindingModel.BreakfastRecipe = recipe.Name;
+                    bindingModel.BreakfastRecipeId = recipe.Id;
                 }
 
                 if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Lunch))
                 {
-                    bindingModel.LunchRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Lunch)?.Recipe.Name;
+                    var recipe = menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Lunch)?.Recipe;
+                    bindingModel.LunchRecipe = recipe.Name;
+                    bindingModel.LunchRecipeId = recipe.Id;
                 }
 
                 if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Dinner))
                 {
-                    bindingModel.DinnerRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dinner)?.Recipe.Name;
+                    var recipe = menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dinner)?.Recipe;
+                    bindingModel.DinnerRecipe = recipe.Name;
+                    bindingModel.DinnerRecipeId = recipe.Id;
                 }
 
                 if (menu.RecipeMenus.Any(x => x.MenuType == DishType.Dessert))
                 {
-                    bindingModel.DessertRecipe =
-                        menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dessert)?.Recipe.Name;
+                    var recipe = menu.RecipeMenus.FirstOrDefault(x => x.MenuType == DishType.Dessert)?.Recipe;
+                    bindingModel.DessertRecipe = recipe.Name;
+                    bindingModel.DessertRecipeId = recipe.Id;
                 }
 
                 menusBindingModels.Add(bindingModel);

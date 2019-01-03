@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Runtime.InteropServices.ComTypes;
 using AutoMapper;
 using Foodnetic.App.Mapping;
 using Foodnetic.Data;
 using Foodnetic.Models;
-using Foodnetic.Services;
 using Foodnetic.Services.Contracts;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
@@ -12,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests
+namespace Foodnetic.Services.Tests
 {
     public class BaseService
     {

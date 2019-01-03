@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Foodnetic.Constants\Foodnetic.Constants.csproj" />
+    <ProjectReference Include="..\Foodnetic.Constants\Foodnetic.Infrastructure.csproj" />
     <ProjectReference Include="..\Foodnetic.Data\Foodnetic.Data.csproj" />
     <ProjectReference Include="..\Foodnetic.Services\Foodnetic.Services.csproj" />
     <ProjectReference Include="..\Foodnetic.ViewModels\Foodnetic.ViewModels.csproj" />
@@ -25,6 +25,8 @@
   <ItemGroup>
     <Folder Include="Areas\Identity\Services\" />
     <Folder Include="Areas\Identity\Views\Shared\" />
+    <Folder Include="Areas\Recipes\Data\" />
+    <Folder Include="Areas\Recipes\Models\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,6 +43,30 @@
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Areas\Administration\Views\_ViewStart.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_AddedIngredientsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_DefaultNavbarPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_RecipeCommentsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_RecipeIngredientsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_SecondaryLayout.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\Shared\_ValidationScriptsPartial.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\_ViewImports.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Areas\Recipes\Views\_ViewStart.cshtml">
       <Pack>$(IncludeRazorContentInPack)</Pack>
     </Content>
     <Content Update="Views\Account\ExternalLogin.cshtml">

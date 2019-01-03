@@ -1,11 +1,10 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.ContactServiceTests
+namespace Foodnetic.Services.Tests.ContactServiceTests
 {
     public class ContactServiceTests : BaseService
     {

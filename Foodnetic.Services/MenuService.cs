@@ -29,7 +29,7 @@ namespace Foodnetic.Services
 
         public Menu Create(string username)
         {
-                var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
+            var userId = dbContext.Users.FirstOrDefault(x => x.UserName == username)?.Id;
 
             //user's groceries
             var fridgeIngredients = this.dbContext.
@@ -43,7 +43,8 @@ namespace Foodnetic.Services
             //all recipes
             var recipes = dbContext.RecipeTags
                     .Include(x => x.Recipe)
-                .ThenInclude(x => x.Ingredients)
+                    .ThenInclude(x => x.Ingredients)
+                    .Include(x => x.Recipe.Stars)
                 .ToList();
 
             //creating menu
@@ -112,14 +113,19 @@ namespace Foodnetic.Services
                 .Menus
                 .Include(x => x.RecipeMenus)
                 .ThenInclude(x => x.Recipe)
+                .ThenInclude(x => x.Stars)
                 .FirstOrDefault(x => x.UserId == userId && x.CreatedOn == DateTime.Today);
         }
 
         public ICollection<Menu> GetAllMenusForUser(string currentUser)
         {
-            var user = (FoodneticUser)dbContext.Users.FirstOrDefault(x => x.UserName == currentUser);
+            FoodneticUser user = (FoodneticUser)dbContext
+                .Users
+                .FirstOrDefault(x => x.UserName == currentUser);
 
-            if (user.DailyMenus.Any())
+            var dailyMenus = this.dbContext.Menus.Any(x => x.UserId == user.Id);
+
+            if (dailyMenus)
             {
                 return this.dbContext.Menus
                     .Include(x => x.RecipeMenus)
@@ -130,16 +136,20 @@ namespace Foodnetic.Services
             return null;
 
         }
-        
+
         private RecipeMenu CreateBreakfast(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.BreakfastString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == GlobalConstants.BreakfastString)?.Id;
+            var recipesOrdered = recipes
+                .OrderByDescending(x => x.Recipe.Rating)
+                .Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Breakfast);
+               
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Breakfast))
+            foreach (var recipeTag in recipesOrdered)
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
-               
+
                 if (isRecipeValid)
                 {
                     var menuBreakfast = CreateRecipeMenu(recipe, menu);
@@ -181,13 +191,16 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateLunch(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.LunchString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == GlobalConstants.LunchString)?.Id;
+            var recipesOrdered = recipes
+                .OrderByDescending(x => x.Recipe.Rating)
+                .Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Lunch);
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Lunch))
+            foreach (var recipeTag in recipesOrdered)
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
-               
+
                 if (isRecipeValid)
                 {
                     var menuBreakfast = CreateRecipeMenu(recipe, menu);
@@ -202,13 +215,16 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDinner(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.DinnerString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == GlobalConstants.DinnerString)?.Id;
+            var recipesOrdered = recipes
+                .OrderByDescending(x => x.Recipe.Rating)
+                .Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dinner);
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dinner))
+            foreach (var recipeTag in recipesOrdered)
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
-               
+
                 if (isRecipeValid)
                 {
                     var menuBreakfast = CreateRecipeMenu(recipe, menu);
@@ -223,13 +239,16 @@ namespace Foodnetic.Services
 
         private RecipeMenu CreateDessert(IEnumerable<RecipeTag> recipes, List<Grocery> fridgeIngredients, Menu menu)
         {
-            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == Constants.Constants.Strings.DessertString)?.Id;
+            var breakfastTagId = dbContext.Tags.FirstOrDefault(x => x.Name.ToLower() == GlobalConstants.DessertString)?.Id;
+            var recipesOrdered = recipes
+                .OrderByDescending(x => x.Recipe.Rating)
+                .Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dessert);
 
-            foreach (var recipeTag in recipes.Where(x => x.TagId == breakfastTagId || x.Recipe.DishType == DishType.Dessert))
+            foreach (var recipeTag in recipesOrdered)
             {
                 var recipe = recipeTag.Recipe;
                 var isRecipeValid = CheckIfUserHaveEnoughIngredients(recipe, fridgeIngredients);
-               
+
                 if (isRecipeValid)
                 {
                     var menuBreakfast = CreateRecipeMenu(recipe, menu);

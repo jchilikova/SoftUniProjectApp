@@ -7,11 +7,15 @@ namespace Foodnetic.ViewModels.Ingredients
 {
     public class CreateIngredientViewModel
     {
-        [Required(ErrorMessage = "Name is required!")]
+        private const string RequiredError = " is required";
+        private const int QuantityMinimumValue = 1;
+        private const int QuantityMaximumValue = 10_000;
+
+        [Required(ErrorMessage = nameof(Name) + RequiredError)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Quantity is required!")]
-        [Range(1, 2000, ErrorMessage = "Quantity must be in range 1 to 2000 grams")]
+        [Required(ErrorMessage = nameof(Quantity) + RequiredError)]
+        [Range(QuantityMinimumValue, QuantityMaximumValue, ErrorMessage = "Quantity must be 1 or more!")]
         public int Quantity { get; set; }
 
         public ICollection<IngredientsViewModel> Ingredients { get; set; }

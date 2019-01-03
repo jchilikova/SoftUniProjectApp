@@ -2,12 +2,11 @@
     ViewData["Title"] = "Index";
     Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
 }
-
 @using Foodnetic.Constants
-@using Foodnetic.ViewModels.Menu
 @using Foodnetic.ViewModels.Menus
 @model Foodnetic.ViewModels.Menus.MenuViewModel
 <style>
+
     .text-foods {
         font-family: "Playfair Display",sans-serif;
         font-style: italic;
@@ -17,13 +16,10 @@
         background-color: black;
         width: 50%
     }
-    .checked {
-        color: orange;
-    }
     .img {
         max-height: 18vw;
         min-height: 17vw;
-        max-width:23vw;
+        max-width: 23vw;
         min-width: 12vw;
         margin-right: 20px;
         margin-left: 0px;
@@ -36,16 +32,18 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">Daily Menu  @if (Model != null)
-                                                        {
-                                                            <a>for @DateTime.Today.Date.ToString("D")</a>
-                                                        }</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">
+            Daily Menu  @if (Model != null)
+            {
+                <a>for @DateTime.Today.Date.ToString("D")</a>
+            }
+        </h1>
         <hr class="hr-green" />
         @if (@Model == null)
         {
-        <div>
-            <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
-        </div>
+            <div>
+                <a asp-controller="Menus" asp-action="Create" class="btn btn-xl">Create Menu</a>
+            </div>
         }
         <div class="my-3">
             <a asp-action="History" asp-controller="Menus">View history...</a>
@@ -53,10 +51,10 @@
     </div>
     @if (@Model == null)
     {
-        if (this.ViewData[Constants.Strings.ErrorString] != null)
+        if (this.ViewData[GlobalConstants.ErrorString] != null)
         {
             <div class="bg-danger text-center container rounded mt-3 py-3">
-                <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+                <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
             </div>
         }
         <div class="text-center my-5">
@@ -71,43 +69,16 @@
                 <h2 class="text-foods">
                     Breakfast
                 </h2>
-                @if (@Model.Breakfast != null)
+            @if (@Model.Breakfast != null)
+            {
                 {
-                    var rating = @Model.Breakfast.Rating;
-                    <div class="my-3">
-                        <img src="@Model.Breakfast.PictureUrl" class="img" />
-                    </div>
-                    <div><h4>@Model.Breakfast.Name</h4></div>
-                    <div>
-                        <p>@Model.Breakfast.Description</p>
-                    </div>
-                    <div>
-                        @for (int j = 0; j < Math.Truncate(rating); j++)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        @if (rating % 1 == 0)
-                        {
-                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                        else
-                        {
-                            <span class="fa fa-star-half checked"></span>
-                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                    </div>
-                    <div><a asp-route-id="@Model.Breakfast.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                    await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Breakfast);
                 }
-                else
-                {
-                    <h4>You don't have enough grocery for breakfast.</h4>
-                }
+            }
+            else
+            {
+                <h4>You don't have enough grocery for breakfast.</h4>
+            }
             </div>
             <div class="col-md-3">
                 <h2 class="text-foods">
@@ -115,36 +86,9 @@
                 </h2>
                 @if (@Model.Lunch != null)
                 {
-                    var rating = @Model.Lunch.Rating;
-                    <div class="my-3">
-                        <img src="@Model.Lunch.PictureUrl" class="img" />
-                    </div>
-                    <div><h4>@Model.Lunch.Name</h4></div>
-                    <div>
-                        <p>@Model.Lunch.Description</p>
-                    </div>
-                    <div>
-                        @for (int j = 0; j < Math.Truncate(rating); j++)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        @if (rating % 1 == 0)
-                        {
-                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                        else
-                        {
-                            <span class="fa fa-star-half checked"></span>
-                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                    </div>
-                    <div><a asp-route-id="@Model.Lunch.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                    {
+                        await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Lunch);
+                    }
                 }
                 else
                 {
@@ -157,36 +101,9 @@
                 </h2>
                 @if (@Model.Dinner != null)
                 {
-                    var rating = @Model.Dinner.Rating;
-                    <div class="my-3">
-                        <img src="@Model.Dinner.PictureUrl" class="img" />
-                    </div>
-                    <div><h4>@Model.Dinner.Name</h4></div>
-                    <div>
-                        <p>@Model.Dinner.Description</p>
-                    </div>
-                    <div>
-                        @for (int j = 0; j < Math.Truncate(rating); j++)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        @if (rating % 1 == 0)
-                        {
-                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                        else
-                        {
-                            <span class="fa fa-star-half checked"></span>
-                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                    </div>
-                    <div><a asp-route-id="@Model.Dinner.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                    {
+                        await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Dinner);
+                    }
                 }
                 else
                 {
@@ -199,36 +116,9 @@
                 </h2>
                 @if (@Model.Dessert != null)
                 {
-                    var rating = @Model.Dessert.Rating;
-                    <div class="my-3">
-                        <img src="@Model.Dessert.PictureUrl" class="img" />
-                    </div>
-                    <div><h4>@Model.Dessert.Name</h4></div>
-                    <div>
-                        <p>@Model.Dessert.Description</p>
-                    </div>
-                    <div>
-                        @for (int j = 0; j < Math.Truncate(rating); j++)
-                        {
-                            <span class="fa fa-star checked"></span>
-                        }
-                        @if (rating % 1 == 0)
-                        {
-                            for (int j = 0; j < 5 - Math.Truncate(rating); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                        else
-                        {
-                            <span class="fa fa-star-half checked"></span>
-                            for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
-                            {
-                                <span class="fa fa-star"></span>
-                            }
-                        }
-                    </div>
-                    <div><a asp-route-id="@Model.Dessert.Id" asp-action="Recipe" asp-controller="Recipes">View recipe...</a></div>
+                    {
+                        await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Dessert);
+                    }
                 }
                 else
                 {
@@ -236,8 +126,6 @@
                 }
             </div>
 
-
         </div>
     }
 </body>
-

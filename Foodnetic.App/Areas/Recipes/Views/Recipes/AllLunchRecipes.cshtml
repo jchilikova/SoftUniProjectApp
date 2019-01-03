@@ -1,5 +1,5 @@
 ﻿@{
-    Layout = "~/Views/Shared/_SecondaryLayout.cshtml";
+    Layout = "~/Areas/Recipes/Views/Shared/_SecondaryLayout.cshtml";
 }
 @using Foodnetic.Constants
 @using Foodnetic.ViewModels.Recipes
@@ -24,7 +24,7 @@
         min-width: 17vw;
         margin-right: 20px;
         margin-left: 0px;
-    }   
+    }
 </style>
 <body>
     <header>
@@ -33,28 +33,28 @@
         }
     </header>
     <div class="intro-text text-center">
-        <h1 class="intro-lead-in mb-4 mt-4">All Breakfast Recipes</h1>
+        <h1 class="intro-lead-in mb-4 mt-4">All Lunch Recipes</h1>
         <hr class="hr-green" />
         <a asp-controller="Recipes" asp-action="AddIngredients" class="btn btn-xl">Create Recipe</a>
     </div>
-    @if (this.ViewData[Constants.Strings.ErrorString] != null)
+    @if (this.ViewData[GlobalConstants.ErrorString] != null)
     {
         <div class="bg-danger text-center container rounded mt-3 py-3">
-            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+            <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
         </div>
     }
-        <div class="dropdown text-center mt-5">
-            <button class="btn btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Categories
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" asp-action="All" asp-controller="Recipes">All</a>
-                <a class="dropdown-item" asp-action="AllBreakfastRecipes" asp-controller="Recipes">Breakfast recipes</a>
-                <a class="dropdown-item" asp-action="AllLunchRecipes" asp-controller="Recipes">Lunch recipes</a>
-                <a class="dropdown-item" asp-action="AllDinnerRecipes" asp-controller="Recipes">Dinner recipes</a>
-                <a class="dropdown-item" asp-action="AllDessertRecipes" asp-controller="Recipes">Dessert recipes</a>
-            </div>
+    <div class="dropdown text-center mt-5">
+        <button class="btn btn-lg dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Categories
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <a class="dropdown-item" asp-action="All" asp-controller="Recipes">All</a>
+            <a class="dropdown-item" asp-action="AllBreakfastRecipes" asp-controller="Recipes">Breakfast recipes</a>
+            <a class="dropdown-item"asp-action="AllLunchRecipes" asp-controller="Recipes">Lunch recipes</a>
+            <a class="dropdown-item"asp-action="AllDinnerRecipes" asp-controller="Recipes">Dinner recipes</a>
+            <a class="dropdown-item"asp-action="AllDessertRecipes" asp-controller="Recipes">Dessert recipes</a>
         </div>
+    </div>
     @if (Model != null)
     {
         var recipes = Model as AllRecipesViewModel[] ?? Model.ToArray();
@@ -99,7 +99,7 @@
                     </div>
                     <div><h5>by @item.Author</h5></div>
                     <div class="my-3"><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
-                    @if (this.User.IsInRole(Constants.Strings.ModeratorRole))
+                    @if (this.User.IsInRole(GlobalConstants.ModeratorRole))
                     {
                         <form class="my-3" asp-controller="Moderators" asp-action="DeleteRecipe" method="post">
                             <input type="text" name="@(nameof(item.Id))" value="@item.Id" hidden />
@@ -120,7 +120,7 @@
         }
 
         <div class="row d-flex justify-content-center my-5">
-            @Html.PagedListPager((IPagedList) Model, page => Url.Action("AllBreakfastRecipes", new {page = page}),
+            @Html.PagedListPager((IPagedList) Model, page => Url.Action("AllLunchRecipes", new {page = page}),
                 new PagedListRenderOptions
                 {
                     LiElementClasses = new string[] {"page-item"},

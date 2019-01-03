@@ -7,7 +7,7 @@
 
 @if (SignInManager.IsSignedIn(User))
 {
-    if (User.IsInRole(Constants.Strings.AdministratorRole))
+    if (User.IsInRole(GlobalConstants.AdministratorRole))
     {
         <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
@@ -28,7 +28,7 @@
                             <a asp-action="Index" asp-controller="Home">Home</a>
                         </li>
                         <li>
-                            <a asp-action="All" asp-controller="Recipes">Recipes</a>
+                            <a asp-action="All" asp-controller="Recipes" asp-area="Recipes" class="nav-link">Recipes</a>
                         </li>
                         <li>
                             <a asp-action="Index" asp-controller="Menus">Menu</a>
@@ -79,7 +79,7 @@
                             <a asp-action="Index" asp-controller="Home">Home</a>
                         </li>
                         <li>
-                            <a asp-action="All" asp-controller="Recipes">Recipes</a>
+                            <a asp-action="All" asp-controller="Recipes" asp-area="Recipes" class="nav-link">Recipes</a>
                         </li>
                         <li>
                             <a asp-action="Index" asp-controller="Menus">Menu</a>

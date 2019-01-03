@@ -1,0 +1,40 @@
+﻿@model Foodnetic.ViewModels.Menus.MenuRecipeViewModel
+
+@{
+    var rating = Model.Rating;
+}
+<style>
+    .checked {
+        color: orange;
+    }
+</style>
+<div class="my-3">
+    <img src="@Model.PictureUrl" class="img" />
+</div>
+<div><h4>@Model.Name</h4></div>
+<div>
+    <p>@Model.Description</p>
+</div>
+<div>
+    @for (int j = 0; j < Math.Truncate(rating); j++)
+    {
+        <span class="fa fa-star checked"></span>
+    }
+    @if (rating % 1 == 0)
+    {
+        for (int j = 0; j < 5 - Math.Truncate(rating); j++)
+        {
+            <span class="fa fa-star"></span>
+        }
+    }
+    else
+    {
+        <span class="fa fa-star-half checked"></span>
+        for (int j = 0; j < 5 - (Math.Truncate(rating) + 1); j++)
+        {
+            <span class="fa fa-star"></span>
+        }
+    }
+</div>
+<div><a asp-route-id="@Model.Id" asp-action="Recipe" asp-controller="Recipes" asp-area="Recipes" class="btn btn-green mt-3">View recipe...</a></div>
+

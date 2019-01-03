@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Foodnetic.Constants;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Account;
@@ -27,7 +28,7 @@ namespace Foodnetic.App.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel bindingModel)
+        public IActionResult Login(LoginViewModel bindingModel)
         {
             if (!ModelState.IsValid) return View(bindingModel);
 
@@ -38,9 +39,9 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.UserAlreadyExistsErrorMsg;
+            this.ViewData[GlobalConstants.ErrorString] = ConstantMessages.UserAlreadyExistsErrorMsg;
 
-            return View(bindingModel); 
+            return View(bindingModel);
         }
 
         [HttpGet]
@@ -56,7 +57,7 @@ namespace Foodnetic.App.Controllers
 
             if (userExists)
             {
-                this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.UsernameAlreadyExistsErrorMsg;
+                this.ViewData[GlobalConstants.ErrorString] = ConstantMessages.UsernameAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
@@ -64,7 +65,7 @@ namespace Foodnetic.App.Controllers
 
             if (emailExists)
             {
-                this.ViewData[Constants.Constants.Strings.ErrorString] = Constants.Constants.Messages.EmailAlreadyExistsErrorMsg;
+                this.ViewData[GlobalConstants.ErrorString] = ConstantMessages.EmailAlreadyExistsErrorMsg;
                 return this.View(bindingModel);
             }
 
@@ -105,7 +106,7 @@ namespace Foodnetic.App.Controllers
         [HttpPost]
         public IActionResult ExternalLogin(string provider, string returnUrl = null)
         {
-            const string redirectUrl = Constants.Constants.Strings.ExternalLoginRedirect;
+            const string redirectUrl = GlobalConstants.ExternalLoginRedirect;
             var properties = this.signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
             return new ChallengeResult(provider, properties);
         }

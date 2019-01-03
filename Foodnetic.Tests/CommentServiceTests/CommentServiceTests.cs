@@ -1,12 +1,12 @@
 ﻿using System.Linq;
-using Foodnetic.Constants;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Comments;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.CommentServiceTests
+namespace Foodnetic.Services.Tests.CommentServiceTests
 {
     public class CommentServiceTests : BaseService
     {
@@ -60,7 +60,7 @@ namespace Foodnetic.Tests.CommentServiceTests
            this.CommentService.AlterCommentContent("1");
             var result = this.DbContext.Comments.FirstOrDefault()?.Content;
 
-            Assert.AreEqual(result, Constants.Constants.Messages.ModeratorDeleteCommentContentMsg);
+            Assert.AreEqual(result, ConstantMessages.ModeratorDeleteCommentContentMsg);
         }
     }
 }

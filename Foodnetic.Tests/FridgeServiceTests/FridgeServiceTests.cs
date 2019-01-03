@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.FridgeServiceTests
+namespace Foodnetic.Services.Tests.FridgeServiceTests
 {
     public class FridgeServiceTests : BaseService
     {

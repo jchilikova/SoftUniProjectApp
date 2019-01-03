@@ -4,14 +4,17 @@ namespace Foodnetic.ViewModels.Account
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage = "Username is required!")]
+        private const string RequiredError = " is required";
+        private const string RememberMeString = "Remember me?";
+
+        [Required(ErrorMessage = nameof(Username) + RequiredError)]
         public string Username { get; set; }
 
-        [Required(ErrorMessage = "Password is required!")]
+        [Required(ErrorMessage =  nameof(Password) + RequiredError)]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name ="Remember me?")]
+        [Display(Name = RememberMeString)]
         public bool RememberMe { get; set; }
     }
 }

@@ -4,16 +4,21 @@ namespace Foodnetic.ViewModels.Contact
 {
     public class ContactUsViewModel
     {
-        [Required(ErrorMessage = "Name is required!")]
+        private const string RequiredError = " is required";
+        private const string ValidEmailError = "Must be a valid Email!";
+        private const int MessageMaximumCharacters = 200;
+        private const int MessageMinimumCharacters = 2;
+
+        [Required(ErrorMessage = nameof(Name) + RequiredError)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Email is required!")]
+        [Required(ErrorMessage = nameof(Email) + RequiredError)]
         [EmailAddress]
-        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Must be a valid Email!")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = ValidEmailError)]
         public string Email { get; set; }
 
-        [Required(ErrorMessage = "Message is required!")]
-        [StringLength(200, MinimumLength = 2, ErrorMessage = "Message must contain at least 2 characters and maximum 200!")]
+        [Required(ErrorMessage = nameof(Message) + RequiredError)]
+        [StringLength(MessageMaximumCharacters, MinimumLength = MessageMinimumCharacters, ErrorMessage = "Message must contain at least 2 characters and maximum 200!")]
         public string Message { get; set; }
     }
 }

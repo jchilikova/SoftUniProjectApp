@@ -37,17 +37,17 @@ namespace Foodnetic.App.Middlewares
         {
             await roleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.AdministratorRole
+                Name =  GlobalConstants.AdministratorRole
             });
 
             await roleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.UserRole
+                Name =  GlobalConstants.UserRole
             });
 
             await roleManager.CreateAsync(new IdentityRole
             {
-                Name =  Constants.Constants.Strings.ModeratorRole
+                Name =  GlobalConstants.ModeratorRole
             });
 
             var user = new FoodneticUser
@@ -61,7 +61,7 @@ namespace Foodnetic.App.Middlewares
 
             await userManager.CreateAsync(user, AdminString);
 
-            await userManager.AddToRoleAsync(user, Constants.Constants.Strings.AdministratorRole);
+            await userManager.AddToRoleAsync(user, GlobalConstants.AdministratorRole);
         }
     }
 }

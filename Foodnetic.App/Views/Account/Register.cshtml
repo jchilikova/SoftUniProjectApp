@@ -18,10 +18,10 @@
     await Html.RenderPartialAsync("_LoginRegisterNavbarPartial");
 }
 <main>
-    @if (ViewData.ContainsKey(Constants.Strings.ErrorString))
+    @if (ViewData.ContainsKey(GlobalConstants.ErrorString))
     {
         <div class="bg-danger text-center container rounded mt-3 py-3">
-            <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+            <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
         </div>
     }
     <div class="col-lg-4 col-lg-offset-4 dark-bg col-md-3 col-sm-3 col-sm-offset-4" style="border-radius: 2rem !important; margin-top: 10%;   background: rgba(0, 0, 0, 0.5);">

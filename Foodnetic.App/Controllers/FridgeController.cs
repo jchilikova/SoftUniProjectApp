@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using AutoMapper;
+using Foodnetic.Constants;
+using Foodnetic.Infrastructure;
 using Foodnetic.Models;
 using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Groceries;
@@ -50,7 +52,7 @@ namespace Foodnetic.App.Controllers
         [Authorize]
         public IActionResult AddGrocery(string searchString, string data)
         {
-            this.ViewData[Constants.Constants.Strings.ErrorString] = data;
+            this.ViewData[GlobalConstants.ErrorString] = data;
 
             var products = this.productService.GetAll();
 
@@ -71,7 +73,7 @@ namespace Foodnetic.App.Controllers
                 return RedirectToAction("Index");
             }
 
-            var data = Constants.Constants.Messages.InvalidDataMsg;
+            var data = ConstantMessages.InvalidDataMsg;
             return RedirectToAction("AddGrocery", new {Data = data});
         }
 

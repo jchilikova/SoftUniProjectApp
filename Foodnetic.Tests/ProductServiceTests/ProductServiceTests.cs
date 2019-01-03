@@ -5,7 +5,7 @@ using Foodnetic.Services.Contracts;
 using Microsoft.Extensions.DependencyInjection;
 using NUnit.Framework;
 
-namespace Foodnetic.Tests.ProductServiceTests
+namespace Foodnetic.Services.Tests.ProductServiceTests
 {
     public class ProductServiceTests : BaseService
     {

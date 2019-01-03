@@ -26,10 +26,10 @@
     <h1 class="intro-lead-in mb-4 mt-4">Virtual Fridge</h1>
     <hr class="hr-black" />
 </div>
-@if (this.ViewData[Constants.Strings.ErrorString] != null)
+@if (this.ViewData[GlobalConstants.ErrorString] != null)
 {
     <div class="bg-danger text-center container rounded mt-3 py-3">
-        <h5 class="text-white">@ViewData[Constants.Strings.ErrorString]</h5>
+        <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
     </div>
 }
     <div class="container col-md-5 text-center">

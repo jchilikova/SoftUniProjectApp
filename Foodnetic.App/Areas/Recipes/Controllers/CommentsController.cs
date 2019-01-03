@@ -1,10 +1,12 @@
-﻿using Foodnetic.Services.Contracts;
+﻿using Foodnetic.Constants;
+using Foodnetic.Services.Contracts;
 using Foodnetic.ViewModels.Comments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Foodnetic.App.Controllers
+namespace Foodnetic.App.Areas.Recipes.Controllers
 {
+    [Area(GlobalConstants.RecipesAreaString)]
     public class CommentsController : Controller
     {
         private readonly ICommentService commentService;

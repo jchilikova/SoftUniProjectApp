@@ -1,4 +1,4 @@
-﻿namespace Foodnetic.ViewModels.Menu
+﻿namespace Foodnetic.ViewModels.Menus
 {
     public class MenuRecipeViewModel
     {

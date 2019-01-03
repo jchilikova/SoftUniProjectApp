@@ -35,10 +35,10 @@
                 {
                     <tr class="row border">
                         <td class="col-md-4">@menusView.CreatedOn.ToShortDateString()</td>
-                        <td class="col-md-2">@menusView.BreakfastRecipe</td>
-                        <td class="col-md-2">@menusView.LunchRecipe</td>
-                        <td class="col-md-2">@menusView.DinnerRecipe</td>
-                        <td class="col-md-2">@menusView.DessertRecipe</td>
+                        <td class="col-md-2"><a asp-route-id="@menusView.BreakfastRecipeId" asp-action="Recipe" asp-controller="Recipes" asp-area="Recipes">@menusView.BreakfastRecipe</a></td>
+                        <td class="col-md-2"><a asp-route-id="@menusView.LunchRecipeId" asp-action="Recipe" asp-controller="Recipes" asp-area="Recipes">@menusView.LunchRecipe</a></td>
+                        <td class="col-md-2"><a asp-route-id="@menusView.DinnerRecipeId" asp-action="Recipe" asp-controller="Recipes" asp-area="Recipes">@menusView.DinnerRecipe</a></td>
+                        <td class="col-md-2"><a asp-route-id="@menusView.DessertRecipeId" asp-action="Recipe" asp-controller="Recipes" asp-area="Recipes">@menusView.DessertRecipe</a></td>
                     </tr>
                 }
             }

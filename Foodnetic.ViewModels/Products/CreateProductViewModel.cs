@@ -6,10 +6,12 @@ namespace Foodnetic.ViewModels.Products
 {
     public class CreateProductViewModel
     {
-        [Required(ErrorMessage = "Name of product is required!")]
+        private const string RequiredError = " is required";
+
+        [Required(ErrorMessage = nameof(Name) + RequiredError)]
         public string Name { get; set; }
 
-        [Required(ErrorMessage = "Product type is required!")]
+        [Required(ErrorMessage = nameof(ProductType) + RequiredError)]
         [DisplayName("Product type")]
         public ProductType ProductType { get; set; }
     }

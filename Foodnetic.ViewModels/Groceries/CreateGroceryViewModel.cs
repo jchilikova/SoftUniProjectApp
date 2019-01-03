@@ -8,14 +8,19 @@ namespace Foodnetic.ViewModels.Groceries
 {
     public class CreateGroceryViewModel
     {
-        [Required(ErrorMessage = "Product is required!")]
+        private const string RequiredError = " is required";
+        private const int QuantityMinimumValue = 1;
+        private const int QuantityMaximumValue = 10_000;
+
+        [Required(ErrorMessage = nameof(ProductName) + RequiredError)]
         public string ProductName { get; set; }
 
-        [Required(ErrorMessage = "Quantity is required!")]
-        [Range(1, int.MaxValue, ErrorMessage = "Quantity must be 1 or more!")]
+        [Required(ErrorMessage = nameof(Quantity) + RequiredError)]
+        [Range(QuantityMinimumValue, QuantityMaximumValue, ErrorMessage = "Quantity must be 1 or more!")]
         public int Quantity { get; set; }
 
-        [Required(ErrorMessage = "Expiration Date is required!")]
+        [Required(ErrorMessage = nameof(ExpirationDate) + RequiredError)]
+        [Display(Name = "Expiration Date")]
         [DataType(DataType.Date)]
         public DateTime ExpirationDate { get; set; }
 

@@ -22,7 +22,7 @@
     <h1 class="intro-lead-in mb-4 mt-4">All Users</h1>
     <hr class="hr-green" />
 </div>
-@if (this.ViewData[Constants.Strings.SuccessString] != null)
+@if (this.ViewData[GlobalConstants.SuccessString] != null)
 {
     <div class="bg-success text-center container rounded mt-3 py-3">
         <h5 class="text-dark">@ViewData["Success"]</h5>
@@ -33,7 +33,7 @@
             <tr class="row border">
                 <th class="col-md-6">Id</th>
                 <th class="col-md-3">Name</th>
-                <th class="col-md-3">Product Type</th>
+                <th class="col-md-3">Promote/Demote</th>
             </tr>
         </thead>
         <tbody>
@@ -46,7 +46,7 @@
                         @{
                             var user = this.SignInManager.UserManager.Users.FirstOrDefault(x => x.UserName == item.Username);
                         }
-                        @if (this.SignInManager.UserManager.IsInRoleAsync(user, Constants.Strings.ModeratorRole).Result)
+                        @if (this.SignInManager.UserManager.IsInRoleAsync(user, GlobalConstants.ModeratorRole).Result)
                         {
                             <a asp-action="DemoteUserFromModerator" asp-controller="Admins" asp-route-id="@item.Id" class="btn btn-green">Demote</a>
                         }
