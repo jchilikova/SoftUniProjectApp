@@ -159,5 +159,56 @@ namespace Foodnetic.Services.Tests.FridgeServiceTests
 
             Assert.AreEqual(2, fridge.Groceries.Count);
         }
+
+        [Test]
+        public void CreateGroceryShouldSumQuantityIfGroceryAlreadyExists()
+        {
+            var user = new FoodneticUser
+            {
+                Id = "1",
+                UserName = "test"
+            };
+
+            var product = new Product
+            {
+                Name = "test",
+                ProductType = ProductType.Fruits
+            };
+
+            var virtualFridge = new VirtualFridge
+            {
+                OwnerId = "1",
+                Id = "test"
+            };
+
+            var grocery = new Grocery
+            {
+                ExpirationDate = DateTime.Now,
+                Name = "tomato",
+                Quantity = 40,
+                VirtualFridgeId = "test"
+            };
+
+            virtualFridge.Groceries.Add(grocery);
+            this.DbContext.VirtualFridges.Add(virtualFridge);
+            this.DbContext.Users.Add(user);
+            this.DbContext.Products.Add(product);
+            this.DbContext.SaveChanges();
+
+            var bindingModel = new CreateGroceryViewModel
+            {
+                ProductName = "tomato",
+                ExpirationDate = DateTime.Now,
+                Quantity = 60
+            };
+
+            this.FridgeService.CreateGrocery(bindingModel, "test");
+
+            var fridge = this.DbContext.VirtualFridges.Include(f => f.Groceries).FirstOrDefault(x => x.OwnerId == "1");
+
+            Assert.AreEqual(fridge.Groceries.FirstOrDefault(x => x.Name == "tomato").Quantity, 100);
+        }
+
+
     }
 }

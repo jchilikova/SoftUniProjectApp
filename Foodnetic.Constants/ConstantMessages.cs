@@ -19,6 +19,7 @@
         public const string NoContentCommentMsg = "Rated {0}/5";
 
         public const string InvalidDataMsg = "Invalid data";
+        public const string MenuForTodayAlreadyExists = "You already have menu for today. Come back tomorrow!";
     }
 }
 

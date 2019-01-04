@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Foodnetic.Models;
 using Foodnetic.Models.Enums;
 using Foodnetic.Services.Contracts;
@@ -45,10 +46,78 @@ namespace Foodnetic.Services.Tests.RecipeServiceTests
 
             var result = this.DbContext.Recipes.
                 Include(x => x.Ingredients)
-                .FirstOrDefault(x => x.IsInCreate).Ingredients.Count;
+                .FirstOrDefault(x => x.IsInCreate && x.AuthorId == "test").Ingredients.Count;
 
 
             Assert.AreEqual(result, 1);
+        }
+
+        [Test]
+        public void CancelRecipeShouldDoNothingIfRecipeDoesNotExists()
+        {
+            var user = new FoodneticUser
+            {
+                Id = "test",
+                UserName = "test"
+            };
+
+            var recipe = new Recipe
+            {
+                Id = "testRecipe",
+                AuthorId = user.Id,
+            };
+
+            this.DbContext.Users.Add(user);
+            this.DbContext.Recipes.Add(recipe);
+            this.DbContext.SaveChanges();
+
+            this.RecipeService.CancelRecipe(user.UserName);
+
+            var result = this.DbContext.Recipes.Any(x => x.Id == "testRecipe");
+
+            Assert.IsTrue(result);
+        }
+
+        [Test]
+        public void CreateIngredientShouldSumIngredientQuantityIfAlreadyExists()
+        {
+            var user = new FoodneticUser
+            {
+                Id = "test",
+                UserName = "test"
+            };
+
+            var recipe = new Recipe
+            {
+                Id = "testRecipe",
+                IsInCreate = true,
+                AuthorId = user.Id
+            };
+
+            recipe.Ingredients.Add(new Ingredient
+            {
+                Name = "test",
+                Quantity = 100
+            });
+
+            this.DbContext.Users.Add(user);
+            this.DbContext.Recipes.Add(recipe);
+            this.DbContext.SaveChanges();
+
+            var bindingModel = new CreateIngredientViewModel
+            {
+                Name = "test",
+                Quantity = 100
+            };
+
+            this.RecipeService.CreateIngredient(bindingModel, user.UserName);
+
+            var result = this.DbContext.Recipes.
+                Include(x => x.Ingredients)
+                .FirstOrDefault(x => x.IsInCreate).Ingredients.FirstOrDefault(x => x.Name == "test").Quantity;
+
+
+            Assert.AreEqual(200, result);
         }
 
         [Test]
@@ -64,8 +133,8 @@ namespace Foodnetic.Services.Tests.RecipeServiceTests
             {
                 Id = "testRecipe",
                 IsInCreate = true,
-                AuthorId = user.Id
-            };
+                AuthorId = user.Id,
+            }; 
 
             this.DbContext.Users.Add(user);
             this.DbContext.Recipes.Add(recipe);
@@ -74,6 +143,43 @@ namespace Foodnetic.Services.Tests.RecipeServiceTests
             this.RecipeService.CancelRecipe(user.UserName);
 
             var result = this.DbContext.Recipes.Any(x => x.IsInCreate && x.AuthorId == "test");
+
+            Assert.IsFalse(result);
+        }
+
+        [Test]
+        public void CancelRecipeShouldDeleteInIngredientsOfInCreateRecipe()
+        {
+            var user = new FoodneticUser
+            {
+                Id = "test",
+                UserName = "test"
+            };
+
+            var recipe = new Recipe
+            {
+                Id = "testRecipe",
+                IsInCreate = true,
+                AuthorId = user.Id,
+            };
+
+            var ingredient = new Ingredient
+            {
+                RecipeId = "testRecipe",
+                Name = "test"
+            };
+
+            this.DbContext.Ingredients.Add(ingredient);
+
+            recipe.Ingredients.Add(ingredient);
+
+            this.DbContext.Users.Add(user);
+            this.DbContext.Recipes.Add(recipe);
+            this.DbContext.SaveChanges();
+
+            this.RecipeService.CancelRecipe(user.UserName);
+
+            var result = this.DbContext.Ingredients.Any(x => x.Name == "test");
 
             Assert.IsFalse(result);
         }
@@ -110,14 +216,52 @@ namespace Foodnetic.Services.Tests.RecipeServiceTests
                 Id = "test2"
             };
 
+            var recipe3 = new Recipe
+            {
+                Id = "test3",
+                IsDeleted = true
+            };
+
             this.DbContext.Recipes.Add(recipe);
             this.DbContext.Recipes.Add(recipe2);
+            this.DbContext.Recipes.Add(recipe3);
             this.DbContext.SaveChanges();
 
             var result = this.RecipeService.GetAll().Count();
 
             Assert.AreEqual(result, 2);
         }
+
+        [Test]
+        public void GetAllRecipesShouldReturnAllRecipesNotInCreate()
+        {
+            var recipe = new Recipe
+            {
+                Id = "test"
+            };
+
+            var recipe2 = new Recipe
+            {
+                Id = "test2",
+                IsInCreate = true
+            };
+
+            var recipe3 = new Recipe
+            {
+                Id = "test3",
+                IsDeleted = true
+            };
+
+            this.DbContext.Recipes.Add(recipe);
+            this.DbContext.Recipes.Add(recipe2);
+            this.DbContext.Recipes.Add(recipe3);
+            this.DbContext.SaveChanges();
+
+            var result = this.RecipeService.GetAll().Count();
+
+            Assert.AreEqual(result, 1);
+        }
+
 
 
         [Test]

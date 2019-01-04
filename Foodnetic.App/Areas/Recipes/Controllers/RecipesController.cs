@@ -21,6 +21,7 @@ namespace Foodnetic.App.Areas.Recipes.Controllers
     [Area(GlobalConstants.RecipesAreaString)]
     public class RecipesController : Controller
     {
+        private const string ImageString = "data:image/jpg;base64,{0}";
         private readonly IRecipeService recipeService;
         private readonly IMapper mapper;
         private readonly IProductService productService;
@@ -44,7 +45,10 @@ namespace Foodnetic.App.Areas.Recipes.Controllers
                 return this.View();
             }
 
-            var recipeModels = this.MapAllRecipes(recipes);
+            var orderedRecipes = recipes.OrderByDescending(x => x.Rating).ThenByDescending(x => x.Comments.Count)
+                .ThenBy(x => x.Name);
+
+            var recipeModels = this.MapAllRecipes(orderedRecipes);
 
             var nextPage = page ?? 1;
 
@@ -275,7 +279,7 @@ namespace Foodnetic.App.Areas.Recipes.Controllers
             var recipeModel = this.mapper.Map<RecipeViewModel>(recipe);
 
             var base64 = Convert.ToBase64String(recipe.Image);
-            var imgSrc = $"data:image/jpg;base64,{base64}";
+            var imgSrc = string.Format(ImageString, base64);
             recipeModel.PictureUrl = imgSrc;
 
             foreach (var ingredient in recipe.Ingredients)

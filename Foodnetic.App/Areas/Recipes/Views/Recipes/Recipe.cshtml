@@ -10,13 +10,18 @@
     .checked {
         color: orange;
     }
+
     .img {
         max-height: 20vw;
         min-height: 17vw;
-        max-width:23vw;
+        max-width: 23vw;
         min-width: 17vw;
         margin-right: 20px;
         margin-left: 0px;
+    }
+
+    .border-3 {
+        border-width: 5px !important;
     }
 </style>
 
@@ -30,10 +35,10 @@
         <h1 class="intro-lead-in mb-4 mt-4">@Model.Name</h1>
         <hr class="hr-green" />
     </div>
-    <div class="row d-flex justify-content-between">
-        <div class="col-md-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-4 py-3 border border-3 border-right-0">
             <div class="container-fluid text-center">
-                <img src="@Model.PictureUrl" class="img"/>
+                <img src="@Model.PictureUrl" class="img" />
             </div>
             <div class="my-3 text-center d-flex justify-content-around">
                 <i class="fa fa-clock" aria-hidden="true"> Preparation: @Model.PreparationTime minutes</i>
@@ -62,48 +67,56 @@
                 }
             </div>
             <div class="text-center my-2">
-                <h4>Description</h4>
-                <h5>@Model.Description</h5>
-                @if (this.User.IsInRole(GlobalConstants.ModeratorRole))
-                {
-                    <form asp-controller="Moderators" asp-action="DeleteRecipe" asp-area="Administration" method="post">
-                        <input type="text" name="@(nameof(@Model.Id))" value="@Model.Id" hidden/>
-                        <button type="submit" class="btn btn-xs">Delete</button>
-                        <br/>
-                    </form>
-                }
+                <h5>Author: @Model.Author</h5>
             </div>
+            @if (this.User.IsInRole(GlobalConstants.ModeratorRole))
+            {
+                <div class="text-center">
+                    <form asp-controller="Moderators" asp-action="DeleteRecipe" asp-area="Administration" method="post">
+                        <input type="text" name="@(nameof(@Model.Id))" value="@Model.Id" hidden />
+                        <button type="submit" class="btn btn-xs">Delete</button>
+                        <br />
+                    </form>
+                </div>
+            }
         </div>
-        <div class="col-md-3 text-center">
-            <h4 class="mb-4">Ingredients</h4>
+        <div class="col-md-2 py-3 text-center border border-3 border-left-0">
+            <h4 class="mb-4"><b>Ingredients</b></h4>
             @{
                 await Html.RenderPartialAsync("_RecipeIngredientsPartial", Model.IngredientsViewModel);
             }
         </div>
-        <div class="col-md-5 text-center">
-            <h4 class="mb-4">Directions</h4>
-            <h5>@Model.Directions</h5>
-        </div>
     </div>
-<hr class="hr-green" />
-<div class="text-center container my-5">
-    <h4 class="my-5">Comments</h4>
-    <form method="post" asp-controller="Comments" asp-action="Create">
-        <input hidden value="@Model.Id" name="RecipeId" id="RecipeId"/>
-        <textarea id="Content" name="Content" class="form-control" placeholder="write a comment..." rows="3"></textarea>
-        <label for="Rate" name="Rate">Rate</label>
-        <select id="Rate" name="Rate">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-        </select>
-        <button type="submit" class="btn btn-green pull-right my-4">Post</button>
-    </form>
-    @{
-        await Html.RenderPartialAsync("_RecipeCommentsPartial", Model.CommentViewModels);
-    }
-</div>
+    <div class="col-md-5 text-center container my-4 py-4">
+        <h4><b>Description</b></h4>
+        <h5>@Model.Description</h5>
+    </div>
+    <div class="col-md-5 text-center container">
+        <h4><b>Directions</b></h4>
+        <h5>@Model.Directions</h5>
+    </div>
+    <hr class="hr-green" />
+    <div class="text-center container my-5">
+        <h4 class="my-5">Comments</h4>
+            @if (@Model.CommentViewModels.All(x => x.Username != this.User.Identity.Name))
+            {
+                <form method="post" asp-controller="Comments" asp-action="Create">
+                    <input hidden value="@Model.Id" name="RecipeId" id="RecipeId" />
+                    <textarea id="Content" name="Content" class="form-control" placeholder="write a comment..." rows="3"></textarea>
+                    <label for="Rate" name="Rate">Rate</label>
+                    <select id="Rate" name="Rate">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                    <button type="submit" class="btn btn-green pull-right my-4">Post</button>
+                </form>
+            }
+        @{
+            await Html.RenderPartialAsync("_RecipeCommentsPartial", Model.CommentViewModels);
+        }
+    </div>
 
 </body>

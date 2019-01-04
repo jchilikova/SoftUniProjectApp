@@ -98,7 +98,7 @@
                         <p>@item.Description</p>
                     </div>
                     <div><h5>by @item.Author</h5></div>
-                    <div class="my-3"><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes">View more...</a></div>
+                    <div class="my-3"><a asp-route-id="@item.Id" asp-action="Recipe" asp-controller="Recipes"  class="btn btn-green">View more...</a></div>
                     @if (this.User.IsInRole(GlobalConstants.ModeratorRole))
                     {
                         <form class="my-3" asp-controller="Moderators" asp-action="DeleteRecipe" method="post">

@@ -49,9 +49,16 @@ namespace Foodnetic.App.Controllers
         public IActionResult Create()
         {
             var currentUser = this.User.Identity.Name;
+            string data = null;
+
+            if (this.menuService.CheckIfMenuExist(currentUser))
+            {
+                data = ConstantMessages.MenuForTodayAlreadyExists;
+                return RedirectToAction("Index", new { Data = data });
+            }
 
             var menu = this.menuService.Create(currentUser);
-            string data = null;
+          
 
             if (menu.RecipeMenus.Count <= 0)
             {

@@ -19,9 +19,9 @@ namespace Foodnetic.Services
             this.dbContext = dbContext;
         }
 
-        public void CreateGrocery(CreateGroceryViewModel bindingmodel, string username)
+        public void CreateGrocery(CreateGroceryViewModel bindingModel, string username)
         {
-            var product = this.dbContext.Products.FirstOrDefault(x => x.Name == bindingmodel.ProductName);
+            var product = this.dbContext.Products.FirstOrDefault(x => x.Name == bindingModel.ProductName);
 
             var user = (FoodneticUser)this.dbContext.Users.FirstOrDefault(x => x.UserName == username);
 
@@ -40,12 +40,12 @@ namespace Foodnetic.Services
 
             Grocery grocery;
 
-            if (this.CheckIfGroceryExists(bindingmodel.ProductName, fridge))
+            if (this.CheckIfGroceryExists(bindingModel.ProductName, fridge))
             {
-                grocery = fridge.Groceries.FirstOrDefault(g => g.Name == bindingmodel.ProductName);
+                grocery = fridge.Groceries.FirstOrDefault(g => g.Name == bindingModel.ProductName);
 
-                grocery.Quantity += bindingmodel.Quantity;
-                grocery.ExpirationDate = bindingmodel.ExpirationDate;
+                grocery.Quantity += bindingModel.Quantity;
+                grocery.ExpirationDate = bindingModel.ExpirationDate;
             }
             else
             {
@@ -53,8 +53,8 @@ namespace Foodnetic.Services
                 {
                     Name = product.Name,
                     ProductType = product.ProductType,
-                    ExpirationDate = bindingmodel.ExpirationDate,
-                    Quantity = bindingmodel.Quantity
+                    ExpirationDate = bindingModel.ExpirationDate,
+                    Quantity = bindingModel.Quantity
                 };
 
                 fridge.Groceries.Add(grocery);

@@ -16,6 +16,7 @@
         background-color: black;
         width: 50%
     }
+
     .img {
         max-height: 18vw;
         min-height: 17vw;
@@ -49,14 +50,14 @@
             <a asp-action="History" asp-controller="Menus">View history...</a>
         </div>
     </div>
+    @if (this.ViewData[GlobalConstants.ErrorString] != null)
+    {
+        <div class="bg-danger text-center container rounded mt-3 py-3">
+            <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
+        </div>
+    }
     @if (@Model == null)
     {
-        if (this.ViewData[GlobalConstants.ErrorString] != null)
-        {
-            <div class="bg-danger text-center container rounded mt-3 py-3">
-                <h5 class="text-white">@ViewData[GlobalConstants.ErrorString]</h5>
-            </div>
-        }
         <div class="text-center my-5">
             <h2 class="text-foods my-3">Create your own daily menu for breakfast, lunch, dinner and dessert!</h2>
         </div>
@@ -64,21 +65,21 @@
     }
     else
     {
-        <div class="row d-flex justify-content-between mx-2 mt-5 text-center">
+        <div class="row d-flex justify-content-between mx-2 mt-5 text-center mb-4">
             <div class="col-md-3">
                 <h2 class="text-foods">
                     Breakfast
                 </h2>
-            @if (@Model.Breakfast != null)
-            {
+                @if (@Model.Breakfast != null)
                 {
-                    await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Breakfast);
+                    {
+                        await Html.RenderPartialAsync("_RecipeFromMenuPartial", Model.Breakfast);
+                    }
                 }
-            }
-            else
-            {
-                <h4>You don't have enough grocery for breakfast.</h4>
-            }
+                else
+                {
+                    <h4>You don't have enough grocery for breakfast.</h4>
+                }
             </div>
             <div class="col-md-3">
                 <h2 class="text-foods">

@@ -7,7 +7,7 @@
 <hr>
 <div class="container mt-5">
     <ul class="media-list">
-        @foreach (var item in Model.OrderByDescending(x => x.PostedOn))
+        @foreach (var item in Model.OrderBy(x => x.PostedOn))
         {
             <li class="media">
                 <div class="media-body border my-3">

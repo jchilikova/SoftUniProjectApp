@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using Foodnetic.Models.Enums;
 
@@ -18,20 +19,28 @@ namespace Foodnetic.Models
 
         public string Id { get; set; }
 
+        [Required]
         public string Name { get; set; }
 
+        [Required]
         public string Description { get; set; }
 
+        [Required]
         public int PreparationTime { get; set; }
 
+        [Required]
         public int CookTime { get; set; }
 
+        [Required]
         public int NumberOfServings { get; set; }
 
+        [Required]
         public string Directions { get; set; }
 
+        [Required]
         public DishType DishType { get; set; }
 
+        [Required]
         public byte[] Image { get; set; }
 
         public bool IsInCreate { get; set; } = false;
